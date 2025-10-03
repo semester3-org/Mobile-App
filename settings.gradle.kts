@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Mobile_KosHub"
+rootProject.name = "KosHub"
 include(":app")
+ 

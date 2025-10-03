@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KosHub"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Jember"
+                android:textSize="14sp"
+                android:textColor="@color/black" />
+
+            <ImageButton
+                android:id="@+id/ibSearchHome"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:src="@drawable/ic_search"
+                android:contentDescription="Search"
+                tools:ignore="TouchTargetSizeCheck"/>
+        </LinearLayout>
+
+        <!-- Search Bar -->
+        <EditText
+            android:id="@+id/etSearchHome"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:hint="Cari Kos di Jember"
+            android:drawableStart="@drawable/ic_search"
+            android:padding="10dp"
+            android:background="@drawable/bg_search"
+            android:layout_marginTop="12dp"
+            tools:ignore="TouchTargetSizeCheck"/>
+
+        <!-- Filter Kategori -->
+        <HorizontalScrollView
+            android:id="@+id/hsvFilters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnFilterAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Semua"
+                    android:background="@drawable/bg_filter"/>
+
+                <Button
+                    android:id="@+id/btnFilterPutra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kos Putra"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_filter"/>
+
+                <Button
+                    android:id="@+id/btnFilterPutri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kos Putri"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_filter"/>
+
+                <Button
+                    android:id="@+id/btnFilterAC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AC"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_filter"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Rekomendasi Kos -->
+        <TextView
+            android:id="@+id/tvRekomendasiTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rekomendasi Kos Pilihan"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRekomendasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- Kos Terfavorit -->
+        <TextView
+            android:id="@+id/tvFavoritTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kos Terfavorit"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFavoritHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false" />
+
+    </LinearLayout>
+</ScrollView>

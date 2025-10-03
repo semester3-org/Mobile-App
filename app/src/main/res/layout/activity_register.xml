@@ -1,0 +1,271 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center_horizontal">
+
+    <!-- Header Hijau -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@drawable/header_curve"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_logo"
+                android:scaleType="centerInside"
+                android:layout_marginBottom="8dp"
+                android:padding="12dp"
+                android:layout_gravity="center"
+                android:clipToOutline="true"
+                android:contentDescription="Logo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KosHub"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_regular"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome! User"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign up to find comfort place"
+        android:textColor="#757575"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Form -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="24dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/fullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Full Name"
+                android:background="@drawable/input_underline"
+                android:textColor="@android:color/black"
+                android:textColorHint="#9E9E9E"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingBottom="8dp"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:id="@+id/username"
+                android:background="@drawable/input_underline"
+                android:textColor="@android:color/black"
+                android:textColorHint="#9E9E9E"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingBottom="8dp"
+                android:layout_marginTop="12dp"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:background="@drawable/input_underline"
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/black"
+                android:textColorHint="#9E9E9E"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingBottom="8dp"
+                android:layout_marginTop="12dp"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nomor Handphone"
+                android:id="@+id/phone"
+                android:background="@drawable/input_underline"
+                android:inputType="phone"
+                android:textColor="@android:color/black"
+                android:textColorHint="#9E9E9E"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingBottom="8dp"
+                android:layout_marginTop="12dp"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:id="@+id/password"
+                android:background="@drawable/input_underline"
+                android:inputType="textPassword"
+                android:textColor="@android:color/black"
+                android:textColorHint="#9E9E9E"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingBottom="8dp"
+                android:layout_marginTop="12dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Konfirmasi Password"
+                android:id="@+id/confirmPassword"
+                android:background="@drawable/input_underline"
+                android:inputType="textPassword"
+                android:textColor="@android:color/black"
+                android:textColorHint="#9E9E9E"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingBottom="8dp"
+                android:layout_marginTop="12dp"/>
+
+            <!-- Checkbox -->
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I agree to the terms and conditions"
+                android:id="@+id/termsCheckbox"
+                android:textColor="@color/green_dark"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/poppins_regular"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Button Login -->
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/btn_rounded"
+        android:text="Login"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins_regular"/>
+
+    <!-- Social Login -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginVertical="16dp"
+        android:paddingHorizontal="24dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#BDBDBD"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  or  "
+            android:textColor="#757575"
+            android:fontFamily="@font/poppins_regular"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#BDBDBD"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_google"
+            android:background="@drawable/btn_circle"
+            android:scaleType="centerInside"
+            android:layout_marginHorizontal="8dp"
+            android:contentDescription="Login dengan Google"
+            tools:ignore="TouchTargetSizeCheck"/>
+
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_facebook"
+            android:background="@drawable/btn_circle"
+            android:scaleType="centerInside"
+            android:layout_marginHorizontal="8dp"
+            android:contentDescription="Login dengan Facebook"
+            tools:ignore="TouchTargetSizeCheck"/>
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_apple"
+            android:background="@drawable/btn_circle"
+            android:scaleType="centerInside"
+            android:layout_marginHorizontal="8dp"
+            android:contentDescription="Login dengan Apple"
+            tools:ignore="TouchTargetSizeCheck"/>
+    </LinearLayout>
+
+    <!-- Footer -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already have an account? "
+        android:textColor="#757575"
+        android:fontFamily="@font/poppins_regular"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign in"
+        android:textColor="@color/green_dark"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginBottom="24dp"/>
+</LinearLayout>

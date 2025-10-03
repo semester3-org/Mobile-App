@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@android:color/white">
+
+    <EditText
+        android:id="@+id/etSearchExplore"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="Cari Kos Berdasarkan lokasi, nama..."
+        android:drawableStart="@drawable/ic_search"
+        android:background="@drawable/bg_search"
+        android:padding="10dp"
+        tools:ignore="TouchTargetSizeCheck"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExplore"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"
+        android:paddingBottom="80dp" />
+
+</LinearLayout>

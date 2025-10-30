@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,22 +32,22 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // Init views
+        // Inisialisasi view
         etSearchHome = view.findViewById(R.id.etSearchHome)
         rvRekomendasi = view.findViewById(R.id.rvRekomendasi)
         rvFavoritHome = view.findViewById(R.id.rvFavoritHome)
         val ibSearchHome: ImageButton = view.findViewById(R.id.ibSearchHome)
 
-        // Setup RecyclerViews
+        // Setup RecyclerViews (horizontal scroll)
         setupRecyclerViews()
 
         // Dummy data
-        allRekomendasi.addAll(getDummyKos(3)) // 3 items untuk rekomendasi
-        allFavorit.addAll(getDummyKos(2)) // 2 items untuk favorit
+        allRekomendasi.addAll(getDummyKos(5))
+        allFavorit.addAll(getDummyKos(4))
         adapterRekomendasi.updateList(allRekomendasi)
         adapterFavorit.updateList(allFavorit)
 
-        // Search listener
+        // Fitur search
         etSearchHome.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 filterKos(s.toString())
@@ -57,27 +56,29 @@ class HomeFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // ImageButton search: Bisa ganti ke SearchFragment atau activity
+        // Tombol search → buka halaman lain (opsional)
         ibSearchHome.setOnClickListener {
-            // Misal: load SearchFragment() atau startActivity(Intent(context, SearchActivity::class.java))
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SearchFragment())
-                .addToBackStack(null)
-                .commit()
+            // Ganti dengan fragment/activity yang sesuai
+            // contoh:
+            // requireActivity().supportFragmentManager.beginTransaction()
+            //    .replace(R.id.fragment_container, SearchFragment())
+            //    .addToBackStack(null)
+            //    .commit()
         }
 
-        // Filter buttons (dummy: toggle background)
+        // Filter buttons
         setupFilters(view)
 
         return view
     }
 
     private fun setupRecyclerViews() {
-        rvRekomendasi.layoutManager = LinearLayoutManager(context)
-        rvFavoritHome.layoutManager = LinearLayoutManager(context)
+        // 🔹 Horizontal untuk tiap kategori
+        rvRekomendasi.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rvFavoritHome.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
+        // Adapter
         adapterRekomendasi = KosAdapter(emptyList()) { kos ->
-            // Handle click: Misal show detail
             android.widget.Toast.makeText(context, "Detail: ${kos.nama}", android.widget.Toast.LENGTH_SHORT).show()
         }
         adapterFavorit = KosAdapter(emptyList()) { kos ->
@@ -94,7 +95,6 @@ class HomeFragment : Fragment() {
         val btnPutri: Button = view.findViewById(R.id.btnFilterPutri)
         val btnAC: Button = view.findViewById(R.id.btnFilterAC)
 
-        // Dummy click: Set selected state
         btnAll.setOnClickListener { resetFilters(); btnAll.setBackgroundResource(R.drawable.bg_filter_selected) }
         btnPutra.setOnClickListener { resetFilters(); btnPutra.setBackgroundResource(R.drawable.bg_filter_selected); filterByCategory("Putra") }
         btnPutri.setOnClickListener { resetFilters(); btnPutri.setBackgroundResource(R.drawable.bg_filter_selected); filterByCategory("Putri") }
@@ -102,7 +102,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun resetFilters() {
-        // Reset semua button ke bg_filter
         val view = view ?: return
         view.findViewById<Button>(R.id.btnFilterAll).setBackgroundResource(R.drawable.bg_filter)
         view.findViewById<Button>(R.id.btnFilterPutra).setBackgroundResource(R.drawable.bg_filter)
@@ -113,9 +112,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun filterByCategory(category: String) {
-        // Dummy filter berdasarkan nama (nanti sesuaikan model)
-        val filteredRekomendasi = allRekomendasi.filter { it.nama.contains(category, ignoreCase = true) }
-        val filteredFavorit = allFavorit.filter { it.nama.contains(category, ignoreCase = true) }
+        val filteredRekomendasi = allRekomendasi.filter { it.nama.contains(category, true) }
+        val filteredFavorit = allFavorit.filter { it.nama.contains(category, true) }
         adapterRekomendasi.updateList(filteredRekomendasi)
         adapterFavorit.updateList(filteredFavorit)
     }
@@ -126,8 +124,8 @@ class HomeFragment : Fragment() {
             adapterFavorit.updateList(allFavorit)
             return
         }
-        val filteredRekomendasi = allRekomendasi.filter { it.nama.contains(query, ignoreCase = true) || it.lokasi.contains(query, ignoreCase = true) }
-        val filteredFavorit = allFavorit.filter { it.nama.contains(query, ignoreCase = true) || it.lokasi.contains(query, ignoreCase = true) }
+        val filteredRekomendasi = allRekomendasi.filter { it.nama.contains(query, true) || it.lokasi.contains(query, true) }
+        val filteredFavorit = allFavorit.filter { it.nama.contains(query, true) || it.lokasi.contains(query, true) }
         adapterRekomendasi.updateList(filteredRekomendasi)
         adapterFavorit.updateList(filteredFavorit)
     }

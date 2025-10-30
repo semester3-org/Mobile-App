@@ -7,8 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apk.koshub.R
 import com.apk.koshub.adapters.KosAdapter
@@ -30,18 +31,18 @@ class ExploreFragment : Fragment() {
         etSearchExplore = view.findViewById(R.id.etSearchExplore)
         rvExplore = view.findViewById(R.id.rvExplore)
 
-        // Setup RecyclerView
-        rvExplore.layoutManager = LinearLayoutManager(context)
+        // RecyclerView Grid 2 kolom
+        rvExplore.layoutManager = GridLayoutManager(context, 2)
         adapter = KosAdapter(emptyList()) { kos ->
-            android.widget.Toast.makeText(context, "Explore: ${kos.nama}", android.widget.Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Lihat detail: ${kos.nama}", Toast.LENGTH_SHORT).show()
         }
         rvExplore.adapter = adapter
 
         // Dummy data
-        allKos.addAll(getDummyKos(10))
+        allKos.addAll(getDummyKos(12))
         adapter.updateList(allKos)
 
-        // Search listener
+        // Pencarian
         etSearchExplore.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 filterKos(s.toString())
@@ -58,14 +59,16 @@ class ExploreFragment : Fragment() {
             adapter.updateList(allKos)
             return
         }
-        val filtered = allKos.filter { it.nama.contains(query, ignoreCase = true) || it.lokasi.contains(query, ignoreCase = true) }
+        val filtered = allKos.filter {
+            it.nama.contains(query, ignoreCase = true) || it.lokasi.contains(query, ignoreCase = true)
+        }
         adapter.updateList(filtered)
     }
 
     private fun getDummyKos(count: Int): List<KosItem> {
         val list = mutableListOf<KosItem>()
         for (i in 1..count) {
-            list.add(KosItem(i, "Kos Explore $i", "Jember, Area $i", "Rp ${700 + i * 100}.000/bulan"))
+            list.add(KosItem(i, "Kos $i", "Jember, Area $i", "Rp ${600 + i * 100}.000/bulan"))
         }
         return list
     }

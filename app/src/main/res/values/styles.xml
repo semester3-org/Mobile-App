@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- style lain yg udah ada jangan dihapus, taruh di sini juga -->
+
+    <style name="NeutralOutlineButton">
+        <item name="android:background">@drawable/btn_outline_green</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+
+</resources>

@@ -14,4 +14,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="holo_red_dark">#B71C1C</color>
     <color name="transparent">#00000000</color>
+    <color name="wifi_green">#4CAF50</color>
+
 </resources>

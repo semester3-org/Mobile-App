@@ -5,24 +5,151 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    tools:context=".fragments.ExploreFragment">
 
+    <!-- Title dan Lokasi -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvExploreTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Explore"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_regular" />
+
+        <TextView
+            android:id="@+id/tvLokasiExplore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jember"
+            android:textColor="@color/green_light"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppins_regular" />
+    </LinearLayout>
+
+    <!-- Search -->
     <EditText
         android:id="@+id/etSearchExplore"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:hint="Cari Kos Berdasarkan lokasi, nama..."
+        android:hint="Cari Kos Berdasarkan lokasi, nama, atau lain-lain"
+        android:textColor="@android:color/black"
+        android:textSize="13sp"
         android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="8dp"
         android:background="@drawable/bg_search"
-        android:padding="10dp"
-        tools:ignore="TouchTargetSizeCheck"/>
+        android:paddingHorizontal="14dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/poppins_regular"
+        tools:ignore="TouchTargetSizeCheck" />
 
+    <!-- Filter buttons -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnTerbaru"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_filter"
+                android:text="Terbaru"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular" />
+
+            <Button
+                android:id="@+id/btnTerpopuler"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_filter"
+                android:text="Terpopuler"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular" />
+
+            <Button
+                android:id="@+id/btnPutri"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_filter"
+                android:text="Kos Putri"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular" />
+
+            <Button
+                android:id="@+id/btnPutra"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_filter"
+                android:text="Kos Putra"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_regular" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Filter & Urutkan -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_filter"
+            android:text="Filter"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:fontFamily="@font/poppins_regular"
+            tools:ignore="TouchTargetSizeCheck"/>
+
+        <Button
+            android:id="@+id/btnUrutkan"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_filter"
+            android:text="⇅ Urutkan"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:fontFamily="@font/poppins_regular"
+            tools:ignore="TouchTargetSizeCheck"/>
+    </LinearLayout>
+
+    <!-- RecyclerView (Grid) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvExplore"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="12dp"
-        android:paddingBottom="80dp" />
+        android:layout_height="match_parent"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_kos" />
+
 
 </LinearLayout>

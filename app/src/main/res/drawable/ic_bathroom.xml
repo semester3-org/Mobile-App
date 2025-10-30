@@ -1,0 +1,57 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- Badan bathtub -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="
+            M10,28
+            c0,-6 6,-10 22,-10
+            s22,4 22,10
+            v6
+            c0,2 -2,4 -6,4
+            H16
+            c-4,0 -6,-2 -6,-4
+            v-6
+            z"/>
+
+    <!-- Kaki kiri -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="
+            M18,38
+            c-1,3 -2,5 -4,5
+            c-1,0 -2,-1 -2,-2
+            c0,-2 2,-3 4,-3
+            h2
+            z"/>
+
+    <!-- Kaki kanan -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="
+            M46,38
+            c1,3 2,5 4,5
+            c1,0 2,-1 2,-2
+            c0,-2 -2,-3 -4,-3
+            h-2
+            z"/>
+
+    <!-- Kran air -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="
+            M16,18
+            v-3
+            c0,-2 2,-4 4,-4
+            h4
+            v2
+            h-4
+            c-1,0 -2,1 -2,2
+            v3
+            h-2
+            z"/>
+</vector>

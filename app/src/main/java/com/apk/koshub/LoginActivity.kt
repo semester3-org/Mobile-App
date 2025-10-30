@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
             // TODO: Implement API call to validate login with backend MySQL
 
             // For demo, assume login success if email == "user@example.com" and password == "123456"
-            if (email == "richbuaya@cong.com" && password == "123456") {
+            if (email == "arya@bintang.com" && password == "123456") {
                 val intent = Intent(this,  MainActivity::class.java)
                 intent.putExtra("USER_EMAIL", email)
                 startActivity(intent)

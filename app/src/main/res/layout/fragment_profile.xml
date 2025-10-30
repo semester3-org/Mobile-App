@@ -1,23 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp"
-    android:background="@android:color/white">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
+        <!-- Tombol Kembali & Judul -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_back"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profil"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_regular" />
+        </LinearLayout>
+
+        <!-- Foto Profil -->
         <ImageView
             android:id="@+id/ivProfile"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_profile"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_gravity="center"
-            android:contentDescription="Profile Picture" />
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_profile"
+            android:background="@drawable/bg_profile_circle"
+            android:padding="8dp" />
 
+        <!-- Nama & Email -->
         <TextView
             android:id="@+id/tvNamaUser"
             android:layout_width="wrap_content"
@@ -26,60 +56,259 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_regular" />
 
         <TextView
             android:id="@+id/tvEmailUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="zenair.alexa@gmail.com"
-            android:textSize="14sp"
+            android:text="zenair.4lexsa@gmail.com"
+            android:textSize="13sp"
             android:layout_gravity="center"
-            android:layout_marginBottom="16dp" />
+            android:textColor="@color/white"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/poppins_regular" />
 
-        <Button
-            android:id="@+id/btnEditProfile"
+        <!-- Bagian: Informasi Akun -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Edit Profil"
-            android:layout_marginBottom="8dp" />
+            android:text="Informasi Akun"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_regular" />
 
-        <Button
-            android:id="@+id/btnRiwayatPencarian"
+        <!-- Edit Profil -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Riwayat Pencarian"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
 
-        <Button
-            android:id="@+id/btnKosFavorit"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_edit" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="Edit Profil"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_arrow_right" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Bagian: Riwayat & Interaksi -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kos Favorit"
-            android:layout_marginBottom="8dp" />
+            android:text="Riwayat dan Interaksi"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_regular" />
 
-        <Button
-            android:id="@+id/btnNotifikasi"
+        <!-- Riwayat Pencarian -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardRiwayat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Notifikasi"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
 
-        <Button
-            android:id="@+id/btnBahasa"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_history" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="Riwayat Pencarian"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_arrow_right" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Kos Favorit -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardFavorit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bahasa"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_heart" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Kos Favorit"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_arrow_right" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Bagian: Pengaturan Aplikasi -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pengaturan Aplikasi"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_regular" />
+
+        <!-- Notifikasi -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardNotifikasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_notification" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="Notifikasi"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <Switch
+                    android:id="@+id/switchNotifikasi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="TouchTargetSizeCheck"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Bahasa -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardBahasa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_language" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="Bahasa"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_arrow_right" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Tombol Logout -->
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:text="Logout"
-            android:textColor="@android:color/holo_red_dark"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
             android:backgroundTint="@android:color/transparent"
-            android:layout_marginTop="16dp" />
+            android:fontFamily="@font/poppins_regular"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn_logout_border"
+            tools:ignore="TouchTargetSizeCheck"/>
 
     </LinearLayout>
 </ScrollView>

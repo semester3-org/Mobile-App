@@ -83,8 +83,8 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
             android:layout_below="@id/email"
+            android:textColor="@android:color/black"
             android:layout_marginTop="12dp"
             android:layout_marginHorizontal="24dp"
             android:hint="Password"
@@ -106,14 +106,15 @@
 
             <CheckBox
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:layout_height="wrap_content"
                 android:text="Remember me"
                 tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
                 android:text="Forgot Password?"
                 android:textColor="@color/primaryGreen"/>
         </LinearLayout>
@@ -125,9 +126,9 @@
             android:layout_height="50dp"
             android:layout_below="@id/rememberForgot"
             android:layout_margin="24dp"
-            android:background="@drawable/btn_rounded"
             android:text="Login"
-            android:textColor="@color/white" />
+            android:background="@drawable/btn_rounded"
+            android:textColor="@color/white"/>
 
         <!-- OR -->
         <TextView

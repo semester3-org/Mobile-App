@@ -1,67 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="240dp"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="5dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:backgroundTint="@android:color/white">
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:orientation="vertical">
 
-        <!-- Image Kos (placeholder) -->
+        <!-- Gambar Kos -->
         <ImageView
             android:id="@+id/ivKosImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_home"
-        android:scaleType="centerCrop"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sampel_kos"
+            android:background="@color/darker_gray" />
 
-        <!-- Detail Text -->
+        <!-- Detail -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/ivKosImage"
-            android:layout_marginStart="12dp"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
+            <!-- Nama Kos -->
             <TextView
                 android:id="@+id/tvNamaKos"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nama Kos"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:maxLines="1"
-                android:ellipsize="end" />
-
-            <TextView
-                android:id="@+id/tvLokasi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Lokasi"
-                android:textSize="14sp"
-                android:textColor="@color/darker_gray"
-                android:layout_marginTop="4dp" />
-
-            <TextView
-                android:id="@+id/tvHarga"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Mulai Rp 800.000/bulan"
+                android:text="Kos Super JosJis"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:layout_marginTop="4dp" />
+                android:fontFamily="@font/poppins_regular" />
+
+            <!-- Lokasi -->
+            <TextView
+                android:id="@+id/tvLokasi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jember, Dekat Unej"
+                android:textColor="@color/darker_gray"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppins_regular" />
+
+            <!-- Fasilitas -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_wifi" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wifi"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="4dp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_ac" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AC"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="4dp" />
+            </LinearLayout>
+
+            <!-- Harga -->
+            <TextView
+                android:id="@+id/tvHarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp 800.000/bulan"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_marginTop="10dp" />
+
+            <!-- Tombol -->
+            <Button
+                android:id="@+id/btnLihatDetail"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/btn_rounded"
+                android:text="Lihat Detail"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_regular" />
 
         </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

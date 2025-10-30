@@ -16,7 +16,7 @@
 
         <!-- Launcher Activity -->
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.KosHub">
             <intent-filter>
@@ -26,6 +26,9 @@
         </activity>
 
         <!-- Auth Activities -->
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />

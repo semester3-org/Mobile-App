@@ -51,9 +51,9 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:hint="Cari Kos di Jember"
-            android:drawableStart="@drawable/ic_search"
             android:padding="10dp"
             android:background="@drawable/bg_search"
+            android:textColor="@android:color/black"
             android:layout_marginTop="12dp"
             tools:ignore="TouchTargetSizeCheck"/>
 
@@ -110,6 +110,7 @@
             android:layout_height="wrap_content"
             android:text="Rekomendasi Kos Pilihan"
             android:textStyle="bold"
+            android:textColor="@android:color/black"
             android:textSize="16sp"
             android:layout_marginTop="16dp"/>
 
@@ -127,6 +128,7 @@
             android:layout_height="wrap_content"
             android:text="Kos Terfavorit"
             android:textStyle="bold"
+            android:textColor="@android:color/black"
             android:textSize="16sp"
             android:layout_marginTop="24dp"/>
 

@@ -63,7 +63,8 @@
             android:gravity="center"
             android:text="Sign in to continue to your account"
             android:textColor="@color/primaryGreen"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            />
 
         <EditText
             android:id="@+id/email"
@@ -135,10 +136,10 @@
             android:id="@+id/orText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnLogin"
-            android:layout_marginTop="8dp"
+            android:layout_below="@+id/btnLogin"
+            android:layout_marginTop="1dp"
             android:gravity="center"
-            android:text="or"/>
+            android:text="or" />
 
         <!-- Social Login -->
         <LinearLayout
@@ -157,29 +158,19 @@
                 android:background="@drawable/btn_circle"
                 android:src="@drawable/ic_google"/>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginHorizontal="8dp"
-                android:background="@drawable/btn_circle"
-                android:src="@drawable/ic_facebook"/>
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginHorizontal="8dp"
-                android:background="@drawable/btn_circle"
-                android:src="@drawable/ic_apple"/>
         </LinearLayout>
 
-        <!-- Register -->
         <TextView
+            android:id="@+id/SignUpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/socialLogin"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="Don’t have account? Create one!"
+            android:text="Belum Punya Akun? Sign Up"
+            android:textStyle="bold"
             android:textSize="14sp"/>
+
+
     </RelativeLayout>
 </ScrollView>

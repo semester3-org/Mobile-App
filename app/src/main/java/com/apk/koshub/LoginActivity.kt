@@ -4,8 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -17,37 +20,45 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        emailInput = findViewById(R.id.email)
-        passwordInput = findViewById(R.id.password)
-        btnLogin = findViewById(R.id.btnLogin)
+        val signInText = findViewById<TextView>(R.id.SignUpButton)
+        signInText.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+            finish() // biar ga bisa balik ke register pas back
 
-        btnLogin.setOnClickListener {
-            val email = emailInput.text.toString().trim()
-            val password = passwordInput.text.toString()
+            emailInput = findViewById(R.id.email)
+            passwordInput = findViewById(R.id.password)
+            btnLogin = findViewById(R.id.btnLogin)
 
-            if (email.isEmpty()) {
-                emailInput.error = "Email is required"
-                emailInput.requestFocus()
-                return@setOnClickListener
-            }
+            btnLogin.setOnClickListener {
+                val email = emailInput.text.toString().trim()
+                val password = passwordInput.text.toString()
 
-            if (password.isEmpty()) {
-                passwordInput.error = "Password is required"
-                passwordInput.requestFocus()
-                return@setOnClickListener
-            }
+                if (email.isEmpty()) {
+                    emailInput.error = "Email is required"
+                    emailInput.requestFocus()
+                    return@setOnClickListener
+                }
 
-            // TODO: Implement API call to validate login with backend MySQL
+                if (password.isEmpty()) {
+                    passwordInput.error = "Password is required"
+                    passwordInput.requestFocus()
+                    return@setOnClickListener
+                }
 
-            // For demo, assume login success if email == "user@example.com" and password == "123456"
-            if (email == "arya@bintang.com" && password == "123456") {
-                val intent = Intent(this,  MainActivity::class.java)
-                intent.putExtra("USER_EMAIL", email)
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
+                // TODO: Implement API call to validate login with backend MySQL
+
+                // For demo, assume login success if email == "user@example.com" and password == "123456"
+                if (email == "arya@bintang.com" && password == "123456") {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("USER_EMAIL", email)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+
     }
+
 }

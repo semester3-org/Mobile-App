@@ -50,7 +50,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome! User"
+        android:text="Selamat Datang"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -60,7 +60,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign up to find comfort place"
+        android:text="Sign Up Untuk Mencari Tempat Kos Yang Nyaman"
+        android:textStyle="bold"
         android:textColor="#757575"
         android:textSize="14sp"
         android:fontFamily="@font/poppins_regular"
@@ -87,20 +88,24 @@
                 android:textColor="@android:color/black"
                 android:textColorHint="#9E9E9E"
                 android:fontFamily="@font/poppins_regular"
-                android:paddingBottom="8dp"
+                android:paddingVertical="8dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 tools:ignore="TouchTargetSizeCheck"/>
 
             <EditText
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username"
-                android:id="@+id/username"
                 android:background="@drawable/input_underline"
                 android:textColor="@android:color/black"
                 android:textColorHint="#9E9E9E"
                 android:fontFamily="@font/poppins_regular"
-                android:paddingBottom="8dp"
-                android:layout_marginTop="12dp"
+                android:paddingVertical="8dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginTop="10dp"
                 tools:ignore="TouchTargetSizeCheck"/>
 
             <EditText
@@ -113,62 +118,70 @@
                 android:textColor="@android:color/black"
                 android:textColorHint="#9E9E9E"
                 android:fontFamily="@font/poppins_regular"
-                android:paddingBottom="8dp"
-                android:layout_marginTop="12dp"
+                android:paddingVertical="8dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginTop="10dp"
                 tools:ignore="TouchTargetSizeCheck"/>
 
-
             <EditText
+                android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nomor Handphone"
-                android:id="@+id/phone"
                 android:background="@drawable/input_underline"
                 android:inputType="phone"
                 android:textColor="@android:color/black"
                 android:textColorHint="#9E9E9E"
                 android:fontFamily="@font/poppins_regular"
-                android:paddingBottom="8dp"
-                android:layout_marginTop="12dp"
+                android:paddingVertical="8dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginTop="10dp"
                 tools:ignore="TouchTargetSizeCheck"/>
 
             <EditText
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
-                android:id="@+id/password"
                 android:background="@drawable/input_underline"
                 android:inputType="textPassword"
                 android:textColor="@android:color/black"
                 android:textColorHint="#9E9E9E"
                 android:fontFamily="@font/poppins_regular"
-                android:paddingBottom="8dp"
-                android:layout_marginTop="12dp"/>
+                android:paddingVertical="8dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginTop="10dp"/>
 
             <EditText
+                android:id="@+id/confirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Konfirmasi Password"
-                android:id="@+id/confirmPassword"
                 android:background="@drawable/input_underline"
                 android:inputType="textPassword"
                 android:textColor="@android:color/black"
                 android:textColorHint="#9E9E9E"
                 android:fontFamily="@font/poppins_regular"
-                android:paddingBottom="8dp"
-                android:layout_marginTop="12dp"/>
-
-            <!-- Checkbox -->
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="I agree to the terms and conditions"
-                android:id="@+id/termsCheckbox"
-                android:textColor="@color/green_dark"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/poppins_regular"/>
+                android:paddingVertical="8dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginTop="10dp"/>
         </LinearLayout>
     </ScrollView>
+
+    <!-- Checkbox -->
+    <CheckBox
+        android:id="@+id/termsCheckbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Saya setuju dengan syarat dan ketentuan"
+        android:textColor="@color/green_dark" />
 
     <!-- Button Login -->
     <Button
@@ -176,9 +189,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/btn_rounded"
-        android:text="Login"
+        android:text="Sign Up"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:textAllCaps="false"
@@ -190,7 +203,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginVertical="16dp"
+        android:layout_marginTop="8dp"
         android:paddingHorizontal="24dp">
 
         <View
@@ -214,58 +227,48 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginTop="6dp">
 
         <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:src="@drawable/ic_google"
             android:background="@drawable/btn_circle"
             android:scaleType="centerInside"
-            android:layout_marginHorizontal="8dp"
             android:contentDescription="Login dengan Google"
             tools:ignore="TouchTargetSizeCheck"/>
 
-
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_facebook"
-            android:background="@drawable/btn_circle"
-            android:scaleType="centerInside"
-            android:layout_marginHorizontal="8dp"
-            android:contentDescription="Login dengan Facebook"
-            tools:ignore="TouchTargetSizeCheck"/>
-
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_apple"
-            android:background="@drawable/btn_circle"
-            android:scaleType="centerInside"
-            android:layout_marginHorizontal="8dp"
-            android:contentDescription="Login dengan Apple"
-            tools:ignore="TouchTargetSizeCheck"/>
     </LinearLayout>
+
 
     <!-- Footer -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Already have an account? "
+        android:layout_marginTop="-10dp"
+        android:text="Sudah Punya Akun?"
         android:textColor="#757575"
+        android:layout_marginVertical="12dp"
         android:fontFamily="@font/poppins_regular"/>
 
+
+    <!--Tombol Kembali Ke Log in Jika Sudah Punya Akun-->
     <TextView
+        android:id="@+id/tvLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in"
+        android:text="Log in"
         android:textColor="@color/green_dark"
         android:textStyle="bold"
         android:fontFamily="@font/poppins_regular"
-        android:layout_marginBottom="24dp"/>
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingVertical="13dp"
+        android:paddingHorizontal="12dp"
+        android:layout_marginTop="-8dp"/>
+
 </LinearLayout>

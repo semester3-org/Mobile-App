@@ -2,11 +2,10 @@ package com.apk.koshub
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.apk.koshub.utils.DatabaseHelper
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -14,6 +13,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordInput: EditText
     private lateinit var btnLogin: Button
     private lateinit var signInText: TextView
+    private lateinit var db: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,10 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         signInText = findViewById(R.id.SignUpButton)
 
-        // Tombol Sign Up → pindah ke Register
+        // Inisialisasi database helper
+        db = DatabaseHelper(this)
+
+        // Tombol Sign Up → pindah ke RegisterActivity
         signInText.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
             finish()
@@ -34,28 +37,32 @@ class LoginActivity : AppCompatActivity() {
         // Tombol Login
         btnLogin.setOnClickListener {
             val email = emailInput.text.toString().trim()
-            val password = passwordInput.text.toString()
+            val password = passwordInput.text.toString().trim()
 
+            // Validasi input
             if (email.isEmpty()) {
-                emailInput.error = "Email is required"
+                emailInput.error = "Email wajib diisi"
                 emailInput.requestFocus()
                 return@setOnClickListener
             }
 
             if (password.isEmpty()) {
-                passwordInput.error = "Password is required"
+                passwordInput.error = "Password wajib diisi"
                 passwordInput.requestFocus()
                 return@setOnClickListener
             }
 
-            // Demo login lokal
-            if (email == "arya@bintang.com" && password == "123456") {
+            // Cek ke database
+            val isValid = db.checkUser(email, password)
+            if (isValid) {
+                Toast.makeText(this, "Login berhasil!", Toast.LENGTH_SHORT).show()
+
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("USER_EMAIL", email)
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Email atau password salah!", Toast.LENGTH_SHORT).show()
             }
         }
     }

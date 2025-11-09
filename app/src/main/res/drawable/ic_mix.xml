@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#000000">
+
+    <!-- Lingkaran utama -->
+    <path
+        android:fillColor="@android:color/black"
+        android:pathData="M9,8a3,3 0 1,0 0,6 3,3 0 0,0 0,-6zM9,6a5,5 0 1,1 0,10 5,5 0 0,1 0,-10z" />
+
+    <!-- Panah laki-laki -->
+    <path
+        android:fillColor="@android:color/black"
+        android:pathData="M13,5l3,-3h-2V1h4v4h-1V3l-3,3z" />
+
+    <!-- Garis penghubung ke panah -->
+    <path
+        android:fillColor="@android:color/black"
+        android:pathData="M11,7l5,-5" />
+
+    <!-- Simbol salib perempuan -->
+    <path
+        android:fillColor="@android:color/black"
+        android:pathData="M8.5,14v2H7v1h1.5v1.5h1V17H11v-1H9.5v-2z" />
+</vector>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white">
+
+        <!-- Gambar Kos -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgKos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sampel_kos" />
+
+            <!-- Icon Favorite -->
+            <ImageButton
+                android:id="@+id/btnFavorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="8dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_favorite_border"
+                android:contentDescription="Favorite"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+            <!-- Rating -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_rating"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_star" />
+
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.9"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp"
+                    android:layout_marginStart="3dp"
+                    android:fontFamily="@font/poppins_regular" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Detail Kos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvNamaKos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kos Nyaman"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_regular" />
+
+            <TextView
+                android:id="@+id/tvAlamatKos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tawangmangu, Area 1"
+                android:textColor="@color/darker_gray"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_regular" />
+
+            <TextView
+                android:id="@+id/tvFasilitasKos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WiFi, Lemari, Meja"
+                android:textColor="@color/darker_gray"
+                android:textSize="11sp"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppins_regular" />
+
+            <TextView
+                android:id="@+id/tvHargaKos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp 700.000/bulan"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/poppins_regular" />
+
+            <!-- Tombol Lihat Detail -->
+            <TextView
+                android:id="@+id/btnDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_btn_detail"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:text="Lihat Detail"
+                android:textColor="@android:color/white"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -12,15 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apk.koshub.R
-import com.apk.koshub.adapters.KosAdapter
-import com.apk.koshub.models.KosItem
+import com.apk.koshub.adapters.KosCardAdapter
+import com.apk.koshub.models.KosItemCard
 
 class ExploreFragment : Fragment() {
 
     private lateinit var rvExplore: RecyclerView
     private lateinit var etSearchExplore: EditText
-    private lateinit var adapter: KosAdapter
-    private var allKos = mutableListOf<KosItem>()
+    private lateinit var adapter: KosCardAdapter
+    private var allKos = mutableListOf<KosItemCard>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,18 +31,20 @@ class ExploreFragment : Fragment() {
         etSearchExplore = view.findViewById(R.id.etSearchExplore)
         rvExplore = view.findViewById(R.id.rvExplore)
 
-        // RecyclerView Grid 2 kolom
+        // 🔹 Tampilkan grid 2 kolom
         rvExplore.layoutManager = GridLayoutManager(context, 2)
-        adapter = KosAdapter(emptyList()) { kos ->
+
+        // 🔹 Adapter
+        adapter = KosCardAdapter(mutableListOf()) { kos ->
             Toast.makeText(context, "Lihat detail: ${kos.nama}", Toast.LENGTH_SHORT).show()
         }
         rvExplore.adapter = adapter
 
-        // Dummy data
+        // 🔹 Dummy data
         allKos.addAll(getDummyKos(12))
         adapter.updateList(allKos)
 
-        // Pencarian
+        // 🔹 Pencarian live
         etSearchExplore.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 filterKos(s.toString())
@@ -60,15 +62,28 @@ class ExploreFragment : Fragment() {
             return
         }
         val filtered = allKos.filter {
-            it.nama.contains(query, ignoreCase = true) || it.lokasi.contains(query, ignoreCase = true)
+            it.nama.contains(query, ignoreCase = true) ||
+                    it.lokasi.contains(query, ignoreCase = true)
         }
         adapter.updateList(filtered)
     }
 
-    private fun getDummyKos(count: Int): List<KosItem> {
-        val list = mutableListOf<KosItem>()
+    // 🔹 Dummy data (bisa ganti nanti dari API / database)
+    private fun getDummyKos(count: Int): List<KosItemCard> {
+        val list = mutableListOf<KosItemCard>()
         for (i in 1..count) {
-            list.add(KosItem(i, "Kos $i", "Jember, Area $i", "Rp ${600 + i * 100}.000/bulan"))
+            list.add(
+                KosItemCard(
+                    id = i,
+                    nama = "Kos Nyaman $i",
+                    lokasi = "Tawangmangu, Area $i",
+                    fasilitas = "WiFi, Lemari, Meja",
+                    harga = "Rp ${600 + i * 100}.000/bulan",
+                    rating = 4.5 + (i % 5) * 0.1,
+                    gambar = "https://picsum.photos/300/200?random=$i",
+                    isFavorite = false
+                )
+            )
         }
         return list
     }

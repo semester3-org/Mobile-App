@@ -1,155 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="12dp"
     android:background="@android:color/white"
+    android:fillViewport="true"
     tools:context=".fragments.ExploreFragment">
 
-    <!-- Title dan Lokasi -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvExploreTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Explore"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:fontFamily="@font/poppins_regular" />
-
-        <TextView
-            android:id="@+id/tvLokasiExplore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jember"
-            android:textColor="@color/green_light"
-            android:textSize="13sp"
-            android:fontFamily="@font/poppins_regular" />
-    </LinearLayout>
-
-    <!-- Search -->
-    <EditText
-        android:id="@+id/etSearchExplore"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:hint="Cari Kos Berdasarkan lokasi, nama, atau lain-lain"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="8dp"
-        android:background="@drawable/bg_search"
-        android:paddingHorizontal="14dp"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/poppins_regular"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <!-- Filter buttons -->
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:scrollbars="none">
-
+        <!-- Header Explore + Lokasi -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnTerbaru"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_filter"
-                android:text="Terbaru"
+            <TextView
+                android:id="@+id/tvExploreTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Explore"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textSize="20sp"
                 android:fontFamily="@font/poppins_regular" />
 
-            <Button
-                android:id="@+id/btnTerpopuler"
+            <TextView
+                android:id="@+id/tvLokasiExplore"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_filter"
-                android:text="Terpopuler"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                android:fontFamily="@font/poppins_regular" />
-
-            <Button
-                android:id="@+id/btnPutri"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_filter"
-                android:text="Kos Putri"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                android:fontFamily="@font/poppins_regular" />
-
-            <Button
-                android:id="@+id/btnPutra"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_filter"
-                android:text="Kos Putra"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_location"
+                android:drawablePadding="4dp"
+                android:text="Jember"
+                android:textColor="@color/green_light"
+                android:textSize="14sp"
                 android:fontFamily="@font/poppins_regular" />
         </LinearLayout>
-    </HorizontalScrollView>
 
-    <!-- Filter & Urutkan -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        android:gravity="center_horizontal">
+        <!-- Search Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_search_rounded"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/btnFilter"
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_search"/>
+
+            <EditText
+                android:id="@+id/etSearchExplore"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Cari Kos Berdasarkan Lokasi, nama, dan dll."
+                android:background="@android:color/transparent"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingHorizontal="8dp"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+            <ImageButton
+                android:id="@+id/btnFilter"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_filter"
+                android:background="@android:color/transparent"
+                android:contentDescription="Filter"
+                tools:ignore="TouchTargetSizeCheck"/>
+        </LinearLayout>
+
+        <!-- Kategori -->
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/bg_filter"
-            android:text="Filter"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Kategori"
             android:textColor="@color/black"
-            android:textSize="12sp"
-            android:fontFamily="@font/poppins_regular"
-            tools:ignore="TouchTargetSizeCheck"/>
+            android:textSize="15sp"
+            android:fontFamily="@font/poppins_regular" />
 
-        <Button
-            android:id="@+id/btnUrutkan"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:background="@drawable/bg_filter"
-            android:text="⇅ Urutkan"
-            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:text="Pilih tipe kos yang kamu inginkan"
+            android:textColor="@color/darker_gray"
             android:textSize="12sp"
-            android:fontFamily="@font/poppins_regular"
-            tools:ignore="TouchTargetSizeCheck"/>
+            android:fontFamily="@font/poppins_regular" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="4"
+            android:layout_marginTop="12dp">
+
+            <!-- Kos Putra -->
+            <LinearLayout
+                android:id="@+id/btnKosPutra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:src="@drawable/ic_male"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/bg_circle_gray"
+                    android:padding="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kos Putra"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_regular" />
+            </LinearLayout>
+
+            <!-- Kos Putri -->
+            <LinearLayout
+                android:id="@+id/btnKosPutri"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:src="@drawable/ic_female"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/bg_circle_gray"
+                    android:padding="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kos Putri"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_regular" />
+            </LinearLayout>
+
+            <!-- Kos Campur -->
+            <LinearLayout
+                android:id="@+id/btnKosCampur"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:src="@drawable/ic_mix"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/bg_circle_gray"
+                    android:padding="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kos Campur"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_regular" />
+            </LinearLayout>
+
+            <!-- Kos Exclusive -->
+            <LinearLayout
+                android:id="@+id/btnKosExclusive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:src="@drawable/ic_star_badge"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/bg_circle_gray"
+                    android:padding="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kos Exclusive"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_regular" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!-- RecyclerView Grid -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvExplore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/item_kos_card" />
+
     </LinearLayout>
-
-    <!-- RecyclerView (Grid) -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvExplore"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="8dp"
-        android:paddingBottom="16dp"
-        android:clipToPadding="false"
-        tools:listitem="@layout/item_kos" />
-
-
-</LinearLayout>
+</ScrollView>

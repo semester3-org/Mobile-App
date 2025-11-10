@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Gambar utama -->
+    <ImageView
+        android:id="@+id/imageSlide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <!-- Overlay gelap agar teks terlihat jelas -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000" />
+
+    <!-- Konten teks di bawah tapi tidak tertutup tombol -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_gravity="bottom"
+        android:paddingHorizontal="24dp"
+        android:paddingBottom="230dp">
+
+        <TextView
+            android:id="@+id/titleSlide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Temukan Kos Impianmu"
+            android:textColor="#00FF66"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/descSlide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jelajahi berbagai pilihan kos dengan mudah. Dapatkan tempat tinggal yang nyaman, sesuai kebutuhan dan budget kamu."
+            android:textColor="#E0E0E0"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp" />
+    </LinearLayout>
+</FrameLayout>

@@ -1,11 +1,11 @@
-package com.apk.koshub;
+package com.apk.koshub
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.apk.koshub.utils.DatabaseHelper
-
+import com.apk.koshub.db.DatabaseHelper
+import com.apk.koshub.models.User
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -64,22 +64,23 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Cek apakah email sudah ada
-            if (db.checkEmail(emailStr)) {
-                toast("Email sudah terdaftar!")
-                return@setOnClickListener
-            }
+            // Buat objek user
+            val user = User(
+                id = 1, // bisa diatur otomatis
+                username = usernameStr,
+                email = emailStr,
+                full_name = fullNameStr,
+                phone = phoneStr,
+                user_type = "user" // default
+            )
 
-            // Simpan data ke database
-            val insert = db.insertUser(usernameStr, emailStr, passwordStr)
-            if (insert) {
-                toast("Registrasi berhasil! Silakan login.")
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                toast("Terjadi kesalahan saat menyimpan data.")
-            }
+            // Simpan ke database lokal
+            db.insertUser(user)
+
+            toast("Registrasi berhasil! Silakan login.")
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         // === Tombol Log In (kembali ke halaman login) ===

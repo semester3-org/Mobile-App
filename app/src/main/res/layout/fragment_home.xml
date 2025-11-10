@@ -19,43 +19,84 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="KosHub"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:layout_weight="1"
+                android:text="KostHub"
                 android:textColor="@color/black"
-                android:layout_weight="1"/>
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" Jember"
-                android:textSize="14sp"
-                android:textColor="@color/black" />
+                android:drawableLeft="@drawable/ic_location"
+                android:drawablePadding="4dp"
+                android:text="Jember"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
 
             <ImageButton
-                android:id="@+id/ibSearchHome"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/ibNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:background="@null"
-                android:src="@drawable/ic_search"
-                android:contentDescription="Search"
-                tools:ignore="TouchTargetSizeCheck"/>
+                android:contentDescription="Filter"
+                android:src="@drawable/ic_notification"
+                app:tint="@color/black"
+                tools:ignore="TouchTargetSizeCheck" />
+
+
         </LinearLayout>
 
         <!-- Search Bar -->
-        <EditText
-            android:id="@+id/etSearchHome"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:hint="Cari Kos di Jember"
-            android:padding="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:background="@drawable/bg_search"
-            android:textColor="@android:color/black"
             android:layout_marginTop="12dp"
-            tools:ignore="TouchTargetSizeCheck"/>
+            android:paddingHorizontal="10dp">
+
+            <ImageButton
+                android:id="@+id/ibSearchIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_search"
+                android:background="@null"
+                app:tint="@color/black"
+                android:contentDescription="Search Icon"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+            <EditText
+                android:id="@+id/etSearchHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Cari Kos di Jember"
+                android:background="@null"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:paddingStart="8dp"
+                android:textSize="14sp"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <ImageButton
+                android:id="@+id/ibFilterHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@null"
+                android:contentDescription="Filter"
+                android:src="@drawable/ic_filter_category"
+                app:tint="@color/green_primary"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
 
         <!-- Filter Kategori -->
         <HorizontalScrollView
@@ -74,8 +115,8 @@
                     android:id="@+id/btnFilterAll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Semua"
-                    android:background="@drawable/bg_filter"/>
+                    android:background="@drawable/bg_filter"
+                    android:text="Semua" />
 
                 <Button
                     android:id="@+id/btnFilterPutra"
@@ -114,14 +155,16 @@
             android:textSize="16sp"
             android:layout_marginTop="16dp"/>
 
+        <!-- Kos Terfavorit -->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRekomendasi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/item_kos"/>
 
-        <!-- Kos Terfavorit -->
         <TextView
             android:id="@+id/tvFavoritTitle"
             android:layout_width="wrap_content"
@@ -137,7 +180,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/item_kos" />
 
     </LinearLayout>
 </ScrollView>

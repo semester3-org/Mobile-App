@@ -90,7 +90,10 @@ class DatabaseHelper(context: Context) :
                         email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL)),
                         full_name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FULLNAME)),
                         phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE)),
-                        user_type = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERTYPE))
+                        user_type = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERTYPE)),
+                        profile_image = cursor.getString(
+                            cursor.getColumnIndexOrThrow("profile_image")
+                        ) // kalo ada kolomnya
                     )
                 }
             }

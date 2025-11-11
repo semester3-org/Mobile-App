@@ -36,30 +36,59 @@ class ProfileFragment : Fragment() {
         val cardBahasa = view.findViewById<View>(R.id.cardBahasa)
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
 
-        loadUserData()
+        val isLoggedIn = pref.isLoggedIn()
 
-        cardEditProfile.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, EditProfileFragment())
-                .addToBackStack(null)
-                .commit()
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
-                View.GONE
-        }
+        if (isLoggedIn) {
+            loadUserData()
 
-        cardBahasa.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, GantiBahasaFragment())
-                .addToBackStack(null)
-                .commit()
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
-                View.GONE
-        }
+            cardEditProfile.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, EditProfileFragment())
+                    .addToBackStack(null)
+                    .commit()
+                requireActivity()
+                    .findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
+                    View.GONE
+            }
 
-        btnLogout.setOnClickListener {
-            dbHelper.logoutUser()
-            pref.clearSession()
-            Toast.makeText(context, "Berhasil logout", Toast.LENGTH_SHORT).show()
+            cardBahasa.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, GantiBahasaFragment())
+                    .addToBackStack(null)
+                    .commit()
+                requireActivity()
+                    .findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
+                    View.GONE
+            }
+
+            btnLogout.setOnClickListener {
+                dbHelper.logoutUser()
+                pref.clearSession()
+                Toast.makeText(context, "Berhasil logout", Toast.LENGTH_SHORT).show()
+                // optional: pindah ke LoginActivity / Welcome
+            }
+        } else {
+            // Mode tamu: jangan maksa akses DB user
+            tvNamaUser.text = "Pengguna Tamu"
+            tvEmailUser.text = "Silakan login untuk mengelola profil"
+            ivProfile.setImageResource(R.drawable.ic_default_profile)
+
+            cardEditProfile.setOnClickListener {
+                Toast.makeText(context, "Anda Harus Login", Toast.LENGTH_SHORT).show()
+                // Bisa arahkan ke LoginActivity kalau mau
+            }
+
+            cardBahasa.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, GantiBahasaFragment())
+                    .addToBackStack(null)
+                    .commit()
+                requireActivity()
+                    .findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
+                    View.GONE
+            }
+
+            btnLogout.visibility = View.GONE
         }
 
         return view
@@ -67,9 +96,11 @@ class ProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // biar data langsung update pas balik dari edit
-        loadUserData()
+        if (pref.isLoggedIn()) {
+            loadUserData()
+        }
     }
+
 
     private fun loadUserData() {
         val user = dbHelper.getUser()

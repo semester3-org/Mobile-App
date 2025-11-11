@@ -8,8 +8,27 @@ import com.apk.koshub.fragments.HomeFragment
 import com.apk.koshub.fragments.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.apk.koshub.R
+import android.content.Context
+import android.content.res.Configuration
+import com.apk.koshub.utils.SharedPrefHelper
+import java.util.Locale
+
 
 class MainActivity : AppCompatActivity() {
+
+    override fun attachBaseContext(newBase: Context) {
+        val pref = SharedPrefHelper(newBase)
+        val lang = pref.getLanguage() ?: "id"
+
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+
+        val config = Configuration(newBase.resources.configuration)
+        config.setLocale(locale)
+
+        val context = newBase.createConfigurationContext(config)
+        super.attachBaseContext(context)
+    }
 
     private lateinit var bottomNavigation: BottomNavigationView
 
@@ -20,7 +39,9 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation = findViewById(R.id.bottom_navigation)
 
         // Default fragment: Home
-        loadFragment(HomeFragment())
+        if (savedInstanceState == null) {
+            loadFragment(HomeFragment())
+        }
 
         // Listener untuk bottom nav
         bottomNavigation.setOnItemSelectedListener { item ->

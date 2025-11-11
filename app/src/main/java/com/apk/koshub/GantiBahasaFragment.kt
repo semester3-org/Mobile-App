@@ -64,13 +64,8 @@ class GantiBahasaFragment : Fragment(R.layout.fragment_ganti_bahasa) {
                 applyLanguageUI(lang)
                 return
             }
-
             pref.setLanguage(lang)
-
-            // recreate activity supaya BaseActivity apply locale baru
             requireActivity().recreate()
-            // nggak pakai AppCompatDelegate.setApplicationLocales
-            // nggak ada navigate ke home (karena MainActivity pakai savedInstanceState guard)
         }
 
         cardID.setOnClickListener { changeLanguage("id") }

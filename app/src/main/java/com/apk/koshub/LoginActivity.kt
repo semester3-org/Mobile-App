@@ -9,85 +9,82 @@ import androidx.appcompat.app.AppCompatActivity
 import com.apk.koshub.api.ApiClient
 import com.apk.koshub.api.ApiService
 import com.apk.koshub.db.DatabaseHelper
-import com.apk.koshub.models.User
 import com.apk.koshub.models.UserResponse
+import com.apk.koshub.utils.SharedPrefHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var emailInput: EditText
-    private lateinit var passwordInput: EditText
+    private lateinit var etEmail: EditText
+    private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button
-    private lateinit var signInText: TextView
+    private lateinit var tvCreateOne: TextView
     private lateinit var db: DatabaseHelper
     private lateinit var api: ApiService
+    private lateinit var pref: SharedPrefHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // Inisialisasi view
-        emailInput = findViewById(R.id.email)
-        passwordInput = findViewById(R.id.password)
+        // 🧩 Inisialisasi view sesuai ID di XML
+        etEmail = findViewById(R.id.etEmail)
+        etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
-        signInText = findViewById(R.id.tvCreateOne)
+        tvCreateOne = findViewById(R.id.tvCreateOne)
 
         val logo = findViewById<ImageView>(R.id.logo)
         val loginContainer = findViewById<LinearLayout>(R.id.loginContainer)
 
-        // Logo fade-in
+        // 🎞️ Animasi logo
         logo?.apply {
             alpha = 0f
-            animate()
-                .alpha(1f)
-                .setDuration(500)
-                .start()
+            animate().alpha(1f).setDuration(600).start()
         }
 
-        // Form pop up dari bawah + tetap sedikit transparan
+        // 🎞️ Animasi form login
         loginContainer?.apply {
-            alpha = 0f            // mulai invisible
-            translationY = 250f   // start dari bawah
-
+            alpha = 0f
+            translationY = 200f
             animate()
-                .alpha(0.9f)      // berhenti di 0.9 (agak transparan)
+                .alpha(1f)
                 .translationY(0f)
                 .setDuration(550)
                 .setStartDelay(150)
-                .setInterpolator(DecelerateInterpolator()) // lebih smooth & aman
+                .setInterpolator(DecelerateInterpolator())
                 .start()
         }
 
-        // Inisialisasi database helper & Retrofit
+        // 🧠 Init Database, Pref, dan API
         db = DatabaseHelper(this)
+        pref = SharedPrefHelper(this)
         api = ApiClient.apiService
 
-        // Tombol Sign Up → pindah ke RegisterActivity
-        signInText.setOnClickListener {
+        // 🔁 Pindah ke Register
+        tvCreateOne.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
             finish()
         }
 
-        // Tombol Login ditekan
+        // 🔐 Tombol Login
         btnLogin.setOnClickListener {
-            val email = emailInput.text.toString().trim()
-            val password = passwordInput.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+            val password = etPassword.text.toString().trim()
 
             if (email.isEmpty()) {
-                emailInput.error = "Email wajib diisi"
-                emailInput.requestFocus()
+                etEmail.error = "Email wajib diisi"
+                etEmail.requestFocus()
                 return@setOnClickListener
             }
 
             if (password.isEmpty()) {
-                passwordInput.error = "Password wajib diisi"
-                passwordInput.requestFocus()
+                etPassword.error = "Password wajib diisi"
+                etPassword.requestFocus()
                 return@setOnClickListener
             }
 
-            // Jalankan proses login
             doLogin(email, password)
         }
     }
@@ -98,7 +95,6 @@ class LoginActivity : AppCompatActivity() {
             "password" to password
         )
 
-        // Kirim request POST (JSON body)
         api.login(body).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 Log.d("LOGIN_DEBUG", "Response code: ${response.code()}")
@@ -106,22 +102,29 @@ class LoginActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     val userResponse = response.body()
-
                     if (userResponse?.status == "success") {
                         val user = userResponse.user
-
-                        // Simpan user ke SQLite
                         user?.let {
+                            // 💾 Simpan user ke SQLite
                             db.insertUser(it)
                             Log.d("DB_DEBUG", "User saved: ${it.email}")
+
+                            // ✅ Simpan juga ke SharedPreferences
+                            pref.saveUserData(
+                                id = it.id,
+                                name = it.full_name ?: it.username,
+                                email = it.email,
+                                phone = it.phone
+                            )
                         }
 
                         Toast.makeText(this@LoginActivity, "Login berhasil!", Toast.LENGTH_SHORT)
                             .show()
 
-                        // Pindah ke MainActivity
+                        // 🚀 Pindah ke MainActivity
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        intent.putExtra("USER_EMAIL", email)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish()
                     } else {
@@ -149,4 +152,5 @@ class LoginActivity : AppCompatActivity() {
                 ).show()
             }
         })
-    }}
+    }
+}

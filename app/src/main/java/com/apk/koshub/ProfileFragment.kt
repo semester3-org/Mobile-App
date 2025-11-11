@@ -1,11 +1,14 @@
 package com.apk.koshub.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.apk.koshub.LoginActivity
 import com.apk.koshub.R
 import com.apk.koshub.db.DatabaseHelper
 import com.apk.koshub.utils.SharedPrefHelper
@@ -18,27 +21,31 @@ class ProfileFragment : Fragment() {
     private lateinit var ivProfile: ImageView
     private lateinit var tvNamaUser: TextView
     private lateinit var tvEmailUser: TextView
+    private lateinit var btnLogout: Button
+    private lateinit var cardEditProfile: View
+    private lateinit var cardBahasa: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
+        // 🔹 Inisialisasi
         dbHelper = DatabaseHelper(requireContext())
         pref = SharedPrefHelper(requireContext())
 
         ivProfile = view.findViewById(R.id.ivProfile)
         tvNamaUser = view.findViewById(R.id.tvNamaUser)
         tvEmailUser = view.findViewById(R.id.tvEmailUser)
+        btnLogout = view.findViewById(R.id.btnLogout)
+        cardEditProfile = view.findViewById(R.id.cardEditProfile)
+        cardBahasa = view.findViewById(R.id.cardBahasa)
 
-        val cardEditProfile = view.findViewById<View>(R.id.cardEditProfile)
-        val cardBahasa = view.findViewById<View>(R.id.cardBahasa)
-        val btnLogout = view.findViewById<Button>(R.id.btnLogout)
+        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        val isLoggedIn = pref.isLoggedIn()
-
-        if (isLoggedIn) {
+        // 🔐 Cek apakah user sudah login
+        if (pref.isLoggedIn()) {
             loadUserData()
 
             cardEditProfile.setOnClickListener {
@@ -46,9 +53,7 @@ class ProfileFragment : Fragment() {
                     .replace(R.id.fragment_container, EditProfileFragment())
                     .addToBackStack(null)
                     .commit()
-                requireActivity()
-                    .findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
-                    View.GONE
+                bottomNav.visibility = View.GONE
             }
 
             cardBahasa.setOnClickListener {
@@ -56,39 +61,26 @@ class ProfileFragment : Fragment() {
                     .replace(R.id.fragment_container, GantiBahasaFragment())
                     .addToBackStack(null)
                     .commit()
-                requireActivity()
-                    .findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
-                    View.GONE
+                bottomNav.visibility = View.GONE
             }
 
             btnLogout.setOnClickListener {
                 dbHelper.logoutUser()
                 pref.clearSession()
                 Toast.makeText(context, "Berhasil logout", Toast.LENGTH_SHORT).show()
-                // optional: pindah ke LoginActivity / Welcome
+
+                // 🚪 Redirect ke LoginActivity
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
             }
+
         } else {
-            // Mode tamu: jangan maksa akses DB user
-            tvNamaUser.text = "Pengguna Tamu"
-            tvEmailUser.text = "Silakan login untuk mengelola profil"
-            ivProfile.setImageResource(R.drawable.ic_default_profile)
-
-            cardEditProfile.setOnClickListener {
-                Toast.makeText(context, "Anda Harus Login", Toast.LENGTH_SHORT).show()
-                // Bisa arahkan ke LoginActivity kalau mau
-            }
-
-            cardBahasa.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, GantiBahasaFragment())
-                    .addToBackStack(null)
-                    .commit()
-                requireActivity()
-                    .findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
-                    View.GONE
-            }
-
-            btnLogout.visibility = View.GONE
+            // 🚫 Belum login → arahkan ke LoginActivity
+            Toast.makeText(context, "Anda harus login terlebih dahulu", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         return view
@@ -96,22 +88,26 @@ class ProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (pref.isLoggedIn()) {
-            loadUserData()
-        }
+        if (pref.isLoggedIn()) loadUserData()
     }
-
 
     private fun loadUserData() {
         val user = dbHelper.getUser()
         if (user != null) {
-            tvNamaUser.text = user.full_name
+            tvNamaUser.text = user.full_name.ifEmpty { user.username }
             tvEmailUser.text = user.email
+
             if (!user.profile_image.isNullOrEmpty()) {
-                ivProfile.setImageURI(android.net.Uri.parse(user.profile_image))
+                ivProfile.setImageURI(Uri.parse(user.profile_image))
             } else {
                 ivProfile.setImageResource(R.drawable.ic_default_profile)
             }
+        } else {
+            // Jika tidak ada user di database → logout otomatis
+            pref.clearSession()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 }

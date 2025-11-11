@@ -11,7 +11,7 @@ class DatabaseHelper(context: Context) :
 
     companion object {
         private const val DATABASE_NAME = "koshub.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2 // ✅ Naikkan versi database
 
         private const val TABLE_USER = "users"
         private const val COLUMN_ID = "id"
@@ -20,6 +20,7 @@ class DatabaseHelper(context: Context) :
         private const val COLUMN_FULLNAME = "full_name"
         private const val COLUMN_PHONE = "phone"
         private const val COLUMN_USERTYPE = "user_type"
+        private const val COLUMN_PROFILE_IMAGE = "profile_image"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -30,20 +31,21 @@ class DatabaseHelper(context: Context) :
                 $COLUMN_EMAIL TEXT UNIQUE,
                 $COLUMN_FULLNAME TEXT,
                 $COLUMN_PHONE TEXT,
-                $COLUMN_USERTYPE TEXT
+                $COLUMN_USERTYPE TEXT,
+                $COLUMN_PROFILE_IMAGE TEXT
             );
         """.trimIndent()
         db.execSQL(createUserTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_USER")
-        onCreate(db)
+        // ✅ Hanya tambahkan kolom baru, tidak drop tabel agar data tidak hilang
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE $TABLE_USER ADD COLUMN $COLUMN_PROFILE_IMAGE TEXT;")
+        }
     }
 
-    /**
-     * Simpan user hasil login (hanya satu yang aktif)
-     */
+    /** Simpan user hasil login (hanya satu yang aktif) */
     fun insertUser(user: User) {
         writableDatabase.use { db ->
             db.delete(TABLE_USER, null, null) // hapus data lama
@@ -55,15 +57,14 @@ class DatabaseHelper(context: Context) :
                 put(COLUMN_FULLNAME, user.full_name)
                 put(COLUMN_PHONE, user.phone)
                 put(COLUMN_USERTYPE, user.user_type)
+                put(COLUMN_PROFILE_IMAGE, user.profile_image)
             }
 
             db.insert(TABLE_USER, null, values)
         }
     }
 
-    /**
-     * Update data user (misal dari profil)
-     */
+    /** Update data user (misal dari profil) */
     fun updateUser(user: User): Int {
         return writableDatabase.use { db ->
             val values = ContentValues().apply {
@@ -72,14 +73,13 @@ class DatabaseHelper(context: Context) :
                 put(COLUMN_FULLNAME, user.full_name)
                 put(COLUMN_PHONE, user.phone)
                 put(COLUMN_USERTYPE, user.user_type)
+                put(COLUMN_PROFILE_IMAGE, user.profile_image)
             }
             db.update(TABLE_USER, values, "$COLUMN_ID = ?", arrayOf(user.id.toString()))
         }
     }
 
-    /**
-     * Ambil data user aktif
-     */
+    /** Ambil data user aktif */
     fun getUser(): User? {
         readableDatabase.use { db ->
             db.rawQuery("SELECT * FROM $TABLE_USER LIMIT 1", null).use { cursor ->
@@ -92,8 +92,8 @@ class DatabaseHelper(context: Context) :
                         phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE)),
                         user_type = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERTYPE)),
                         profile_image = cursor.getString(
-                            cursor.getColumnIndexOrThrow("profile_image")
-                        ) // kalo ada kolomnya
+                            cursor.getColumnIndexOrThrow(COLUMN_PROFILE_IMAGE)
+                        )
                     )
                 }
             }
@@ -101,18 +101,14 @@ class DatabaseHelper(context: Context) :
         return null
     }
 
-    /**
-     * Hapus semua user (logout)
-     */
+    /** Hapus semua user (logout) */
     fun logoutUser() {
         writableDatabase.use { db ->
             db.delete(TABLE_USER, null, null)
         }
     }
 
-    /**
-     * Cek apakah user sudah login (tersimpan di SQLite)
-     */
+    /** Cek apakah user sudah login (tersimpan di SQLite) */
     fun isUserLoggedIn(): Boolean {
         readableDatabase.use { db ->
             db.rawQuery("SELECT COUNT(*) FROM $TABLE_USER", null).use { cursor ->

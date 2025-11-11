@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KosHub</string>
+    <string name="profile_photo">Profile Photo</string>
+    <string name="edit_photo">Edit Profile Photo</string>
+
+    <string name="lang_title">Choose Language</string>
+    <string name="lang_id_title">Indonesian</string>
+    <string name="lang_id_sub">App language settings</string>
+    <string name="lang_en_title">English</string>
+    <string name="lang_en_sub">App language</string>
+
+    <string name="lang_changed_to_id">Language changed to Indonesian</string>
+    <string name="lang_changed_to_en">Language changed to English</string>
+</resources>
+

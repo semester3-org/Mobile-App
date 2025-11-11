@@ -64,14 +64,15 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Buat objek user
+            // Buat objek user dari model User.kt
             val user = User(
-                id = 1, // bisa diatur otomatis
+                id = 0, // auto increment (biar SQLite yang atur)
                 username = usernameStr,
                 email = emailStr,
                 full_name = fullNameStr,
                 phone = phoneStr,
-                user_type = "user" // default
+                user_type = "user",
+                profile_image = null // default kosong dulu
             )
 
             // Simpan ke database lokal
@@ -83,7 +84,7 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
 
-        // === Tombol Log In (kembali ke halaman login) ===
+        // === Tombol Log In ===
         tvLogIn.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()

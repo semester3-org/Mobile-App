@@ -1,6 +1,6 @@
 <resources>
     <color name="green_dark">#004D40</color>
-    <color name="green_primary">#2E7D32</color>
+    <color name="green">#2E7D32</color>
     <color name="green_light">#43A047</color>
     <color name="text_gray">#757575</color>
     <color name="white">#FFFFFF</color>
@@ -15,5 +15,9 @@
     <color name="holo_red_dark">#B71C1C</color>
     <color name="transparent">#00000000</color>
     <color name="wifi_green">#4CAF50</color>
+    <color name="green_primary">#27AE60</color>
+    <color name="gray_slider_inactive">#E0E0E0</color>
+
+
 
 </resources>

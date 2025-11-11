@@ -36,7 +36,7 @@ class ExploreFragment : Fragment() {
 
         // 🔹 Adapter
         adapter = KosCardAdapter(mutableListOf()) { kos ->
-            Toast.makeText(context, "Lihat detail: ${kos.nama}", Toast.LENGTH_SHORT).show()
+            openDetailFromKosCard(kos)
         }
         rvExplore.adapter = adapter
 
@@ -67,6 +67,21 @@ class ExploreFragment : Fragment() {
         }
         adapter.updateList(filtered)
     }
+    private fun openDetailFromKosCard(kos: KosItemCard) {
+        val detailFragment = DetailKosFragment.newInstance(
+            nama = kos.nama,
+            lokasi = kos.lokasi,
+            harga = kos.harga,
+            kategori = "Kos",
+            deskripsi = ""
+        )
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, detailFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
 
     // 🔹 Dummy data (bisa ganti nanti dari API / database)
     private fun getDummyKos(count: Int): List<KosItemCard> {

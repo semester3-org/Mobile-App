@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutFilterRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+    <!-- Sheet container (rounded top) -->
+    <LinearLayout
+        android:id="@+id/containerSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/bg_filter_sheet">
+
+        <!-- drag handle -->
+        <View
+            android:id="@+id/dragHandle"
+            android:layout_width="60dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#C8E6C9"
+            android:layout_marginBottom="12dp"
+            android:alpha="0.9" />
+
+        <!-- title + close -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/tvFilterTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Filter Pencarian"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#111111" />
+
+            <ImageView
+                android:id="@+id/ivCloseFilter"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_close"
+                android:padding="4dp" />
+        </RelativeLayout>
+
+        <!-- content scrollable -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Harga -->
+                <TextView
+                    android:id="@+id/tvHargaTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Harga (Perbulan)"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#222222"
+                    android:layout_marginTop="4dp" />
+
+                <!-- Range slider -->
+                <com.google.android.material.slider.RangeSlider
+                    android:id="@+id/rsHarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:valueFrom="0"
+                    android:valueTo="5000000"
+                    app:values="@array/default_harga_values"
+                    app:trackHeight="4dp"
+                    app:thumbRadius="8dp"
+                    app:trackColorActive="@color/green_primary"
+                    app:trackColorInactive="@color/gray_slider_inactive" />
+
+
+                <!-- Min / Max card -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <LinearLayout
+                        android:id="@+id/layoutMinHarga"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:background="@drawable/bg_price_box"
+                        android:layout_marginEnd="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Min Harga"
+                            android:textSize="11sp"
+                            android:textColor="#777777" />
+
+                        <TextView
+                            android:id="@+id/tvMinHarga"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rp 400.000"
+                            android:textSize="13sp"
+                            android:textColor="#222222"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutMaxHarga"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:background="@drawable/bg_price_box">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Max Harga"
+                            android:textSize="11sp"
+                            android:textColor="#777777" />
+
+                        <TextView
+                            android:id="@+id/tvMaxHarga"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rp 1.000.000"
+                            android:textSize="13sp"
+                            android:textColor="#222222"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Jumlah Kamar -->
+                <TextView
+                    android:id="@+id/tvJumlahKamar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Jumlah Kamar"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#222222" />
+
+                <!-- Segmented buttons -->
+                <LinearLayout
+                    android:id="@+id/layoutJumlahKamar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:id="@+id/btnKamar1"
+                        style="@style/FilterChipFilled"
+                        android:text="1" />
+
+                    <TextView
+                        android:id="@+id/btnKamar2"
+                        style="@style/FilterChipOutline"
+                        android:text="2"
+                        android:layout_marginStart="6dp" />
+
+                    <TextView
+                        android:id="@+id/btnKamar3"
+                        style="@style/FilterChipOutline"
+                        android:text="3"
+                        android:layout_marginStart="6dp" />
+
+                    <TextView
+                        android:id="@+id/btnKamar4Plus"
+                        style="@style/FilterChipOutline"
+                        android:text="4+"
+                        android:layout_marginStart="6dp" />
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Fasilitas (collapsable row) -->
+                <LinearLayout
+                    android:id="@+id/rowFasilitas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_facility" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:text="Fasilitas"
+                        android:textSize="14sp"
+                        android:textColor="#222222" />
+
+                    <ImageView
+                        android:id="@+id/ivFasilitasToggle"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_arrow_down" />
+                </LinearLayout>
+
+                <!-- container fasilitas (bisa di-GONE default, isi checkbox/chip) -->
+                <LinearLayout
+                    android:id="@+id/layoutFasilitasContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/chipWifi"
+                        style="@style/FilterChipOutline"
+                        android:text="WiFi" />
+
+                    <TextView
+                        android:id="@+id/chipAc"
+                        style="@style/FilterChipOutline"
+                        android:text="AC"
+                        android:layout_marginStart="6dp" />
+
+                    <TextView
+                        android:id="@+id/chipKmDalam"
+                        style="@style/FilterChipOutline"
+                        android:text="KM Dalam"
+                        android:layout_marginStart="6dp" />
+
+                    <TextView
+                        android:id="@+id/chipMeja"
+                        style="@style/FilterChipOutline"
+                        android:text="Meja"
+                        android:layout_marginStart="6dp" />
+
+                    <TextView
+                        android:id="@+id/chipLemari"
+                        style="@style/FilterChipOutline"
+                        android:text="Lemari"
+                        android:layout_marginStart="6dp" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Jenis Kos (collapsable, default open) -->
+                <LinearLayout
+                    android:id="@+id/rowJenisKos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_home" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:text="Jenis Kos"
+                        android:textSize="14sp"
+                        android:textColor="#222222" />
+
+                    <ImageView
+                        android:id="@+id/ivJenisKosToggle"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_arrow_up" />
+                </LinearLayout>
+
+                <!-- Jenis Kos chips -->
+                <LinearLayout
+                    android:id="@+id/layoutJenisKosContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:id="@+id/btnPutra"
+                        style="@style/FilterChipOutline"
+                        android:text="Putra" />
+
+                    <TextView
+                        android:id="@+id/btnPutri"
+                        style="@style/FilterChipFilled"
+                        android:text="Putri"
+                        android:layout_marginStart="8dp" />
+
+                    <TextView
+                        android:id="@+id/btnCampur"
+                        style="@style/FilterChipOutline"
+                        android:text="Campur"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <!-- spacer bottom biar ga ketutup tombol -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- bottom buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/btnResetFilter"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Reset"
+                android:textSize="14sp"
+                android:textColor="#27AE60"
+                android:background="@drawable/bg_btn_reset" />
+
+            <TextView
+                android:id="@+id/btnTerapkanFilter"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:gravity="center"
+                android:text="Terapkan Filter"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_btn_apply" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

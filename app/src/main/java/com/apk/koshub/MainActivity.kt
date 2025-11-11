@@ -7,9 +7,8 @@ import com.apk.koshub.fragments.ExploreFragment
 import com.apk.koshub.fragments.HomeFragment
 import com.apk.koshub.fragments.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.apk.koshub.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var bottomNavigation: BottomNavigationView
 
@@ -19,10 +18,12 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigation = findViewById(R.id.bottom_navigation)
 
-        // Default fragment: Home
-        loadFragment(HomeFragment())
+        // ✅ hanya set fragment awal kalau activity baru pertama kali dibuat
+        if (savedInstanceState == null) {
+            loadFragment(HomeFragment())
+        }
 
-        // Listener untuk bottom nav
+        // Listener bottom nav (tetap sama)
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {

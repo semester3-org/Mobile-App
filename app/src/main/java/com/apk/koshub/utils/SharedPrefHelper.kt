@@ -38,6 +38,14 @@ class SharedPrefHelper(context: Context) {
     fun getLanguage(): String {
         return pref.getString("APP_LANG", "id") ?: "id"  // default indo
     }
+    fun setString(key: String, value: String) {
+        pref.edit().putString(key, value).apply()
+    }
+
+    fun getString(key: String): String? {
+        return pref.getString(key, "")
+    }
+
 
 }
 

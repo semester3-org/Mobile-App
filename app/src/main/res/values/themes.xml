@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.KosHub" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
         <!-- Primary brand color -->
         <item name="colorPrimary">#2E7D32</item>
         <item name="colorPrimaryVariant">#0E4D2E</item>
@@ -15,6 +16,9 @@
         <!-- Background & Surface -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowDisablePreview">true</item>
+
 
     </style>
 </resources>

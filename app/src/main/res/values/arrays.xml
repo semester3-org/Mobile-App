@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- default values RangeSlider: min, max -->
+    <array name="default_harga_values">
+        <item>400000</item>
+        <item>1000000</item>
+    </array>
+</resources>

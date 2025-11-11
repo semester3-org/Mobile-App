@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">KosHub</string>
+    <string name="profile_photo">Foto Profil</string>
+    <string name="edit_photo">Edit Foto Profil</string>
+
+
+        <!-- yang lama biarin, tambahin yang ini -->
+        <string name="lang_title">Pilih Bahasa</string>
+        <string name="lang_id_title">Bahasa Indonesia</string>
+        <string name="lang_id_sub">Pengaturan bahasa aplikasi</string>
+        <string name="lang_en_title">English</string>
+        <string name="lang_en_sub">Bahasa aplikasi</string>
+
+        <!-- contoh lain kalau mau dipakai di toast/label -->
+        <string name="lang_changed_to_id">Bahasa diubah ke Indonesia</string>
+        <string name="lang_changed_to_en">Bahasa diubah ke English</string>
+
 </resources>

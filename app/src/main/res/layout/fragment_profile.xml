@@ -67,7 +67,7 @@
             android:text="zenair.4lexsa@gmail.com"
             android:textSize="13sp"
             android:layout_gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/poppins_regular" />
 

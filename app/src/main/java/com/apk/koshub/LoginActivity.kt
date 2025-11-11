@@ -3,6 +3,7 @@ package com.apk.koshub
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.apk.koshub.api.ApiClient
@@ -31,7 +32,33 @@ class LoginActivity : AppCompatActivity() {
         emailInput = findViewById(R.id.email)
         passwordInput = findViewById(R.id.password)
         btnLogin = findViewById(R.id.btnLogin)
-        signInText = findViewById(R.id.SignUpButton)
+        signInText = findViewById(R.id.tvCreateOne)
+
+        val logo = findViewById<ImageView>(R.id.logo)
+        val loginContainer = findViewById<LinearLayout>(R.id.loginContainer)
+
+        // Logo fade-in
+        logo?.apply {
+            alpha = 0f
+            animate()
+                .alpha(1f)
+                .setDuration(500)
+                .start()
+        }
+
+        // Form pop up dari bawah + tetap sedikit transparan
+        loginContainer?.apply {
+            alpha = 0f            // mulai invisible
+            translationY = 250f   // start dari bawah
+
+            animate()
+                .alpha(0.9f)      // berhenti di 0.9 (agak transparan)
+                .translationY(0f)
+                .setDuration(550)
+                .setStartDelay(150)
+                .setInterpolator(DecelerateInterpolator()) // lebih smooth & aman
+                .start()
+        }
 
         // Inisialisasi database helper & Retrofit
         db = DatabaseHelper(this)

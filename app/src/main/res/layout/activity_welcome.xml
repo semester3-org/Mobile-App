@@ -35,21 +35,12 @@
 
         <ImageView
             android:id="@+id/logoImage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_logo2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_logo_baru"
             android:contentDescription="Logo KosHub"
             android:layout_marginEnd="10dp" />
 
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="KosHub"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#00FF66"
-            android:layout_gravity="center_vertical" />
     </LinearLayout>
 
     <!-- Dot Indicator -->
@@ -84,6 +75,7 @@
 
             <Button
                 android:id="@+id/btn_login"
+                android:alpha="0.9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -95,6 +87,7 @@
 
             <Button
                 android:id="@+id/btn_register"
+                android:alpha="0.9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -109,8 +102,8 @@
             android:id="@+id/tvExplore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Saya ingin menjelajah terlebih dahulu"
-            android:textColor="#00FF66"
+            android:text="Saya Ingin Menjelajah Terlebih Dahulu"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="14sp" />
     </LinearLayout>

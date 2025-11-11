@@ -10,6 +10,7 @@ import com.apk.koshub.models.UserResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.animation.DecelerateInterpolator
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -29,10 +30,13 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // === Inisialisasi API service ===
         api = ApiClient.apiService
 
-        // === Inisialisasi View ===
+        // View utama form + logo (buat animasi)
+        val logo = findViewById<ImageView>(R.id.logo)
+        val registerContainer = findViewById<LinearLayout>(R.id.registerContainer)
+
+        // Form fields (ID sudah disamain dengan layout baru)
         fullName = findViewById(R.id.fullName)
         username = findViewById(R.id.username)
         email = findViewById(R.id.email)
@@ -43,7 +47,24 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister = findViewById(R.id.btnRegister)
         tvLogIn = findViewById(R.id.tvLogIn)
 
-        // === Tombol Sign Up ===
+        logo.alpha = 0f
+        logo.animate()
+            .alpha(1f)
+            .setDuration(500)
+            .start()
+
+        // 🔹 Form pop-up dari bawah (slide up + overshoot dikit)
+        registerContainer.alpha = 0f
+        registerContainer.translationY = 250f
+        registerContainer.animate()
+            .alpha(0.9f) // 🧊 tetap sedikit transparan
+            .translationY(0f)
+            .setDuration(550)
+            .setStartDelay(150)
+            .setInterpolator(DecelerateInterpolator(1.1f))
+            .start()
+
+        // Tombol Register
         btnRegister.setOnClickListener {
             val fullNameStr = fullName.text.toString().trim()
             val usernameStr = username.text.toString().trim()
@@ -52,7 +73,6 @@ class RegisterActivity : AppCompatActivity() {
             val passwordStr = password.text.toString().trim()
             val confirmPasswordStr = confirmPassword.text.toString().trim()
 
-            // Validasi input
             if (fullNameStr.isEmpty() || usernameStr.isEmpty() || emailStr.isEmpty()
                 || phoneStr.isEmpty() || passwordStr.isEmpty() || confirmPasswordStr.isEmpty()
             ) {
@@ -70,26 +90,30 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Kirim ke server
             registerUser(fullNameStr, usernameStr, emailStr, phoneStr, passwordStr)
         }
 
-        // === Tombol Log In (kembali ke halaman login) ===
+        // Pindah ke Login
         tvLogIn.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
 
-    // === Fungsi Register ke API ===
-    private fun registerUser(fullName: String, username: String, email: String, phone: String, password: String) {
+    private fun registerUser(
+        fullName: String,
+        username: String,
+        email: String,
+        phone: String,
+        password: String
+    ) {
         val data = mapOf(
             "full_name" to fullName,
             "username" to username,
             "email" to email,
             "phone" to phone,
             "password" to password,
-            "user_type" to "user" // default untuk mobile
+            "user_type" to "user"
         )
 
         api.register(data).enqueue(object : Callback<UserResponse> {

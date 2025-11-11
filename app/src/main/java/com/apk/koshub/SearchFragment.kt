@@ -36,7 +36,11 @@ class SearchFragment : Fragment() {
         // Setup RecyclerView untuk recent searches (bisa ganti ke horizontal chips adapter nanti)
         rvRecentSearches.layoutManager = LinearLayoutManager(context)
         adapter = KosAdapter(emptyList()) { kos ->
-            android.widget.Toast.makeText(context, "Search: ${kos.nama}", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(
+                context,
+                "Search: ${kos.nama}",
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
         }
         rvRecentSearches.adapter = adapter
 
@@ -49,6 +53,7 @@ class SearchFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 filterSearch(s.toString())
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -64,6 +69,7 @@ class SearchFragment : Fragment() {
                     rvRecentSearches.visibility = View.GONE
                 }
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -76,14 +82,27 @@ class SearchFragment : Fragment() {
             adapter.updateList(allSearchResults)
             return
         }
-        val filtered = allSearchResults.filter { it.nama.contains(query, ignoreCase = true) || it.lokasi.contains(query, ignoreCase = true) }
+        val filtered = allSearchResults.filter {
+            it.nama.contains(
+                query,
+                ignoreCase = true
+            ) || it.lokasi.contains(query, ignoreCase = true)
+        }
         adapter.updateList(filtered)
     }
 
     private fun getDummySearchResults(count: Int): List<KosItem> {
         val list = mutableListOf<KosItem>()
         for (i in 1..count) {
-            list.add(KosItem(i, "Search Kos $i", "Jember Search Area", "Rp 750.000/bulan"))
+            list.add(
+                KosItem(
+                    id = i,
+                    nama = "Search Kos $i",
+                    lokasi = "Jember Search Area",
+                    harga = "Rp 750.000/bulan",
+                    gambar = "https://picsum.photos/300/200?random=$i"
+                )
+            )
         }
         return list
     }

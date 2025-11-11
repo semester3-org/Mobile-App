@@ -5,5 +5,5 @@ data class KosItem(
     val nama: String,
     val lokasi: String,
     val harga: String,
-    val gambar: Int = android.R.drawable.ic_menu_gallery // Default placeholder
+    val gambar: String,
 )

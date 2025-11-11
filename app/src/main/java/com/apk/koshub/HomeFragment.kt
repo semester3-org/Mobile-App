@@ -66,6 +66,7 @@ class HomeFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 applyAllFiltersAndSearch()
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -425,15 +426,16 @@ class HomeFragment : Fragment() {
 
     // ================== DUMMY DATA ==================
 
-    private fun getDummyKos(prefix: String, count: Int): List<KosItem> {
+    private fun getDummyKos(kategori: String, count: Int): List<KosItem> {
         val list = mutableListOf<KosItem>()
         for (i in 1..count) {
             list.add(
                 KosItem(
                     id = i,
-                    nama = "Kos $prefix $i",
-                    lokasi = "Jember, Dekat Unej",
-                    harga = "Rp 800.000/bulan"
+                    nama = "$kategori Kos $i",
+                    lokasi = "Jember Area",
+                    harga = "Rp ${600_000 + (i * 50_000)}/bulan",
+                    gambar = "https://picsum.photos/300/200?random=$i"
                 )
             )
         }

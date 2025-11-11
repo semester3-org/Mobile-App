@@ -31,7 +31,11 @@ class FavoriteFragment : Fragment() {
         // Setup RecyclerView
         rvFavorite.layoutManager = LinearLayoutManager(context)
         adapter = KosAdapter(emptyList()) { kos ->
-            android.widget.Toast.makeText(context, "Favorite: ${kos.nama}", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(
+                context,
+                "Favorite: ${kos.nama}",
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
         }
         rvFavorite.adapter = adapter
 
@@ -56,7 +60,15 @@ class FavoriteFragment : Fragment() {
     private fun getDummyFavorites(count: Int): List<KosItem> {
         val list = mutableListOf<KosItem>()
         for (i in 1..count) {
-            list.add(KosItem(i, "Kos Favorit $i", "Jember Favorit", "Rp 900.000/bulan"))
+            list.add(
+                KosItem(
+                    id = i,
+                    nama = "Kos Favorit $i",
+                    lokasi = "Jember City Center",
+                    harga = "Rp ${800_000 + (i * 50_000)}/bulan",
+                    gambar = "https://picsum.photos/300/200?random=${100 + i}" // gambar acak agar beda
+                )
+            )
         }
         return list
     }

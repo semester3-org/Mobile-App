@@ -15,7 +15,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:background="@drawable/header_curve"/>
+            android:background="@drawable/header_curve" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -32,7 +32,7 @@
                 android:padding="12dp"
                 android:layout_gravity="center"
                 android:clipToOutline="true"
-                android:contentDescription="Logo"/>
+                android:contentDescription="Logo" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/poppins_regular"/>
+                android:fontFamily="@font/poppins_regular" />
         </LinearLayout>
     </FrameLayout>
 
@@ -54,7 +54,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:fontFamily="@font/poppins_regular"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
         android:textColor="#757575"
         android:textSize="14sp"
         android:fontFamily="@font/poppins_regular"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp" />
 
     <!-- Form -->
     <ScrollView
@@ -90,7 +90,7 @@
                 android:paddingVertical="8dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                tools:ignore="TouchTargetSizeCheck"/>
+                tools:ignore="TouchTargetSizeCheck" />
 
             <EditText
                 android:id="@+id/username"
@@ -105,7 +105,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="10dp"
-                tools:ignore="TouchTargetSizeCheck"/>
+                tools:ignore="TouchTargetSizeCheck" />
 
             <EditText
                 android:id="@+id/email"
@@ -121,7 +121,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="10dp"
-                tools:ignore="TouchTargetSizeCheck"/>
+                tools:ignore="TouchTargetSizeCheck" />
 
             <EditText
                 android:id="@+id/phone"
@@ -137,7 +137,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="10dp"
-                tools:ignore="TouchTargetSizeCheck"/>
+                tools:ignore="TouchTargetSizeCheck" />
 
             <EditText
                 android:id="@+id/password"
@@ -152,7 +152,7 @@
                 android:paddingVertical="8dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp" />
 
             <EditText
                 android:id="@+id/confirmPassword"
@@ -167,7 +167,7 @@
                 android:paddingVertical="8dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp" />
         </LinearLayout>
     </ScrollView>
 
@@ -182,19 +182,31 @@
         android:text="Saya setuju dengan syarat dan ketentuan"
         android:textColor="@color/green_dark" />
 
-    <!-- Button Login -->
-    <Button
-        android:id="@+id/btnRegister"
+    <!-- Tombol Sign Up + ProgressBar Overlay -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/btn_rounded"
-        android:text="Sign Up"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:fontFamily="@font/poppins_regular"/>
+        android:layout_marginTop="12dp">
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_rounded"
+            android:text="Sign Up"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_regular" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <!-- Social Login -->
     <LinearLayout
@@ -209,20 +221,20 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1"
-            android:background="#BDBDBD"/>
+            android:background="#BDBDBD" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="  or  "
             android:textColor="#757575"
-            android:fontFamily="@font/poppins_regular"/>
+            android:fontFamily="@font/poppins_regular" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1"
-            android:background="#BDBDBD"/>
+            android:background="#BDBDBD" />
     </LinearLayout>
 
     <LinearLayout
@@ -239,10 +251,8 @@
             android:background="@drawable/btn_circle"
             android:scaleType="centerInside"
             android:contentDescription="Login dengan Google"
-            tools:ignore="TouchTargetSizeCheck"/>
-
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
-
 
     <!-- Footer -->
     <TextView
@@ -252,8 +262,7 @@
         android:text="Sudah Punya Akun?"
         android:textColor="#757575"
         android:layout_marginVertical="12dp"
-        android:fontFamily="@font/poppins_regular"/>
-
+        android:fontFamily="@font/poppins_regular" />
 
     <!--Tombol Kembali Ke Log in Jika Sudah Punya Akun-->
     <TextView
@@ -268,6 +277,6 @@
         android:focusable="true"
         android:paddingVertical="13dp"
         android:paddingHorizontal="12dp"
-        android:layout_marginTop="-8dp"/>
+        android:layout_marginTop="-8dp" />
 
 </LinearLayout>

@@ -82,12 +82,13 @@ class EditProfileFragment : Fragment() {
 
             val success = dbHelper.updateUser(updatedUser)
 
-            if (success) {
+            if (success > 0) {
                 Toast.makeText(context, "Profil berhasil diperbarui", Toast.LENGTH_SHORT).show()
                 parentFragmentManager.popBackStack()
             } else {
                 Toast.makeText(context, "Gagal memperbarui profil", Toast.LENGTH_SHORT).show()
             }
+
         }
 
         return view

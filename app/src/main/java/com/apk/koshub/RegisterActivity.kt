@@ -4,12 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.apk.koshub.db.DatabaseHelper
-import com.apk.koshub.models.User
+import com.apk.koshub.api.ApiClient
+import com.apk.koshub.api.ApiService
+import com.apk.koshub.models.UserResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var db: DatabaseHelper
     private lateinit var fullName: EditText
     private lateinit var username: EditText
     private lateinit var email: EditText
@@ -20,11 +23,14 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var btnRegister: Button
     private lateinit var tvLogIn: TextView
 
+    private lateinit var api: ApiService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        db = DatabaseHelper(this)
+        // === Inisialisasi API service ===
+        api = ApiClient.apiService
 
         // === Inisialisasi View ===
         fullName = findViewById(R.id.fullName)
@@ -64,31 +70,48 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Buat objek user dari model User.kt
-            val user = User(
-                id = 0, // auto increment (biar SQLite yang atur)
-                username = usernameStr,
-                email = emailStr,
-                full_name = fullNameStr,
-                phone = phoneStr,
-                user_type = "user",
-                profile_image = null // default kosong dulu
-            )
-
-            // Simpan ke database lokal
-            db.insertUser(user)
-
-            toast("Registrasi berhasil! Silakan login.")
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            // Kirim ke server
+            registerUser(fullNameStr, usernameStr, emailStr, phoneStr, passwordStr)
         }
 
-        // === Tombol Log In ===
+        // === Tombol Log In (kembali ke halaman login) ===
         tvLogIn.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+    }
+
+    // === Fungsi Register ke API ===
+    private fun registerUser(fullName: String, username: String, email: String, phone: String, password: String) {
+        val data = mapOf(
+            "full_name" to fullName,
+            "username" to username,
+            "email" to email,
+            "phone" to phone,
+            "password" to password,
+            "user_type" to "user" // default untuk mobile
+        )
+
+        api.register(data).enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val res = response.body()!!
+                    if (res.status == "success") {
+                        toast("Registrasi berhasil! Silakan login.")
+                        startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                        finish()
+                    } else {
+                        toast(res.message ?: "Registrasi gagal.")
+                    }
+                } else {
+                    toast("Gagal terhubung ke server.")
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                toast("Error: ${t.message}")
+            }
+        })
     }
 
     private fun toast(msg: String) {

@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Inisialisasi database helper & Retrofit
         db = DatabaseHelper(this)
-        api = ApiClient.instance.create(ApiService::class.java)
+        api = ApiClient.apiService
 
         // Tombol Sign Up → pindah ke RegisterActivity
         signInText.setOnClickListener {

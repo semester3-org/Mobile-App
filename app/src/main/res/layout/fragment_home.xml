@@ -135,10 +135,10 @@
                     android:background="@drawable/bg_filter"/>
 
                 <Button
-                    android:id="@+id/btnFilterAC"
+                    android:id="@+id/btnFilterCampur"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="AC"
+                    android:text="Kos Campur"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/bg_filter"/>
             </LinearLayout>

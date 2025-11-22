@@ -1,5 +1,5 @@
 package com.apk.koshub.utils
 
 object Constants {
-    const val BASE_URL = "http://192.168.100.58/Web-App/mobile/api/auth/"
+    const val BASE_URL = "http://10.64.187.61/Web-App/mobile/api/auth/"
 }

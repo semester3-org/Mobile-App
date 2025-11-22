@@ -6,4 +6,8 @@ data class KosItem(
     val lokasi: String,
     val harga: String,
     val gambar: String,
+    val deskripsi: String,
+    val fasilitas: List<String>,
+    val jenisKos: String,
+    val jumlahKamar: Int
 )

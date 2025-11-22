@@ -9,7 +9,10 @@
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="14dp"
     app:cardElevation="3dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    app:useCompatPadding="true"
+    app:cardPreventCornerOverlap="true"
+    app:cardBackgroundColor="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,8 +30,10 @@
                 android:id="@+id/imgKos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/sampel_kos" />
+                android:background="@android:color/darker_gray"
+                tools:src="@drawable/sampel_kos" />
 
             <!-- Icon Favorite -->
             <ImageButton
@@ -39,7 +44,6 @@
                 android:layout_margin="8dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_favorite_border"
-                android:contentDescription="Favorite"
                 tools:ignore="TouchTargetSizeCheck"/>
 
             <!-- Rating -->
@@ -118,7 +122,6 @@
                 android:layout_marginTop="6dp"
                 android:fontFamily="@font/poppins_regular" />
 
-            <!-- Tombol Lihat Detail -->
             <TextView
                 android:id="@+id/btnDetail"
                 android:layout_width="wrap_content"

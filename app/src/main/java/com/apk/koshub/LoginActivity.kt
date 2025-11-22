@@ -102,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     val userResponse = response.body()
-                    if (userResponse?.status == "success") {
+                    if (userResponse?.code == 200) {
                         val user = userResponse.user
                         user?.let {
                             // 💾 Simpan user ke SQLite
@@ -118,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
                             )
                         }
 
-                        Toast.makeText(this@LoginActivity, "Login berhasil!", Toast.LENGTH_SHORT)
+                        Toast.makeText(this@LoginActivity, userResponse.message+", "+user!!.full_name, Toast.LENGTH_SHORT)
                             .show()
 
                         // 🚀 Pindah ke MainActivity

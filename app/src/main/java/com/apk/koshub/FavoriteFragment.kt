@@ -59,6 +59,7 @@ class FavoriteFragment : Fragment() {
 
     private fun getDummyFavorites(count: Int): List<KosItem> {
         val list = mutableListOf<KosItem>()
+
         for (i in 1..count) {
             list.add(
                 KosItem(
@@ -66,10 +67,15 @@ class FavoriteFragment : Fragment() {
                     nama = "Kos Favorit $i",
                     lokasi = "Jember City Center",
                     harga = "Rp ${800_000 + (i * 50_000)}/bulan",
-                    gambar = "https://picsum.photos/300/200?random=${100 + i}" // gambar acak agar beda
+                    gambar = "https://picsum.photos/300/200?random=${1000 + i}",
+                    deskripsi = "Kos favorit $i",
+                    fasilitas = listOf("WiFi", "AC", "Parking"),
+                    jenisKos = if (i % 2 == 0) "Putra" else "Putri",
+                    jumlahKamar = (1..5).random()   // ⬅ tambahin ini biar dummy valid
                 )
             )
         }
+
         return list
     }
 }

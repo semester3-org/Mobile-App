@@ -11,6 +11,7 @@ import com.apk.koshub.R
 import com.apk.koshub.models.KosItem
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import android.util.Log
 
 class KosAdapter(
     private var kosList: List<KosItem>,
@@ -32,7 +33,7 @@ class KosAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val kos = kosList[position]
-
+        Log.d("KosAdapter", "Image URL: ${kos.gambar}")
         // Load gambar dari drawable dengan efek fade-in
         Glide.with(holder.itemView.context)
             .load(kos.gambar)

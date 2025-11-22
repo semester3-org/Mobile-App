@@ -3,73 +3,58 @@ package com.apk.koshub.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
+import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apk.koshub.R
 import com.apk.koshub.adapters.KosAdapter
-import com.apk.koshub.models.KosItem
+import com.apk.koshub.api.ApiClient
+import com.apk.koshub.models.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SearchFragment : Fragment() {
 
-    private lateinit var etSearch: EditText
-    private lateinit var rvRecentSearches: RecyclerView
+    private lateinit var rvResults: RecyclerView
+    private lateinit var etSearch: TextView
     private lateinit var tvRecentTitle: TextView
+    private lateinit var rvRecentSearches: RecyclerView
+
     private lateinit var adapter: KosAdapter
-    private var allSearchResults = mutableListOf<KosItem>()
+
+    private val allKos = mutableListOf<KosItem>() // data full dari API
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
         etSearch = view.findViewById(R.id.etSearch)
-        rvRecentSearches = view.findViewById(R.id.rvRecentSearches)
         tvRecentTitle = view.findViewById(R.id.tvRecentTitle)
+        rvRecentSearches = view.findViewById(R.id.rvRecentSearches)
 
-        // Setup RecyclerView untuk recent searches (bisa ganti ke horizontal chips adapter nanti)
+        rvResults.layoutManager = LinearLayoutManager(context)
         rvRecentSearches.layoutManager = LinearLayoutManager(context)
+
         adapter = KosAdapter(emptyList()) { kos ->
-            android.widget.Toast.makeText(
-                context,
-                "Search: ${kos.nama}",
-                android.widget.Toast.LENGTH_SHORT
-            ).show()
+            openDetail(kos)
         }
+
+        rvResults.adapter = adapter
         rvRecentSearches.adapter = adapter
 
-        // Dummy recent searches (nanti dari DB)
-        allSearchResults.addAll(getDummySearchResults(5))
-        adapter.updateList(allSearchResults)
+        loadKosFromApi()
 
-        // Search listener (filter real-time)
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 filterSearch(s.toString())
             }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        // Jika search kosong, sembunyikan recent
-        etSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                if (s.isNullOrEmpty()) {
-                    tvRecentTitle.visibility = View.VISIBLE
-                    rvRecentSearches.visibility = View.VISIBLE
-                } else {
-                    tvRecentTitle.visibility = View.GONE
-                    rvRecentSearches.visibility = View.GONE
-                }
-            }
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -77,33 +62,60 @@ class SearchFragment : Fragment() {
         return view
     }
 
-    private fun filterSearch(query: String) {
-        if (query.isEmpty()) {
-            adapter.updateList(allSearchResults)
-            return
-        }
-        val filtered = allSearchResults.filter {
-            it.nama.contains(
-                query,
-                ignoreCase = true
-            ) || it.lokasi.contains(query, ignoreCase = true)
-        }
-        adapter.updateList(filtered)
+    private fun loadKosFromApi() {
+        ApiClient.instance.getKosList()
+            .enqueue(object : Callback<KosResponse> {
+                override fun onResponse(call: Call<KosResponse>, res: Response<KosResponse>) {
+                    if (res.isSuccessful) {
+                        val data = res.body()?.data ?: emptyList()
+
+                        allKos.clear()
+                        allKos.addAll(data.map { it.toKosItem() })
+
+                        adapter.updateList(emptyList()) // awal kosong dulu
+                    } else {
+                        Toast.makeText(requireContext(), "Error ${res.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<KosResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Network Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
-    private fun getDummySearchResults(count: Int): List<KosItem> {
-        val list = mutableListOf<KosItem>()
-        for (i in 1..count) {
-            list.add(
-                KosItem(
-                    id = i,
-                    nama = "Search Kos $i",
-                    lokasi = "Jember Search Area",
-                    harga = "Rp 750.000/bulan",
-                    gambar = "https://picsum.photos/300/200?random=$i"
-                )
-            )
+    private fun filterSearch(query: String) {
+        if (query.isBlank()) {
+            adapter.updateList(emptyList())
+            tvRecentTitle.visibility = View.VISIBLE
+            rvRecentSearches.visibility = View.VISIBLE
+            return
         }
-        return list
+
+        val result = allKos.filter {
+            it.nama.contains(query, true) ||
+                    it.lokasi.contains(query, true) ||
+                    it.deskripsi.contains(query, true)
+        }
+
+        adapter.updateList(result)
+
+        tvRecentTitle.visibility = View.GONE
+        rvRecentSearches.visibility = View.GONE
+    }
+
+    private fun openDetail(kos: KosItem) {
+        val fragment = DetailKosFragment.newInstance(
+            nama = kos.nama,
+            lokasi = kos.lokasi,
+            harga = kos.harga,
+            kategori = "Kos",
+            deskripsi = kos.deskripsi
+        )
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

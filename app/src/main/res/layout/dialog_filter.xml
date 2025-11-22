@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layoutFilterRoot"
@@ -7,7 +6,7 @@
     android:orientation="vertical"
     android:background="@android:color/transparent">
 
-    <!-- Sheet container (rounded top) -->
+    <!-- Sheet container -->
     <LinearLayout
         android:id="@+id/containerSheet"
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         android:padding="16dp"
         android:background="@drawable/bg_filter_sheet">
 
-        <!-- drag handle -->
+        <!-- Drag handle -->
         <View
             android:id="@+id/dragHandle"
             android:layout_width="60dp"
@@ -26,7 +25,7 @@
             android:layout_marginBottom="12dp"
             android:alpha="0.9" />
 
-        <!-- title + close -->
+        <!-- Title + Close -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,11 +50,11 @@
                 android:padding="4dp" />
         </RelativeLayout>
 
-        <!-- content scrollable -->
+        <!-- Scrollable Content -->
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
             android:overScrollMode="never">
 
             <LinearLayout
@@ -73,21 +72,6 @@
                     android:textStyle="bold"
                     android:textColor="#222222"
                     android:layout_marginTop="4dp" />
-
-                <!-- Range slider -->
-                <com.google.android.material.slider.RangeSlider
-                    android:id="@+id/rsHarga"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:valueFrom="0"
-                    android:valueTo="5000000"
-                    app:values="@array/default_harga_values"
-                    app:trackHeight="4dp"
-                    app:thumbRadius="8dp"
-                    app:trackColorActive="@color/green_primary"
-                    app:trackColorInactive="@color/gray_slider_inactive" />
-
 
                 <!-- Min / Max card -->
                 <LinearLayout
@@ -113,14 +97,18 @@
                             android:textSize="11sp"
                             android:textColor="#777777" />
 
-                        <TextView
-                            android:id="@+id/tvMinHarga"
-                            android:layout_width="wrap_content"
+                        <EditText
+                            android:id="@+id/etMinHarga"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Rp 400.000"
-                            android:textSize="13sp"
+                            android:inputType="numberDecimal"
+                            android:hint="Min Harga"
+                            android:textSize="14sp"
                             android:textColor="#222222"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:background="@drawable/bg_price_box"
+                            android:padding="10dp"
+                            android:layout_marginTop="8dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -128,29 +116,32 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="@drawable/bg_price_box"
                         android:orientation="vertical"
-                        android:padding="10dp"
-                        android:background="@drawable/bg_price_box">
+                        android:padding="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Max Harga"
-                            android:textSize="11sp"
-                            android:textColor="#777777" />
+                            android:textColor="#777777"
+                            android:textSize="11sp" />
 
-                        <TextView
-                            android:id="@+id/tvMaxHarga"
-                            android:layout_width="wrap_content"
+                        <EditText
+                            android:id="@+id/etMaxHarga"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Rp 1.000.000"
-                            android:textSize="13sp"
+                            android:inputType="numberDecimal"
+                            android:hint="Max Harga"
+                            android:textSize="14sp"
                             android:textColor="#222222"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:background="@drawable/bg_price_box"
+                            android:padding="10dp"
+                            android:layout_marginTop="8dp" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Divider -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -168,7 +159,6 @@
                     android:textStyle="bold"
                     android:textColor="#222222" />
 
-                <!-- Segmented buttons -->
                 <LinearLayout
                     android:id="@+id/layoutJumlahKamar"
                     android:layout_width="match_parent"
@@ -178,36 +168,63 @@
 
                     <TextView
                         android:id="@+id/btnKamar1"
-                        style="@style/FilterChipFilled"
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="1" />
 
                     <TextView
                         android:id="@+id/btnKamar2"
-                        style="@style/FilterChipOutline"
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="2"
                         android:layout_marginStart="6dp" />
 
                     <TextView
                         android:id="@+id/btnKamar3"
-                        style="@style/FilterChipOutline"
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="3"
                         android:layout_marginStart="6dp" />
 
                     <TextView
                         android:id="@+id/btnKamar4Plus"
-                        style="@style/FilterChipOutline"
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="4+"
                         android:layout_marginStart="6dp" />
                 </LinearLayout>
 
-                <!-- Divider -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
                     android:background="#E0E0E0" />
 
-                <!-- Fasilitas (collapsable row) -->
+                <!-- Fasilitas -->
                 <LinearLayout
                     android:id="@+id/rowFasilitas"
                     android:layout_width="match_parent"
@@ -234,10 +251,9 @@
                         android:id="@+id/ivFasilitasToggle"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:src="@drawable/ic_arrow_down" />
+                        android:src="@drawable/ic_arrow_up" />
                 </LinearLayout>
 
-                <!-- container fasilitas (bisa di-GONE default, isi checkbox/chip) -->
                 <LinearLayout
                     android:id="@+id/layoutFasilitasContent"
                     android:layout_width="match_parent"
@@ -248,43 +264,80 @@
 
                     <TextView
                         android:id="@+id/chipWifi"
-                        style="@style/FilterChipOutline"
-                        android:text="WiFi" />
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="WiFi"
+                        android:textSize="10dp"/>
 
                     <TextView
                         android:id="@+id/chipAc"
-                        style="@style/FilterChipOutline"
-                        android:text="AC"
-                        android:layout_marginStart="6dp" />
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="AC" />
 
                     <TextView
                         android:id="@+id/chipKmDalam"
-                        style="@style/FilterChipOutline"
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="KM Dalam"
-                        android:layout_marginStart="6dp" />
+                        android:textSize="10dp" />
 
                     <TextView
                         android:id="@+id/chipMeja"
-                        style="@style/FilterChipOutline"
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="Meja"
-                        android:layout_marginStart="6dp" />
+                        android:textSize="10dp" />
 
                     <TextView
                         android:id="@+id/chipLemari"
-                        style="@style/FilterChipOutline"
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="Lemari"
-                        android:layout_marginStart="6dp" />
-
+                        android:textSize="10dp" />
                 </LinearLayout>
 
-                <!-- Divider -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
                     android:background="#E0E0E0" />
 
-                <!-- Jenis Kos (collapsable, default open) -->
+                <!-- Jenis Kos -->
                 <LinearLayout
                     android:id="@+id/rowJenisKos"
                     android:layout_width="match_parent"
@@ -314,7 +367,6 @@
                         android:src="@drawable/ic_arrow_up" />
                 </LinearLayout>
 
-                <!-- Jenis Kos chips -->
                 <LinearLayout
                     android:id="@+id/layoutJenisKosContent"
                     android:layout_width="match_parent"
@@ -324,31 +376,51 @@
 
                     <TextView
                         android:id="@+id/btnPutra"
-                        style="@style/FilterChipOutline"
-                        android:text="Putra" />
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="7dp"
+                        android:text="Putra"
+                        android:textSize="12dp"/>
 
                     <TextView
                         android:id="@+id/btnPutri"
-                        style="@style/FilterChipFilled"
-                        android:text="Putri"
-                        android:layout_marginStart="8dp" />
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Putri" />
 
                     <TextView
                         android:id="@+id/btnCampur"
-                        style="@style/FilterChipOutline"
-                        android:text="Campur"
-                        android:layout_marginStart="8dp" />
+                        android:background="@drawable/bg_filter_chip_outline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Campur" />
                 </LinearLayout>
 
-                <!-- spacer bottom biar ga ketutup tombol -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="24dp" />
-
             </LinearLayout>
         </ScrollView>
 
-        <!-- bottom buttons -->
+        <!-- Bottom Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -380,5 +452,4 @@
                 android:background="@drawable/bg_btn_apply" />
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

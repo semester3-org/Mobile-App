@@ -30,7 +30,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        api = ApiClient.apiService
+        api = ApiClient.instance
 
         // View utama form + logo (buat animasi)
         val logo = findViewById<ImageView>(R.id.logo)

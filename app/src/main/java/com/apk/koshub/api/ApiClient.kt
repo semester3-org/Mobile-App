@@ -5,17 +5,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private const val BASE_URL = "http://192.168.100.58/Web-App/mobile/api/auth/"
+    private const val BASE_URL = "http://10.64.187.61/Web-App/mobile/api/"
 
-    private val retrofit: Retrofit by lazy {
+    val instance: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    // ✅ Properti ini yang akan dipakai di RegisterActivity & LoginActivity
-    val apiService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
+            .create(ApiService::class.java)
     }
 }
+

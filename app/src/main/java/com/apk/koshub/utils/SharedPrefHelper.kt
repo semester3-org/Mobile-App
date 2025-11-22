@@ -73,3 +73,4 @@ class SharedPrefHelper(context: Context) {
     fun getUserEmail(): String? = pref.getString(KEY_USER_EMAIL, "")
     fun getUserPhone(): String? = pref.getString(KEY_USER_PHONE, "")
 }
+

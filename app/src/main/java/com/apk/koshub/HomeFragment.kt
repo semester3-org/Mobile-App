@@ -154,7 +154,9 @@ class HomeFragment : Fragment() {
             lokasi = kos.lokasi,
             harga = kos.harga,
             kategori = "Kos",
-            deskripsi = kos.deskripsi
+            deskripsi = kos.deskripsi,
+            lat = kos.latitude,
+            lon = kos.longitude
         )
 
         fm.beginTransaction()

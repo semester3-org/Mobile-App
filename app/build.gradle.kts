@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+val mapsApiKey: String = (project.findProperty("MAPS_API_KEY") as String?) ?: ""
+
 android {
     namespace = "com.apk.koshub"
     compileSdk = 36
@@ -15,12 +17,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        {
-
-        }
-
     }
 
     buildTypes {
@@ -31,14 +30,21 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            // optional kalau mau beda config debug
+            isMinifyEnabled = false
+        }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
@@ -64,7 +70,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
@@ -76,6 +81,4 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-
-
 }

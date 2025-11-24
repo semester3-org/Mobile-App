@@ -9,5 +9,8 @@ data class KosItem(
     val deskripsi: String,
     val fasilitas: List<String>,
     val jenisKos: String,
-    val jumlahKamar: Int
+    val jumlahKamar: Int,
+    val rating: Double?,
+    val latitude: Double,
+    val longitude: Double
 )

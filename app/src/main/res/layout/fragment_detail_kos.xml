@@ -48,7 +48,7 @@
             android:adjustViewBounds="true"
             android:clipToOutline="true" />
 
-        <!-- Dot indicator (placeholder 4 dot) -->
+        <!-- Dot indicator -->
         <LinearLayout
             android:id="@+id/indicatorDots"
             android:layout_width="wrap_content"
@@ -153,7 +153,7 @@
             android:textStyle="bold"
             android:textColor="#222222" />
 
-        <!-- Deskripsi Isi (short + read more) -->
+        <!-- Deskripsi Isi -->
         <TextView
             android:id="@+id/tvDeskripsi"
             android:layout_width="match_parent"
@@ -184,7 +184,7 @@
             android:textStyle="bold"
             android:textColor="#222222" />
 
-        <!-- Fasilitas Grid -->
+        <!-- Fasilitas (tetap punyamu) -->
         <LinearLayout
             android:id="@+id/layoutFasilitas"
             android:layout_width="match_parent"
@@ -331,7 +331,7 @@
                         android:textColor="#2E7D32" />
                 </LinearLayout>
 
-                <!-- Kamar mandi dalam -->
+                <!-- KM dalam -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -358,7 +358,6 @@
             </LinearLayout>
         </LinearLayout>
 
-
         <!-- Lokasi Title -->
         <TextView
             android:id="@+id/tvLokasiTitle"
@@ -380,20 +379,15 @@
             android:textSize="13sp"
             android:textColor="#555555" />
 
-        <!-- Map preview -->
-
-        <!-- Bottom: Harga + Save button -->
-
-        <ImageView
-            android:id="@+id/ivMapPreview"
+        <!-- ✅ MAP INTERAKTIF -->
+        <fragment
+            android:id="@+id/mapFragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/darker_gray"
-            android:clipToOutline="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/dummy_key" />
+            android:layout_marginTop="8dp" />
 
+        <!-- Bottom: Harga -->
         <LinearLayout
             android:id="@+id/layoutBottomPrice"
             android:layout_width="match_parent"
@@ -420,5 +414,6 @@
                 android:textSize="16sp"
                 android:textColor="#000000" />
         </LinearLayout>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -33,8 +33,9 @@ class KosAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val kos = kosList[position]
+
         Log.d("KosAdapter", "Image URL: ${kos.gambar}")
-        // Load gambar dari drawable dengan efek fade-in
+
         Glide.with(holder.itemView.context)
             .load(kos.gambar)
             .placeholder(R.drawable.placeholder_image)

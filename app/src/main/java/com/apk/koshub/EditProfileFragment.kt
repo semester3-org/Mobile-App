@@ -26,6 +26,7 @@ class EditProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_edit_profile, container, false)
 
         dbHelper = DatabaseHelper(requireContext())
@@ -40,8 +41,9 @@ class EditProfileFragment : Fragment() {
         val etEmail = view.findViewById<EditText>(R.id.etEmail)
         val btnSimpan = view.findViewById<Button>(R.id.btnSimpanPerubahan)
 
-        // Ambil data user
+        // Ambil data user dari database
         val user = dbHelper.getUser()
+
         user?.let {
             etNama.setText(it.full_name)
             etUsername.setText(it.username)
@@ -58,28 +60,30 @@ class EditProfileFragment : Fragment() {
         // Tombol kembali
         btnBack.setOnClickListener {
             parentFragmentManager.popBackStack()
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility =
-                View.VISIBLE
+            requireActivity()
+                .findViewById<BottomNavigationView>(R.id.bottom_navigation).visibility = View.VISIBLE
         }
 
-        // Pilih foto profil dari galeri
+        // Pilih foto dari galeri
         btnEditPhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, 100)
         }
 
-        // Tombol simpan
+        // Tombol simpan perubahan
         btnSimpan.setOnClickListener {
+
             val updatedUser = User(
                 id = user?.id ?: 0,
                 username = etUsername.text.toString(),
-                email = user?.email ?: "",
+                email = etEmail.text.toString(),  // ← email jangan dikunci, kamu sudah ada etEmail
                 full_name = etNama.text.toString(),
                 phone = etTelepon.text.toString(),
                 user_type = user?.user_type ?: "user",
                 profile_image = selectedImageUri?.toString() ?: user?.profile_image
             )
 
+            // updateUser() mengembalikan Int → row updated
             val success = dbHelper.updateUser(updatedUser)
 
             if (success > 0) {
@@ -88,10 +92,9 @@ class EditProfileFragment : Fragment() {
             } else {
                 Toast.makeText(context, "Gagal memperbarui profil", Toast.LENGTH_SHORT).show()
             }
-
         }
 
-        return view
+            return view
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

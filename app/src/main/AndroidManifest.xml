@@ -17,6 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KosHub">
 
+        <!-- ✅ GOOGLE MAPS API KEY (diambil dari manifestPlaceholders Gradle) -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <!-- ✅ Optional tapi aman: versi play services -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <!-- Launcher / Splash Screen -->
         <activity
             android:name=".SplashActivity"
@@ -40,7 +50,8 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
-        <!-- Main App Activity (jika nanti ada bottom navigation) -->
+
+        <!-- Main App Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="false"

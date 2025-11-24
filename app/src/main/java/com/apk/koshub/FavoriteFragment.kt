@@ -1,81 +1,130 @@
 package com.apk.koshub.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apk.koshub.R
-import com.apk.koshub.adapters.KosAdapter
-import com.apk.koshub.models.KosItem
+import com.apk.koshub.adapters.KosCardAdapter
+import com.apk.koshub.api.ApiClient
+import com.apk.koshub.db.DatabaseHelper
+import com.apk.koshub.models.KosItemCard
+import com.apk.koshub.models.KosResponse
+import com.apk.koshub.models.toKosItemCardForFavorite
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var rvFavorite: RecyclerView
     private lateinit var tvEmptyFavorite: TextView
-    private lateinit var adapter: KosAdapter
-    private var favoriteKos = mutableListOf<KosItem>()
+    private lateinit var adapter: KosCardAdapter
+    private lateinit var db: DatabaseHelper
+
+    private val favoriteKos = mutableListOf<KosItemCard>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_favorite, container, false)
 
         rvFavorite = view.findViewById(R.id.rvFavorite)
         tvEmptyFavorite = view.findViewById(R.id.tvEmptyFavorite)
+        db = DatabaseHelper(requireContext())
 
-        // Setup RecyclerView
-        rvFavorite.layoutManager = LinearLayoutManager(context)
-        adapter = KosAdapter(emptyList()) { kos ->
-            android.widget.Toast.makeText(
-                context,
-                "Favorite: ${kos.nama}",
-                android.widget.Toast.LENGTH_SHORT
-            ).show()
+        adapter = KosCardAdapter(favoriteKos) { kos ->
+            // TODO: klik detail kalau perlu
         }
+
+        rvFavorite.layoutManager = LinearLayoutManager(requireContext())
         rvFavorite.adapter = adapter
 
-        // Dummy data (kosong dulu, nanti dari SharedPrefs/DB)
-        favoriteKos.addAll(getDummyFavorites(1)) // 1 item dummy
-        updateUI()
+        loadFavoriteFromServer()
 
         return view
     }
 
-    private fun updateUI() {
-        if (favoriteKos.isEmpty()) {
-            rvFavorite.visibility = View.GONE
-            tvEmptyFavorite.visibility = View.VISIBLE
-        } else {
-            rvFavorite.visibility = View.VISIBLE
-            tvEmptyFavorite.visibility = View.GONE
-            adapter.updateList(favoriteKos)
-        }
+    override fun onResume() {
+        super.onResume()
+        loadFavoriteFromServer() // refresh tiap balik ke fragment ini
     }
 
-    private fun getDummyFavorites(count: Int): List<KosItem> {
-        val list = mutableListOf<KosItem>()
+    private fun loadFavoriteFromServer() {
+        val user = db.getUser()
 
-        for (i in 1..count) {
-            list.add(
-                KosItem(
-                    id = i,
-                    nama = "Kos Favorit $i",
-                    lokasi = "Jember City Center",
-                    harga = "Rp ${800_000 + (i * 50_000)}/bulan",
-                    gambar = "https://picsum.photos/300/200?random=${1000 + i}",
-                    deskripsi = "Kos favorit $i",
-                    fasilitas = listOf("WiFi", "AC", "Parking"),
-                    jenisKos = if (i % 2 == 0) "Putra" else "Putri",
-                    jumlahKamar = (1..5).random()   // ⬅ tambahin ini biar dummy valid
-                )
-            )
+        if (user == null) {
+            favoriteKos.clear()
+            adapter.updateList(favoriteKos)
+            updateUI()
+            return
         }
 
-        return list
+        ApiClient.instance.getFavoriteKos(userId = user.id)
+            .enqueue(object : Callback<KosResponse> {
+
+                override fun onResponse(
+                    call: Call<KosResponse>,
+                    response: Response<KosResponse>
+                ) {
+                    val body = response.body()
+                    val rawError = response.errorBody()?.string()
+
+                    // Debug log yang benar
+                    Log.d("FAV_DEBUG", "code=${response.code()}")
+                    Log.d("FAV_DEBUG", "body=$body")
+                    Log.d("FAV_DEBUG", "rawError=$rawError")
+
+                    if (response.isSuccessful && body?.isSuccess == true) {
+
+                        val mapped = body.data.map { dto ->
+                            dto.toKosItemCardForFavorite()
+                        }
+
+                        favoriteKos.clear()
+                        favoriteKos.addAll(mapped)
+
+                        // ✅ kirim list baru, bukan reference yang sama
+                        adapter.updateList(mapped)
+
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Gagal memuat favorite",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        favoriteKos.clear()
+                        adapter.updateList(emptyList())
+                    }
+
+                    updateUI()
+
+                }
+
+                override fun onFailure(call: Call<KosResponse>, t: Throwable) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Koneksi gagal: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    private fun updateUI() {
+        if (favoriteKos.isEmpty()) {
+            tvEmptyFavorite.visibility = View.VISIBLE
+            rvFavorite.visibility = View.GONE
+        } else {
+            tvEmptyFavorite.visibility = View.GONE
+            rvFavorite.visibility = View.VISIBLE
+        }
     }
 }

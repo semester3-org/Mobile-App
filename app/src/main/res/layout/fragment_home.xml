@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:fitsSystemWindows="false"
     android:padding="12dp">
 
     <LinearLayout
@@ -29,25 +30,31 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_location"
-                android:drawablePadding="4dp"
-                android:text="Jember"
-                android:textColor="@color/black"
-                android:textSize="17sp" />
 
-            <ImageButton
-                android:id="@+id/ibNotification"
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@null"
-                android:contentDescription="Filter"
-                android:src="@drawable/ic_notification"
-                app:tint="@color/black"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/ibNotification"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_notification"
+                    app:tint="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tvNotifBadge"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_badge_red"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp"
+                    android:visibility="gone"
+                    android:layout_gravity="top|end"
+                    android:textStyle="bold"/>
+            </FrameLayout>
 
 
         </LinearLayout>
@@ -105,43 +112,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:scrollbars="none">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnFilterAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_filter"
-                    android:text="Semua" />
-
-                <Button
-                    android:id="@+id/btnFilterPutra"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kos Putra"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_filter"/>
-
-                <Button
-                    android:id="@+id/btnFilterPutri"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kos Putri"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_filter"/>
-
-                <Button
-                    android:id="@+id/btnFilterCampur"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kos Campur"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_filter"/>
-            </LinearLayout>
         </HorizontalScrollView>
 
         <!-- Rekomendasi Kos -->

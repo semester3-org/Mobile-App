@@ -37,4 +37,11 @@
         <item name="android:textColor">@color/green_primary</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
 </resources>

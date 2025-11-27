@@ -40,8 +40,8 @@
     <!-- Card bawah -->
     <LinearLayout
         android:id="@+id/loginContainer"
-        android:alpha="0.9"
         android:layout_width="0dp"
+        android:alpha="0.9"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_auth_container"
         android:orientation="vertical"
@@ -51,6 +51,7 @@
         android:paddingBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView

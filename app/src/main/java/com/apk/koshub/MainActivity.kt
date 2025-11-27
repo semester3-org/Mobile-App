@@ -12,6 +12,7 @@ import android.content.Context
 import android.content.res.Configuration
 import com.apk.koshub.utils.SharedPrefHelper
 import java.util.Locale
+import androidx.core.view.WindowCompat
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         bottomNavigation = findViewById(R.id.bottom_navigation)
 

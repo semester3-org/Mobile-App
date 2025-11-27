@@ -30,6 +30,9 @@ class HomeFragment : Fragment() {
     private val allRekom = mutableListOf<KosItem>()
     private val allFav = mutableListOf<KosItem>()
 
+    private var unreadNotif = 3
+    private var badgeView: TextView? = null
+
     private val filterVM: HomeFilterViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -38,6 +41,20 @@ class HomeFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        badgeView = view.findViewById(R.id.tvNotifBadge)
+        updateBadge()
+
+        val ibNotif = view.findViewById<ImageButton>(R.id.ibNotification)
+        ibNotif.setOnClickListener {
+            unreadNotif = 0
+            updateBadge()
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, NotifFragment())
+                .addToBackStack(null)
+                .commit()
+        }
 
         val filterButton = view.findViewById<ImageButton>(R.id.ibFilterHome)
         filterButton.setOnClickListener {
@@ -62,9 +79,7 @@ class HomeFragment : Fragment() {
 
         // SEARCH
         etSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                applySearch()
-            }
+            override fun afterTextChanged(s: Editable?) { applySearch() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -79,8 +94,12 @@ class HomeFragment : Fragment() {
             )
         }
 
-
         return view
+    }
+
+    private fun updateBadge() {
+        badgeView?.visibility = if (unreadNotif > 0) View.VISIBLE else View.GONE
+        badgeView?.text = unreadNotif.toString()
     }
 
     private fun loadKos() {
@@ -89,7 +108,6 @@ class HomeFragment : Fragment() {
                 override fun onResponse(call: Call<KosResponse>, res: Response<KosResponse>) {
                     if (res.isSuccessful) {
                         val data = res.body()?.data ?: emptyList()
-
                         allRekom.clear()
                         allFav.clear()
 
@@ -112,7 +130,6 @@ class HomeFragment : Fragment() {
         val rekom = allRekom.filter {
             it.nama.lowercase().contains(q) || it.lokasi.lowercase().contains(q)
         }
-
         val fav = allFav.filter {
             it.nama.lowercase().contains(q) || it.lokasi.lowercase().contains(q)
         }

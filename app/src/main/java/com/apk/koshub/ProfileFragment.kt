@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.apk.koshub.LoginActivity
 import com.apk.koshub.R
 import com.apk.koshub.db.DatabaseHelper
@@ -49,18 +50,18 @@ class ProfileFragment : Fragment() {
             loadUserData()
 
             cardEditProfile.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, EditProfileFragment())
-                    .addToBackStack(null)
-                    .commit()
+                parentFragmentManager.commit {
+                    replace(R.id.fragment_container, EditProfileFragment())
+                    addToBackStack(null)
+                }
                 bottomNav.visibility = View.GONE
             }
 
             cardBahasa.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, GantiBahasaFragment())
-                    .addToBackStack(null)
-                    .commit()
+                parentFragmentManager.commit {
+                    replace(R.id.fragment_container, GantiBahasaFragment())
+                    addToBackStack(null)
+                }
                 bottomNav.visibility = View.GONE
             }
 
@@ -97,8 +98,13 @@ class ProfileFragment : Fragment() {
             tvNamaUser.text = user.full_name.ifEmpty { user.username }
             tvEmailUser.text = user.email
 
+            // Menampilkan foto profil jika ada
             if (!user.profile_image.isNullOrEmpty()) {
-                ivProfile.setImageURI(Uri.parse(user.profile_image))
+                try {
+                    ivProfile.setImageURI(Uri.parse(user.profile_image))
+                } catch (e: Exception) {
+                    ivProfile.setImageResource(R.drawable.ic_default_profile)
+                }
             } else {
                 ivProfile.setImageResource(R.drawable.ic_default_profile)
             }

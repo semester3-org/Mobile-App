@@ -3,6 +3,8 @@
     <string name="app_name">KosHub</string>
     <string name="profile_photo">Profile Photo</string>
     <string name="edit_photo">Edit Profile Photo</string>
+    <string name="default_web_client_id">396950665056-ss38jjn6o5b2i3m63s65a08gh3h7l71l.apps.googleusercontent.com</string>
+
 
     <string name="lang_title">Choose Language</string>
     <string name="lang_id_title">Indonesian</string>
@@ -12,5 +14,6 @@
 
     <string name="lang_changed_to_id">Language changed to Indonesian</string>
     <string name="lang_changed_to_en">Language changed to English</string>
+
 </resources>
 

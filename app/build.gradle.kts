@@ -31,7 +31,6 @@ android {
             )
         }
         debug {
-            // optional kalau mau beda config debug
             isMinifyEnabled = false
         }
     }
@@ -50,7 +49,7 @@ android {
     }
 }
 
-dependencies {
+    dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -81,4 +80,6 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-auth:20.0.1")
+
 }

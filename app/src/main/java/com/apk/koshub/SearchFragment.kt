@@ -63,7 +63,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun loadKosFromApi() {
-        ApiClient.instance.getKosList()
+        ApiClient.api.getKosList()
             .enqueue(object : Callback<KosResponse> {
                 override fun onResponse(call: Call<KosResponse>, res: Response<KosResponse>) {
                     if (res.isSuccessful) {

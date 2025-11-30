@@ -18,6 +18,7 @@ import com.apk.koshub.models.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.apk.koshub.fragments.NotifFragment
 
 class HomeFragment : Fragment() {
 
@@ -38,6 +39,14 @@ class HomeFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        val notifButton = view.findViewById<ImageButton>(R.id.ibNotification)
+        notifButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, NotifFragment())
+                .addToBackStack(null)
+                .commit()
+        }
 
         val filterButton = view.findViewById<ImageButton>(R.id.ibFilterHome)
         filterButton.setOnClickListener {
@@ -84,7 +93,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadKos() {
-        ApiClient.instance.getKosList()
+        ApiClient.api.getKosList()
             .enqueue(object : Callback<KosResponse> {
                 override fun onResponse(call: Call<KosResponse>, res: Response<KosResponse>) {
                     if (res.isSuccessful) {

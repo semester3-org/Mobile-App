@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
         // 🧠 Init Database, Pref, dan API
         db = DatabaseHelper(this)
         pref = SharedPrefHelper(this)
-        api = ApiClient.instance
+        api = ApiClient.api
 
         // 🔁 Pindah ke Register
         tvCreateOne.setOnClickListener {

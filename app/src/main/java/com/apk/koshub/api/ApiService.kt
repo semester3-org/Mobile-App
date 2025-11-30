@@ -3,6 +3,7 @@ package com.apk.koshub.api
 import com.apk.koshub.models.BasicResponse
 import com.apk.koshub.models.KosResponse
 import com.apk.koshub.models.UserResponse
+import com.apk.koshub.models.NotificationResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -45,4 +46,21 @@ interface ApiService {
         @Field("user_id") userId: Int,
         @Field("kos_id") kosId: Int
     ): Call<BasicResponse>
+
+    @GET("mobile/api/users/notification.php")
+    suspend fun getNotifications(
+        @Query("user_id") userId: Int
+    ): NotificationResponse
+
+    // optional: mark as read endpoint (if you create api_mark_read.php)
+    @FormUrlEncoded
+    @POST("mobile/api/users/mark_read.php")
+    suspend fun markNotificationRead(
+        @Field("id") notificationId: Int
+    ): Map<String, Any>
+
+    @POST("mobile/api/users/mark_all_read.php")
+    suspend fun markAllRead(
+        @Field("user_id") userId: Int
+    ): Map<String, Any>
 }

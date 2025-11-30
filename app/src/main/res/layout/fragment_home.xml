@@ -97,53 +97,6 @@
                 tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
-
-        <!-- Filter Kategori -->
-        <HorizontalScrollView
-            android:id="@+id/hsvFilters"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnFilterAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_filter"
-                    android:text="Semua" />
-
-                <Button
-                    android:id="@+id/btnFilterPutra"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kos Putra"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_filter"/>
-
-                <Button
-                    android:id="@+id/btnFilterPutri"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kos Putri"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_filter"/>
-
-                <Button
-                    android:id="@+id/btnFilterCampur"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kos Campur"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_filter"/>
-            </LinearLayout>
-        </HorizontalScrollView>
-
         <!-- Rekomendasi Kos -->
         <TextView
             android:id="@+id/tvRekomendasiTitle"

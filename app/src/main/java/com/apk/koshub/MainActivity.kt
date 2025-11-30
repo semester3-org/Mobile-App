@@ -12,6 +12,11 @@ import android.content.Context
 import android.content.res.Configuration
 import com.apk.koshub.utils.SharedPrefHelper
 import java.util.Locale
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.updatePadding
+import androidx.core.view.WindowInsetsCompat
+import android.view.View
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +40,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        setContentView(R.layout.activity_main)
+
+        val root = findViewById<View>(R.id.mainRoot)
+
+        ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
+            val sysBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(0, sysBars.top, 0, sysBars.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
 
         bottomNavigation = findViewById(R.id.bottom_navigation)
 

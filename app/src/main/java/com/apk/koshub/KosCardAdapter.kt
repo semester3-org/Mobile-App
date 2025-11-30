@@ -98,12 +98,12 @@ class KosCardAdapter(
             notifyItemChanged(pos)
 
             val call = if (kos.isFavorite) {
-                ApiClient.instance.addFavorite(
+                ApiClient.api.addFavorite(
                     userId = user.id,
                     kosId = kos.id
                 )
             } else {
-                ApiClient.instance.removeFavorite(
+                ApiClient.api.removeFavorite(
                     userId = user.id,
                     kosId = kos.id
                 )

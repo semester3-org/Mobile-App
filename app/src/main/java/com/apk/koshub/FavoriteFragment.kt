@@ -67,7 +67,7 @@ class FavoriteFragment : Fragment() {
             return
         }
 
-        ApiClient.instance.getFavoriteKos(userId = user.id)
+        ApiClient.api.getFavoriteKos(userId = user.id)
             .enqueue(object : Callback<KosResponse> {
 
                 override fun onResponse(

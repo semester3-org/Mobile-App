@@ -89,7 +89,7 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
     }
 
     private fun loadKos() {
-        ApiClient.instance.getKosList()
+        ApiClient.api.getKosList()
             .enqueue(object : Callback<KosResponse> {
                 override fun onResponse(
                     call: Call<KosResponse>,
@@ -123,7 +123,7 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
     private fun refreshFavorites() {
         val user = db.getUser() ?: return
 
-        ApiClient.instance.getFavoriteKos(userId = user.id)
+        ApiClient.api.getFavoriteKos(userId = user.id)
             .enqueue(object : Callback<KosResponse> {
                 override fun onResponse(
                     call: Call<KosResponse>,

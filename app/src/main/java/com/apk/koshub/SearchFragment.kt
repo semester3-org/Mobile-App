@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -20,21 +21,24 @@ import retrofit2.Response
 class SearchFragment : Fragment() {
 
     private lateinit var rvResults: RecyclerView
-    private lateinit var etSearch: TextView
+    private lateinit var etSearch: EditText
     private lateinit var tvRecentTitle: TextView
     private lateinit var rvRecentSearches: RecyclerView
 
-    private lateinit var adapter: KosAdapter
+    private lateinit var resultsAdapter: KosAdapter
+    private lateinit var recentAdapter: KosAdapter
 
-    private val allKos = mutableListOf<KosItem>() // data full dari API
+    private val allKos = mutableListOf<KosItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
+        // ✅ INIT VIEW DULU
+        rvResults = view.findViewById(R.id.rvResults)
         etSearch = view.findViewById(R.id.etSearch)
         tvRecentTitle = view.findViewById(R.id.tvRecentTitle)
         rvRecentSearches = view.findViewById(R.id.rvRecentSearches)
@@ -42,12 +46,11 @@ class SearchFragment : Fragment() {
         rvResults.layoutManager = LinearLayoutManager(context)
         rvRecentSearches.layoutManager = LinearLayoutManager(context)
 
-        adapter = KosAdapter(emptyList()) { kos ->
-            openDetail(kos)
-        }
+        resultsAdapter = KosAdapter(emptyList()) { kos -> openDetail(kos) }
+        recentAdapter = KosAdapter(emptyList()) { kos -> openDetail(kos) }
 
-        rvResults.adapter = adapter
-        rvRecentSearches.adapter = adapter
+        rvResults.adapter = resultsAdapter
+        rvRecentSearches.adapter = recentAdapter
 
         loadKosFromApi()
 
@@ -59,6 +62,9 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        // awal: show recent
+        showRecent(true)
+
         return view
     }
 
@@ -68,11 +74,12 @@ class SearchFragment : Fragment() {
                 override fun onResponse(call: Call<KosResponse>, res: Response<KosResponse>) {
                     if (res.isSuccessful) {
                         val data = res.body()?.data ?: emptyList()
-
                         allKos.clear()
                         allKos.addAll(data.map { it.toKosItem() })
 
-                        adapter.updateList(emptyList()) // awal kosong dulu
+                        // recent: tampilkan random aja dulu (kalau belum punya recent beneran)
+                        recentAdapter.updateList(allKos.shuffled().take(6))
+                        resultsAdapter.updateList(emptyList())
                     } else {
                         Toast.makeText(requireContext(), "Error ${res.code()}", Toast.LENGTH_SHORT).show()
                     }
@@ -86,9 +93,8 @@ class SearchFragment : Fragment() {
 
     private fun filterSearch(query: String) {
         if (query.isBlank()) {
-            adapter.updateList(emptyList())
-            tvRecentTitle.visibility = View.VISIBLE
-            rvRecentSearches.visibility = View.VISIBLE
+            resultsAdapter.updateList(emptyList())
+            showRecent(true)
             return
         }
 
@@ -98,23 +104,21 @@ class SearchFragment : Fragment() {
                     it.deskripsi.contains(query, true)
         }
 
-        adapter.updateList(result)
+        resultsAdapter.updateList(result)
+        showRecent(false)
+    }
 
-        tvRecentTitle.visibility = View.GONE
-        rvRecentSearches.visibility = View.GONE
+    private fun showRecent(show: Boolean) {
+        tvRecentTitle.visibility = if (show) View.VISIBLE else View.GONE
+        rvRecentSearches.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun openDetail(kos: KosItem) {
-        val fragment = DetailKosFragment.newInstance(
-            nama = kos.nama,
-            lokasi = kos.lokasi,
-            harga = kos.harga,
-            kategori = "Kos",
-            deskripsi = kos.deskripsi
-        )
+        val fm = parentFragmentManager
+        val detail = DetailKosFragment.newInstance(kosId = kos.id)
 
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
+        fm.beginTransaction()
+            .replace(R.id.fragment_container, detail)
             .addToBackStack(null)
             .commit()
     }

@@ -35,7 +35,6 @@ class KosCardAdapter(
         val tvRating: TextView = view.findViewById(R.id.tvRating)
         val tvNamaKos: TextView = view.findViewById(R.id.tvNamaKos)
         val tvAlamatKos: TextView = view.findViewById(R.id.tvAlamatKos)
-        val tvFasilitasKos: TextView = view.findViewById(R.id.tvFasilitasKos)
         val tvHargaKos: TextView = view.findViewById(R.id.tvHargaKos)
         val btnDetail: TextView = view.findViewById(R.id.btnDetail)
     }
@@ -65,7 +64,6 @@ class KosCardAdapter(
 
         holder.tvNamaKos.text = kos.nama
         holder.tvAlamatKos.text = kos.lokasi
-        holder.tvFasilitasKos.text = kos.fasilitas
         holder.tvHargaKos.text = kos.harga
         holder.tvRating.text = kos.rating.toString()
 

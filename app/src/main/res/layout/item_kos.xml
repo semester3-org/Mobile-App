@@ -56,41 +56,6 @@
                 android:layout_marginTop="2dp"
                 android:fontFamily="@font/poppins_regular" />
 
-            <!-- Fasilitas -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_wifi" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Wifi"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="4dp" />
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_ac" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="4dp"
-                    android:text="AC"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
-            </LinearLayout>
 
             <!-- Harga -->
             <TextView

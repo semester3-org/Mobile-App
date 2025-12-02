@@ -11,5 +11,7 @@ data class KosItemCard(
     val gambar: String,
     val latitude: Double,
     val longitude: Double,
-    var isFavorite: Boolean = false
+    var isFavorite: Boolean = false,
+    val jenisKos: String? = null,
+    val priceMonthly: Int = 0
 )

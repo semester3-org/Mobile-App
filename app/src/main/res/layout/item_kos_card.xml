@@ -101,15 +101,6 @@
                 android:textSize="11sp"
                 android:fontFamily="@font/poppins_regular" />
 
-            <TextView
-                android:id="@+id/tvFasilitasKos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="WiFi, Lemari, Meja"
-                android:textColor="@color/darker_gray"
-                android:textSize="11sp"
-                android:layout_marginTop="2dp"
-                android:fontFamily="@font/poppins_regular" />
 
             <TextView
                 android:id="@+id/tvHargaKos"

@@ -138,15 +138,26 @@ class HomeFragment : Fragment() {
         jumlahKamar: Int
     ) {
 
+
         val filteredRekom = allRekom.filter { kos ->
-            kos.harga.toInt() in minHarga..maxHarga &&
+            val hargaInt = parseHargaToInt(kos.harga)
+
+            val minOk = if (minHarga > 0) hargaInt >= minHarga else true
+            val maxOk = if (maxHarga > 0) hargaInt <= maxHarga else true
+
+            minOk && maxOk &&
                     (selectedFasilitas.isEmpty() || selectedFasilitas.all { f -> f in kos.fasilitas }) &&
                     (selectedJenisKos.isEmpty() || kos.jenisKos == selectedJenisKos) &&
                     (jumlahKamar == 0 || kos.jumlahKamar >= jumlahKamar)
         }
 
         val filteredFav = allFav.filter { kos ->
-            kos.harga.toInt() in minHarga..maxHarga &&
+            val hargaInt = parseHargaToInt(kos.harga)
+
+            val minOk = if (minHarga > 0) hargaInt >= minHarga else true
+            val maxOk = if (maxHarga > 0) hargaInt <= maxHarga else true
+
+            minOk && maxOk &&
                     (selectedFasilitas.isEmpty() || selectedFasilitas.all { f -> f in kos.fasilitas }) &&
                     (selectedJenisKos.isEmpty() || kos.jenisKos == selectedJenisKos) &&
                     (jumlahKamar == 0 || kos.jumlahKamar >= jumlahKamar)
@@ -155,22 +166,27 @@ class HomeFragment : Fragment() {
         adapterRekom.updateList(filteredRekom)
         adapterFav.updateList(filteredFav)
     }
+    private fun parseHargaToInt(harga: String): Int {
+        // handle "Rp 600.000/bulan" / "600.000" / "600000"
+        return harga
+            .replace("Rp", "", ignoreCase = true)
+            .replace("/bulan", "", ignoreCase = true)
+            .replace("/bln", "", ignoreCase = true)
+            .replace("bulan", "", ignoreCase = true)
+            .replace(".", "")
+            .replace(",", "")
+            .trim()
+            .toIntOrNull() ?: 0
+    }
 
     private fun openDetail(kos: KosItem) {
         val fm = parentFragmentManager
-        val detail = DetailKosFragment.newInstance(
-            nama = kos.nama,
-            lokasi = kos.lokasi,
-            harga = kos.harga,
-            kategori = "Kos",
-            deskripsi = kos.deskripsi,
-            lat = kos.latitude,
-            lon = kos.longitude
-        )
+        val detail = DetailKosFragment.newInstance(kosId = kos.id)
 
         fm.beginTransaction()
             .replace(R.id.fragment_container, detail)
             .addToBackStack(null)
             .commit()
     }
+
 }

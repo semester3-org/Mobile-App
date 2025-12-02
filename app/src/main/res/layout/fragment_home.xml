@@ -29,15 +29,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_location"
-                android:drawablePadding="4dp"
-                android:text="Jember"
-                android:textColor="@color/black"
-                android:textSize="17sp" />
-
             <ImageButton
                 android:id="@+id/ibNotification"
                 android:layout_width="wrap_content"

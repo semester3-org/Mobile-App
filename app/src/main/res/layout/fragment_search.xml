@@ -32,14 +32,27 @@
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false" />
 
+    <!-- OPTIONAL: label hasil pencarian -->
     <TextView
         android:id="@+id/tvSearchResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Jember, Dekat Unej, Kos Murah"
+        android:text="Hasil Pencarian"
         android:textSize="14sp"
+        android:textStyle="bold"
         android:padding="8dp"
         android:background="@drawable/bg_filter"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="12dp"
+        android:visibility="gone"/>
+
+    <!-- ✅ INI YANG KURANG: list hasil search -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvResults"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:nestedScrollingEnabled="true"
+        tools:listitem="@layout/item_kos_card" />
 
 </LinearLayout>

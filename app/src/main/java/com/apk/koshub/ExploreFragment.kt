@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,6 +28,8 @@ import retrofit2.Response
 
 class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
 
+    private enum class Category { PUTRA, PUTRI, CAMPUR, EXCLUSIVE }
+
     private lateinit var rvExplore: RecyclerView
     private lateinit var etSearch: EditText
     private lateinit var adapter: KosCardAdapter
@@ -34,6 +37,8 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
     private lateinit var pref: SharedPrefHelper
 
     private val allKos = mutableListOf<KosItemCard>()
+    private var selectedCategory: Category? = null
+    private var lastDialogFilter: FilterState? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +47,15 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
 
         val view = inflater.inflate(R.layout.fragment_explore, container, false)
 
-        val filterButton = view.findViewById<ImageButton>(R.id.btnFilter)
-        filterButton.setOnClickListener {
+        view.findViewById<ImageButton>(R.id.btnFilter).setOnClickListener {
             FilterDialogFragment().show(parentFragmentManager, "filterDialog")
         }
+
+        // category buttons
+        view.findViewById<LinearLayout>(R.id.btnKosPutra).setOnClickListener { toggleCategory(Category.PUTRA) }
+        view.findViewById<LinearLayout>(R.id.btnKosPutri).setOnClickListener { toggleCategory(Category.PUTRI) }
+        view.findViewById<LinearLayout>(R.id.btnKosCampur).setOnClickListener { toggleCategory(Category.CAMPUR) }
+        view.findViewById<LinearLayout>(R.id.btnKosExclusive).setOnClickListener { toggleCategory(Category.EXCLUSIVE) }
 
         rvExplore = view.findViewById(R.id.rvExplore)
         etSearch = view.findViewById(R.id.etSearchExplore)
@@ -53,27 +63,20 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
         db = DatabaseHelper(requireContext())
         pref = SharedPrefHelper(requireContext())
 
-        // ✅ FIX UTAMA: GridLayout auto measure supaya RV di dalam ScrollView tampil semua
         val glm = GridLayoutManager(requireContext(), 2)
         glm.isAutoMeasureEnabled = true
         rvExplore.layoutManager = glm
         rvExplore.setHasFixedSize(false)
         rvExplore.isNestedScrollingEnabled = false
 
-        adapter = KosCardAdapter(mutableListOf()) { kos ->
-            openDetail(kos)
-        }
+        adapter = KosCardAdapter(mutableListOf()) { kos -> openDetail(kos) }
         rvExplore.adapter = adapter
 
-        // reset search biar gak ke-filter otomatis
         etSearch.setText("")
-
         loadKos()
 
         etSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                filterKos(s.toString())
-            }
+            override fun afterTextChanged(s: Editable?) = applyExploreFilters()
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -83,32 +86,25 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
 
     override fun onResume() {
         super.onResume()
-        if (pref.isLoggedIn()) {
-            refreshFavorites()
-        }
+        if (pref.isLoggedIn()) refreshFavorites()
+    }
+
+    private fun toggleCategory(cat: Category) {
+        selectedCategory = if (selectedCategory == cat) null else cat
+        applyExploreFilters()
     }
 
     private fun loadKos() {
         ApiClient.api.getKosList()
             .enqueue(object : Callback<KosResponse> {
-                override fun onResponse(
-                    call: Call<KosResponse>,
-                    res: Response<KosResponse>
-                ) {
+                override fun onResponse(call: Call<KosResponse>, res: Response<KosResponse>) {
                     val kosBody = res.body()
-
                     if (res.isSuccessful && kosBody?.isSuccess == true) {
-
                         val list = kosBody.data.map { it.toKosItemCard() }
-
                         allKos.clear()
                         allKos.addAll(list)
-                        adapter.updateList(allKos)
 
-                        if (pref.isLoggedIn()) {
-                            refreshFavorites()
-                        }
-
+                        if (pref.isLoggedIn()) refreshFavorites() else applyExploreFilters()
                     } else {
                         Toast.makeText(requireContext(), "Gagal memuat kos", Toast.LENGTH_SHORT).show()
                     }
@@ -121,14 +117,14 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
     }
 
     private fun refreshFavorites() {
-        val user = db.getUser() ?: return
+        val user = db.getUser() ?: run {
+            applyExploreFilters()
+            return
+        }
 
         ApiClient.api.getFavoriteKos(userId = user.id)
             .enqueue(object : Callback<KosResponse> {
-                override fun onResponse(
-                    call: Call<KosResponse>,
-                    favRes: Response<KosResponse>
-                ) {
+                override fun onResponse(call: Call<KosResponse>, favRes: Response<KosResponse>) {
                     val favBody = favRes.body()
 
                     val favoriteIds =
@@ -140,55 +136,72 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
                         item.isFavorite = favoriteIds.contains(item.id)
                     }
 
-                    adapter.updateList(allKos)
-                    filterKos(etSearch.text.toString())
+                    applyExploreFilters()
                 }
 
-                override fun onFailure(call: Call<KosResponse>, t: Throwable) { }
+                override fun onFailure(call: Call<KosResponse>, t: Throwable) {
+                    applyExploreFilters()
+                }
             })
     }
 
-    private fun filterKos(query: String) {
-        val result = if (query.isEmpty()) {
-            allKos
-        } else {
-            allKos.filter {
-                it.nama.contains(query, true) ||
-                        it.lokasi.contains(query, true)
+    private fun applyExploreFilters() {
+        val q = etSearch.text.toString().trim()
+
+        var list = allKos.toList()
+
+        // quick category
+        list = when (selectedCategory) {
+            Category.PUTRA -> list.filter { it.jenisKos?.equals("putra", true) == true }
+            Category.PUTRI -> list.filter { it.jenisKos?.equals("putri", true) == true }
+            Category.CAMPUR -> list.filter { it.jenisKos?.equals("campur", true) == true }
+            Category.EXCLUSIVE -> list.filter { it.priceMonthly >= 500_000 }
+            null -> list
+        }
+
+        // dialog filter (kalau kepake)
+        lastDialogFilter?.let { state ->
+            list = applyDialogFilter(list, state)
+        }
+
+        // search
+        if (q.isNotEmpty()) {
+            list = list.filter {
+                it.nama.contains(q, true) || it.lokasi.contains(q, true)
             }
         }
-        adapter.updateList(result)
+
+        adapter.updateList(list)
+    }
+
+    private fun applyDialogFilter(list: List<KosItemCard>, state: FilterState): List<KosItemCard> {
+        return list.filter { item ->
+            val hargaInt = item.priceMonthly // udah aman
+            val minOk = if (state.minHarga > 0) hargaInt >= state.minHarga else true
+            val maxOk = if (state.maxHarga > 0) hargaInt <= state.maxHarga else true
+
+            // NOTE: filter jenisKos dari dialog kalau lu pakai
+            val wantedJenis = state.jenisKos.trim().lowercase()
+            val jenisOk = if (wantedJenis.isNotEmpty()) {
+                item.jenisKos?.lowercase()?.contains(wantedJenis) == true
+            } else true
+
+            val fasilitasOk = state.fasilitas.all { f -> item.fasilitas.contains(f, true) }
+
+            minOk && maxOk && jenisOk && fasilitasOk
+        }
     }
 
     private fun openDetail(kos: KosItemCard) {
-        val fm = parentFragmentManager
-        val detail = DetailKosFragment.newInstance(
-            nama = kos.nama,
-            lokasi = kos.lokasi,
-            harga = kos.harga,
-            kategori = "Kos",
-            deskripsi = kos.fasilitas,
-            lat = kos.latitude,
-            lon = kos.longitude
-        )
-
-        fm.beginTransaction()
+        val detail = DetailKosFragment.newInstance(kosId = kos.id)
+        parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, detail)
             .addToBackStack(null)
             .commit()
     }
 
     override fun onApplyFilter(state: FilterState) {
-        val filtered = allKos.filter { item ->
-            val hargaInt = item.harga.replace(".", "").toIntOrNull() ?: 0
-            val minOk = if (state.minHarga > 0) hargaInt >= state.minHarga else true
-            val maxOk = if (state.maxHarga > 0) hargaInt <= state.maxHarga else true
-            val kamarOk = if (state.jumlahKamar > 0) item.fasilitas.contains("${state.jumlahKamar} Kamar") else true
-            val jenisOk = if (state.jenisKos.isNotEmpty()) item.fasilitas.contains(state.jenisKos) else true
-            val fasilitasOk = state.fasilitas.all { f -> item.fasilitas.contains(f) }
-
-            minOk && maxOk && kamarOk && jenisOk && fasilitasOk
-        }
-        adapter.updateList(filtered)
+        lastDialogFilter = state
+        applyExploreFilters()
     }
 }

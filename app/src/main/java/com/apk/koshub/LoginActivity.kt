@@ -67,13 +67,13 @@ class LoginActivity : AppCompatActivity() {
             val password = etPassword.text.toString().trim()
 
             if (email.isEmpty()) {
-                etEmail.error = "Email wajib diisi"
+                etEmail.error = "Email Wajib Diisi"
                 etEmail.requestFocus()
                 return@setOnClickListener
             }
 
             if (password.isEmpty()) {
-                etPassword.error = "Password wajib diisi"
+                etPassword.error = "Password Wajib Diisi"
                 etPassword.requestFocus()
                 return@setOnClickListener
             }
@@ -224,14 +224,14 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(
                             this@LoginActivity,
-                            userResponse?.message ?: "Email atau password salah",
+                            userResponse?.message ?: "Email Atau Password Salah",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 } else {
                     Toast.makeText(
                         this@LoginActivity,
-                        "Login gagal, kode: ${response.code()}",
+                        "Login Gagal, kode: ${response.code()}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -241,7 +241,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.e("LOGIN_ERROR", "Error: ${t.message}")
                 Toast.makeText(
                     this@LoginActivity,
-                    "Gagal terhubung ke server: ${t.message}",
+                    "Gagal Terhubung Ke Server: ${t.message}",
                     Toast.LENGTH_LONG
                 ).show()
             }

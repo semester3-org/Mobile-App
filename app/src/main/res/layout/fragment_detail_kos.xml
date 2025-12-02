@@ -36,51 +36,24 @@
                 android:src="@drawable/ic_favorite_border" />
         </RelativeLayout>
 
-        <!-- Foto utama / slider -->
-        <ImageView
-            android:id="@+id/ivKosPhoto"
+        <!-- ✅ Slider Foto (ViewPager2) -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vpKosPhotos"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:layout_marginTop="12dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sampel_kos"
-            android:background="@android:color/darker_gray"
-            android:adjustViewBounds="true"
-            android:clipToOutline="true" />
+            android:clipToPadding="false"
+            android:background="@android:color/darker_gray" />
 
-        <!-- Dot indicator -->
+        <!-- ✅ Dot indicator (TabLayout) -->
         <LinearLayout
-            android:id="@+id/indicatorDots"
+            android:id="@+id/layoutDots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal" />
 
-            <View
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:background="@drawable/bg_dot_active"
-                android:layout_margin="3dp" />
-
-            <View
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:background="@drawable/bg_dot_inactive"
-                android:layout_margin="3dp" />
-
-            <View
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:background="@drawable/bg_dot_inactive"
-                android:layout_margin="3dp" />
-
-            <View
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:background="@drawable/bg_dot_inactive"
-                android:layout_margin="3dp" />
-        </LinearLayout>
 
         <!-- Tag kategori -->
         <TextView
@@ -184,179 +157,15 @@
             android:textStyle="bold"
             android:textColor="#222222" />
 
-        <!-- Fasilitas (tetap punyamu) -->
-        <LinearLayout
-            android:id="@+id/layoutFasilitas"
+        <!-- ✅ Fasilitas dinamis (ChipGroup) -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupFacilities"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:orientation="vertical">
-
-            <!-- Row 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- WIFI -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:background="@drawable/bg_facility"
-                    android:layout_marginEnd="6dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_wifi" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="WiFi"
-                        android:textSize="12sp"
-                        android:textColor="#2E7D32" />
-                </LinearLayout>
-
-                <!-- AC -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:background="@drawable/bg_facility"
-                    android:layout_marginHorizontal="3dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_ac" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="AC"
-                        android:textSize="12sp"
-                        android:textColor="#2E7D32" />
-                </LinearLayout>
-
-                <!-- Kasur -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:background="@drawable/bg_facility"
-                    android:layout_marginStart="6dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_bed" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="Kasur"
-                        android:textSize="12sp"
-                        android:textColor="#2E7D32" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Row 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:orientation="horizontal">
-
-                <!-- Meja Belajar -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:background="@drawable/bg_facility"
-                    android:layout_marginEnd="6dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_meja" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="Meja belajar"
-                        android:textSize="12sp"
-                        android:textColor="#2E7D32" />
-                </LinearLayout>
-
-                <!-- Lemari -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:background="@drawable/bg_facility"
-                    android:layout_marginHorizontal="3dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_lemari" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="Lemari"
-                        android:textSize="12sp"
-                        android:textColor="#2E7D32" />
-                </LinearLayout>
-
-                <!-- KM dalam -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:background="@drawable/bg_facility"
-                    android:layout_marginStart="6dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_km_dalam" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="KM dalam"
-                        android:textSize="12sp"
-                        android:textColor="#2E7D32" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+            app:singleLine="false"
+            app:chipSpacingHorizontal="8dp"
+            app:chipSpacingVertical="8dp" />
 
         <!-- Lokasi Title -->
         <TextView

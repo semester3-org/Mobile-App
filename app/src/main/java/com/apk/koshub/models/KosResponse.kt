@@ -33,22 +33,21 @@ data class KosDto(
     val priceMonthly: Int,
 
     val facilities: String,
-
     val rating: Double? = null,
-
     val images: List<String>,
 
-    val jenisKos: String? = null,
-
     @SerializedName("jumlah_kamar")
-    val jumlahKamar: Int? = null
+    val jumlahKamar: Int? = null,
+
+    @SerializedName("kos_type")
+    val jenisKos: String? = null
 )
 
 // ---------- MAPPING KOS LIST → KOS ITEM CARD ----------
 fun KosDto.toKosItemCard(): KosItemCard {
     return KosItemCard(
         id = id,
-        user_id = 0,   // Kos list tidak punya user_id, aman di-set 0
+        user_id = 0,
         nama = name,
         lokasi = locationName,
         fasilitas = facilities,
@@ -57,9 +56,12 @@ fun KosDto.toKosItemCard(): KosItemCard {
         latitude = latitude,
         longitude = longitude,
         gambar = images.firstOrNull() ?: "",
-        isFavorite = false
+        isFavorite = false,
+        jenisKos = jenisKos,
+        priceMonthly = priceMonthly
     )
 }
+
 
 // ---------- MAPPING UNTUK HOME LIST ----------
 fun KosDto.toKosItem(): KosItem {

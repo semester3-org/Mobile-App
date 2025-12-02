@@ -41,20 +41,49 @@ class FavoriteFragment : Fragment() {
         db = DatabaseHelper(requireContext())
 
         adapter = KosCardAdapter(favoriteKos) { kos ->
-            // TODO: klik detail kalau perlu
+            openDetail(kos)
         }
 
         rvFavorite.layoutManager = LinearLayoutManager(requireContext())
         rvFavorite.adapter = adapter
 
+        // load awal
         loadFavoriteFromServer()
+
+        // ✅ NEW: dengerin perubahan favorite dari Detail
+        parentFragmentManager.setFragmentResultListener("fav_changed", viewLifecycleOwner) { _, bundle ->
+            val id = bundle.getInt("kos_id", -1)
+            val fav = bundle.getBoolean("is_favorite", false)
+            if (id == -1) return@setFragmentResultListener
+
+            if (!fav) {
+                // kalau di-unfavorite dari detail, buang dari list favorit
+                val idx = favoriteKos.indexOfFirst { it.id == id }
+                if (idx >= 0) {
+                    favoriteKos.removeAt(idx)
+                    adapter.updateList(favoriteKos)
+                    updateUI()
+                }
+            } else {
+                // kalau baru di-favorite, kita reload biar data lengkap masuk
+                loadFavoriteFromServer()
+            }
+        }
 
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        loadFavoriteFromServer() // refresh tiap balik ke fragment ini
+        // tetap refresh tiap balik ke fragment ini (aman)
+        loadFavoriteFromServer()
+    }
+
+    private fun openDetail(kos: KosItemCard) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, DetailKosFragment.newInstance(kosId = kos.id))
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun loadFavoriteFromServer() {
@@ -70,14 +99,10 @@ class FavoriteFragment : Fragment() {
         ApiClient.api.getFavoriteKos(userId = user.id)
             .enqueue(object : Callback<KosResponse> {
 
-                override fun onResponse(
-                    call: Call<KosResponse>,
-                    response: Response<KosResponse>
-                ) {
+                override fun onResponse(call: Call<KosResponse>, response: Response<KosResponse>) {
                     val body = response.body()
                     val rawError = response.errorBody()?.string()
 
-                    // Debug log yang benar
                     Log.d("FAV_DEBUG", "code=${response.code()}")
                     Log.d("FAV_DEBUG", "body=$body")
                     Log.d("FAV_DEBUG", "rawError=$rawError")
@@ -90,30 +115,19 @@ class FavoriteFragment : Fragment() {
 
                         favoriteKos.clear()
                         favoriteKos.addAll(mapped)
-
-                        // ✅ kirim list baru, bukan reference yang sama
                         adapter.updateList(mapped)
 
                     } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Gagal memuat favorite",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(requireContext(), "Gagal memuat favorite", Toast.LENGTH_SHORT).show()
                         favoriteKos.clear()
                         adapter.updateList(emptyList())
                     }
 
                     updateUI()
-
                 }
 
                 override fun onFailure(call: Call<KosResponse>, t: Throwable) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Koneksi gagal: ${t.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "Koneksi gagal: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
     }

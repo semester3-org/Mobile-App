@@ -2,5 +2,4 @@
     <solid android:color="@color/white" /> <!-- Warna outline -->
     <corners android:radius="16dp" /> <!-- Corner roundness -->
     <stroke android:color="@color/green_primary" android:width="1dp" />
-
 </shape>

@@ -5,6 +5,7 @@ import com.apk.koshub.models.KosResponse
 import com.apk.koshub.models.UserResponse
 import com.apk.koshub.models.NotificationResponse
 import com.apk.koshub.models.KosDetailResponse
+import com.apk.koshub.models.FacilitiesResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -47,6 +48,19 @@ interface ApiService {
         @Field("user_id") userId: Int,
         @Field("kos_id") kosId: Int
     ): Call<BasicResponse>
+
+    @GET("kos/kos_filter.php")
+    fun getFilteredKos(
+        @Query("kos_type") kosType: String? = null,
+        @Query("available_only") availableOnly: Int? = null,
+        @Query("min_price") minPrice: Int? = null,
+        @Query("max_price") maxPrice: Int? = null,
+        @Query("facility_ids") facilityIds: String? = null
+    ): Call<KosResponse>
+
+    @GET("kos/facilities_list.php")
+    suspend fun getFacilities(): FacilitiesResponse
+
 
     // ============ NOTIFICATIONS ============
     @GET("users/notification.php")

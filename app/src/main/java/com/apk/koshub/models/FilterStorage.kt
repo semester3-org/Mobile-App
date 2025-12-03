@@ -5,10 +5,11 @@ import android.content.Context
 data class FilterState(
     val minHarga: Int = 0,
     val maxHarga: Int = 0,
-    val fasilitas: Set<String> = emptySet(),
+    val fasilitas: Set<Int> = emptySet(), // DULUNYA fasilitas: Set<String>
     val jenisKos: String = "",
     val jumlahKamar: Int = 0
 )
+
 
 class FilterStorage(context: Context) {
 
@@ -18,19 +19,26 @@ class FilterStorage(context: Context) {
         pref.edit().apply {
             putInt("minHarga", state.minHarga)
             putInt("maxHarga", state.maxHarga)
-            putStringSet("fasilitas", state.fasilitas)
             putString("jenisKos", state.jenisKos)
-            putInt("jumlahKamar", state.jumlahKamar)  // <-- SAVE INT
+            putInt("jumlahKamar", state.jumlahKamar)
+            // simpan ID fasilitas sebagai string "1,2,3"
+            putString("fasilitasIds", state.fasilitas.joinToString(","))
         }.apply()
     }
 
     fun load(): FilterState {
+        val idsStr = pref.getString("fasilitasIds", "") ?: ""
+        val ids = idsStr
+            .split(",")
+            .mapNotNull { it.toIntOrNull() }
+            .toSet()
+
         return FilterState(
             minHarga = pref.getInt("minHarga", 0),
             maxHarga = pref.getInt("maxHarga", 0),
-            fasilitas = pref.getStringSet("fasilitas", emptySet()) ?: emptySet(),
+            fasilitas = ids,
             jenisKos = pref.getString("jenisKos", "") ?: "",
-            jumlahKamar = pref.getInt("jumlahKamar", 0)  // <-- LOAD INT
+            jumlahKamar = pref.getInt("jumlahKamar", 0)
         )
     }
 

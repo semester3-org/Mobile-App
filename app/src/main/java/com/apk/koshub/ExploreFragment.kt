@@ -25,6 +25,7 @@ import com.apk.koshub.utils.SharedPrefHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.util.Log
 
 class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
 
@@ -36,9 +37,14 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
     private lateinit var db: DatabaseHelper
     private lateinit var pref: SharedPrefHelper
 
-    private val allKos = mutableListOf<KosItemCard>()
+    // data full dari kos_list (approved only)
+    private val allKosFull = mutableListOf<KosItemCard>()
+    // data yang sedang dipakai di layar (bisa full, bisa hasil dialog filter)
+    private val allKosView = mutableListOf<KosItemCard>()
+
     private var selectedCategory: Category? = null
     private var lastDialogFilter: FilterState? = null
+    private var isDialogFilterActive: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +54,11 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
         val view = inflater.inflate(R.layout.fragment_explore, container, false)
 
         view.findViewById<ImageButton>(R.id.btnFilter).setOnClickListener {
-            FilterDialogFragment().show(parentFragmentManager, "filterDialog")
+            val dialog = FilterDialogFragment()
+            dialog.setTargetFragment(this, 0)
+            dialog.show(parentFragmentManager, "filterDialog")
         }
 
-        // category buttons
         view.findViewById<LinearLayout>(R.id.btnKosPutra).setOnClickListener { toggleCategory(Category.PUTRA) }
         view.findViewById<LinearLayout>(R.id.btnKosPutri).setOnClickListener { toggleCategory(Category.PUTRI) }
         view.findViewById<LinearLayout>(R.id.btnKosCampur).setOnClickListener { toggleCategory(Category.CAMPUR) }
@@ -90,6 +97,11 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
     }
 
     private fun toggleCategory(cat: Category) {
+        // tiap kali user main kategori, anggap keluar dari mode dialog filter
+        isDialogFilterActive = false
+        allKosView.clear()
+        allKosView.addAll(allKosFull)
+
         selectedCategory = if (selectedCategory == cat) null else cat
         applyExploreFilters()
     }
@@ -101,8 +113,15 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
                     val kosBody = res.body()
                     if (res.isSuccessful && kosBody?.isSuccess == true) {
                         val list = kosBody.data.map { it.toKosItemCard() }
-                        allKos.clear()
-                        allKos.addAll(list)
+
+                        allKosFull.clear()
+                        allKosFull.addAll(list)
+
+                        // kalau lagi gak ada filter dialog aktif, tampilan ikut full
+                        if (!isDialogFilterActive) {
+                            allKosView.clear()
+                            allKosView.addAll(allKosFull)
+                        }
 
                         if (pref.isLoggedIn()) refreshFavorites() else applyExploreFilters()
                     } else {
@@ -132,7 +151,10 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
                             favBody.data.map { it.id }.toSet()
                         } else emptySet()
 
-                    allKos.forEach { item ->
+                    allKosFull.forEach { item ->
+                        item.isFavorite = favoriteIds.contains(item.id)
+                    }
+                    allKosView.forEach { item ->
                         item.isFavorite = favoriteIds.contains(item.id)
                     }
 
@@ -148,23 +170,16 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
     private fun applyExploreFilters() {
         val q = etSearch.text.toString().trim()
 
-        var list = allKos.toList()
+        var list = allKosView.toList()
 
-        // quick category
         list = when (selectedCategory) {
-            Category.PUTRA -> list.filter { it.jenisKos?.equals("putra", true) == true }
-            Category.PUTRI -> list.filter { it.jenisKos?.equals("putri", true) == true }
-            Category.CAMPUR -> list.filter { it.jenisKos?.equals("campur", true) == true }
+            Category.PUTRA   -> list.filter { it.jenisKos?.equals("putra", true) == true }
+            Category.PUTRI   -> list.filter { it.jenisKos?.equals("putri", true) == true }
+            Category.CAMPUR  -> list.filter { it.jenisKos?.equals("campur", true) == true }
             Category.EXCLUSIVE -> list.filter { it.priceMonthly >= 500_000 }
             null -> list
         }
 
-        // dialog filter (kalau kepake)
-        lastDialogFilter?.let { state ->
-            list = applyDialogFilter(list, state)
-        }
-
-        // search
         if (q.isNotEmpty()) {
             list = list.filter {
                 it.nama.contains(q, true) || it.lokasi.contains(q, true)
@@ -172,24 +187,6 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
         }
 
         adapter.updateList(list)
-    }
-
-    private fun applyDialogFilter(list: List<KosItemCard>, state: FilterState): List<KosItemCard> {
-        return list.filter { item ->
-            val hargaInt = item.priceMonthly // udah aman
-            val minOk = if (state.minHarga > 0) hargaInt >= state.minHarga else true
-            val maxOk = if (state.maxHarga > 0) hargaInt <= state.maxHarga else true
-
-            // NOTE: filter jenisKos dari dialog kalau lu pakai
-            val wantedJenis = state.jenisKos.trim().lowercase()
-            val jenisOk = if (wantedJenis.isNotEmpty()) {
-                item.jenisKos?.lowercase()?.contains(wantedJenis) == true
-            } else true
-
-            val fasilitasOk = state.fasilitas.all { f -> item.fasilitas.contains(f, true) }
-
-            minOk && maxOk && jenisOk && fasilitasOk
-        }
     }
 
     private fun openDetail(kos: KosItemCard) {
@@ -200,8 +197,49 @@ class ExploreFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
             .commit()
     }
 
+    private fun buildFacilityIds(state: FilterState): String? {
+        val ids = state.fasilitas
+        return if (ids.isNotEmpty()) ids.joinToString(",") else null
+    }
+
     override fun onApplyFilter(state: FilterState) {
         lastDialogFilter = state
-        applyExploreFilters()
+        isDialogFilterActive = true
+        Log.d("ExploreFragment", "onApplyFilter: $state")
+
+        val kosType = when (state.jenisKos.lowercase()) {
+            "putra", "putri", "campur" -> state.jenisKos.lowercase()
+            else -> null
+        }
+        val minPrice = state.minHarga.takeIf { it > 0 }
+        val maxPrice = state.maxHarga.takeIf { it > 0 }
+        val availableOnly = if (state.jumlahKamar > 0) 1 else null
+        val facilityIds = buildFacilityIds(state)
+
+        ApiClient.api.getFilteredKos(
+            kosType = kosType,
+            availableOnly = availableOnly,
+            minPrice = minPrice,
+            maxPrice = maxPrice,
+            facilityIds = facilityIds
+        ).enqueue(object : Callback<KosResponse> {
+            override fun onResponse(call: Call<KosResponse>, res: Response<KosResponse>) {
+                val body = res.body()
+                if (res.isSuccessful && body?.isSuccess == true) {
+                    val list = body.data.map { it.toKosItemCard() }
+
+                    allKosView.clear()
+                    allKosView.addAll(list)
+
+                    applyExploreFilters()
+                } else {
+                    Toast.makeText(requireContext(), "Filter gagal: ${body?.message ?: "Unknown"}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<KosResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "Network Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

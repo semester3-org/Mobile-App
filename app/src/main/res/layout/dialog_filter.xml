@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layoutFilterRoot"
@@ -254,82 +255,16 @@
                         android:src="@drawable/ic_arrow_up" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/layoutFasilitasContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/chipWifi"
-                        android:background="@drawable/bg_filter_chip_outline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:gravity="center"
-                        android:paddingLeft="18dp"
-                        android:paddingRight="18dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="WiFi"
-                        android:textSize="10dp"/>
-
-                    <TextView
-                        android:id="@+id/chipAc"
-                        android:background="@drawable/bg_filter_chip_outline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="6dp"
-                        android:gravity="center"
-                        android:paddingLeft="18dp"
-                        android:paddingRight="18dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="AC" />
-
-                    <TextView
-                        android:id="@+id/chipKmDalam"
-                        android:background="@drawable/bg_filter_chip_outline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="6dp"
-                        android:gravity="center"
-                        android:paddingLeft="18dp"
-                        android:paddingRight="18dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="KM Dalam"
-                        android:textSize="10dp" />
-
-                    <TextView
-                        android:id="@+id/chipMeja"
-                        android:background="@drawable/bg_filter_chip_outline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="6dp"
-                        android:gravity="center"
-                        android:paddingLeft="18dp"
-                        android:paddingRight="18dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="Meja"
-                        android:textSize="10dp" />
-
-                    <TextView
-                        android:id="@+id/chipLemari"
-                        android:background="@drawable/bg_filter_chip_outline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="6dp"
-                        android:gravity="center"
-                        android:paddingLeft="18dp"
-                        android:paddingRight="18dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="Lemari"
-                        android:textSize="10dp" />
-                </LinearLayout>
+                <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/layoutFasilitasContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingTop="4dp"
+                app:flexWrap="wrap"
+                app:flexDirection="row"
+                app:justifyContent="flex_start"
+                app:alignItems="flex_start"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -385,7 +320,7 @@
                         android:paddingTop="8dp"
                         android:paddingBottom="7dp"
                         android:text="Putra"
-                        android:textSize="12dp"/>
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/btnPutri"

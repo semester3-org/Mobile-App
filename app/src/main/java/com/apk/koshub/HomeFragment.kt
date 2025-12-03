@@ -8,7 +8,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apk.koshub.R
@@ -18,9 +17,9 @@ import com.apk.koshub.models.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.apk.koshub.fragments.NotifFragment
+import android.util.Log
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), FilterDialogFragment.OnFilterApplied {
 
     private lateinit var rvRekom: RecyclerView
     private lateinit var rvFavorit: RecyclerView
@@ -30,8 +29,6 @@ class HomeFragment : Fragment() {
 
     private val allRekom = mutableListOf<KosItem>()
     private val allFav = mutableListOf<KosItem>()
-
-    private val filterVM: HomeFilterViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +48,7 @@ class HomeFragment : Fragment() {
         val filterButton = view.findViewById<ImageButton>(R.id.ibFilterHome)
         filterButton.setOnClickListener {
             val dialog = FilterDialogFragment()
+            dialog.setTargetFragment(this, 0)
             dialog.show(parentFragmentManager, "filterDialog")
         }
 
@@ -69,25 +67,11 @@ class HomeFragment : Fragment() {
 
         loadKos()
 
-        // SEARCH
         etSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                applySearch()
-            }
+            override fun afterTextChanged(s: Editable?) { applySearch() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-
-        filterVM.filterState.observe(viewLifecycleOwner) { state ->
-            applyFilter(
-                minHarga = state.minHarga,
-                maxHarga = state.maxHarga,
-                selectedFasilitas = state.fasilitas.toList(),
-                selectedJenisKos = state.jenisKos,
-                jumlahKamar = state.jumlahKamar
-            )
-        }
-
 
         return view
     }
@@ -130,53 +114,57 @@ class HomeFragment : Fragment() {
         adapterFav.updateList(fav)
     }
 
-    fun applyFilter(
-        minHarga: Int,
-        maxHarga: Int,
-        selectedFasilitas: List<String>,
-        selectedJenisKos: String,
-        jumlahKamar: Int
-    ) {
-
-
-        val filteredRekom = allRekom.filter { kos ->
-            val hargaInt = parseHargaToInt(kos.harga)
-
-            val minOk = if (minHarga > 0) hargaInt >= minHarga else true
-            val maxOk = if (maxHarga > 0) hargaInt <= maxHarga else true
-
-            minOk && maxOk &&
-                    (selectedFasilitas.isEmpty() || selectedFasilitas.all { f -> f in kos.fasilitas }) &&
-                    (selectedJenisKos.isEmpty() || kos.jenisKos == selectedJenisKos) &&
-                    (jumlahKamar == 0 || kos.jumlahKamar >= jumlahKamar)
-        }
-
-        val filteredFav = allFav.filter { kos ->
-            val hargaInt = parseHargaToInt(kos.harga)
-
-            val minOk = if (minHarga > 0) hargaInt >= minHarga else true
-            val maxOk = if (maxHarga > 0) hargaInt <= maxHarga else true
-
-            minOk && maxOk &&
-                    (selectedFasilitas.isEmpty() || selectedFasilitas.all { f -> f in kos.fasilitas }) &&
-                    (selectedJenisKos.isEmpty() || kos.jenisKos == selectedJenisKos) &&
-                    (jumlahKamar == 0 || kos.jumlahKamar >= jumlahKamar)
-        }
-
-        adapterRekom.updateList(filteredRekom)
-        adapterFav.updateList(filteredFav)
+    private fun buildFacilityIds(state: FilterState): String? {
+        val ids = state.fasilitas
+        return if (ids.isNotEmpty()) ids.joinToString(",") else null
     }
-    private fun parseHargaToInt(harga: String): Int {
-        // handle "Rp 600.000/bulan" / "600.000" / "600000"
-        return harga
-            .replace("Rp", "", ignoreCase = true)
-            .replace("/bulan", "", ignoreCase = true)
-            .replace("/bln", "", ignoreCase = true)
-            .replace("bulan", "", ignoreCase = true)
-            .replace(".", "")
-            .replace(",", "")
-            .trim()
-            .toIntOrNull() ?: 0
+
+
+
+    override fun onApplyFilter(state: FilterState) {
+        Log.d("HomeFragment", "onApplyFilter: $state")
+
+        val kosType = when (state.jenisKos.lowercase()) {
+            "putra", "putri", "campur" -> state.jenisKos.lowercase()
+            else -> null
+        }
+        val minPrice = state.minHarga.takeIf { it > 0 }
+        val maxPrice = state.maxHarga.takeIf { it > 0 }
+        val availableOnly = if (state.jumlahKamar > 0) 1 else null
+        val facilityIds = buildFacilityIds(state)
+
+        Log.d("ExploreFragment", "filter facilityIds = $facilityIds")
+
+        ApiClient.api.getFilteredKos(
+
+            kosType = kosType,
+            availableOnly = availableOnly,
+            minPrice = minPrice,
+            maxPrice = maxPrice,
+            facilityIds = facilityIds
+
+
+        ).enqueue(object : Callback<KosResponse> {
+            override fun onResponse(call: Call<KosResponse>, res: Response<KosResponse>) {
+                val body = res.body()
+                if (res.isSuccessful && body?.isSuccess == true) {
+                    val list = body.data.map { it.toKosItem() }
+
+                    allRekom.clear()
+                    allFav.clear()
+                    allRekom.addAll(list.take(6))
+                    allFav.addAll(list.shuffled().take(6))
+
+                    applySearch()
+                } else {
+                    Toast.makeText(requireContext(), "Filter gagal: ${body?.message ?: "Unknown"}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<KosResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "Network Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun openDetail(kos: KosItem) {
@@ -188,5 +176,4 @@ class HomeFragment : Fragment() {
             .addToBackStack(null)
             .commit()
     }
-
 }

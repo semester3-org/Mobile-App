@@ -466,8 +466,15 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
         return text.split(",")
             .map { it.trim() }
             .filter { it.isNotBlank() }
-            .map { FacilityDto(name = it, icon = null) }
+            .map { name ->
+                FacilityDto(
+                    id = 0,          // id unknown / dari text bebas
+                    name = name,
+                    icon = null
+                )
+            }
     }
+
 
     // ===================== KOS TYPE + RUPIAH =====================
 

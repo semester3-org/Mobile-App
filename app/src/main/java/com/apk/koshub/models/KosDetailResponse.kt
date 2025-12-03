@@ -35,6 +35,9 @@ data class KosDetailDto(
 )
 
 data class FacilityDto(
+    val id: Int,
     val name: String,
-    val icon: String? = null
+    val icon: String?
 )
+
+

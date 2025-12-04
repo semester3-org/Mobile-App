@@ -1,5 +1,6 @@
 package com.apk.koshub.fragments
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apk.koshub.R
 import com.apk.koshub.adapters.KosCardAdapter
@@ -44,13 +45,31 @@ class FavoriteFragment : Fragment() {
             openDetail(kos)
         }
 
-        rvFavorite.layoutManager = LinearLayoutManager(requireContext())
-        rvFavorite.adapter = adapter
+        // ===== RecyclerView: Grid =====
+        val widthDp = resources.configuration.screenWidthDp
+        val spanCount = when {
+            widthDp >= 900 -> 4
+            widthDp >= 600 -> 3
+            else -> 2
+        }
+
+        rvFavorite.apply {
+            layoutManager = GridLayoutManager(requireContext(), spanCount)
+            adapter = this@FavoriteFragment.adapter
+            setHasFixedSize(true)
+
+            // spacing (hapus kalau lu udah pakai margin di item)
+            val spacingPx = dpToPx(12)
+            // biar ga dobel itemDecoration kalau fragment ke-recreate
+            if (itemDecorationCount == 0) {
+                addItemDecoration(GridSpacingItemDecoration(spanCount, spacingPx, true))
+            }
+        }
 
         // load awal
         loadFavoriteFromServer()
 
-        // ✅ NEW: dengerin perubahan favorite dari Detail
+        // dengerin perubahan favorite dari Detail
         parentFragmentManager.setFragmentResultListener("fav_changed", viewLifecycleOwner) { _, bundle ->
             val id = bundle.getInt("kos_id", -1)
             val fav = bundle.getBoolean("is_favorite", false)
@@ -65,7 +84,7 @@ class FavoriteFragment : Fragment() {
                     updateUI()
                 }
             } else {
-                // kalau baru di-favorite, kita reload biar data lengkap masuk
+                // kalau baru di-favorite, reload biar data lengkap masuk
                 loadFavoriteFromServer()
             }
         }
@@ -75,7 +94,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // tetap refresh tiap balik ke fragment ini (aman)
+        // refresh tiap balik ke fragment ini
         loadFavoriteFromServer()
     }
 
@@ -139,6 +158,37 @@ class FavoriteFragment : Fragment() {
         } else {
             tvEmptyFavorite.visibility = View.GONE
             rvFavorite.visibility = View.VISIBLE
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int =
+        (dp * resources.displayMetrics.density).toInt()
+
+    // ===== ItemDecoration buat spacing grid =====
+    private class GridSpacingItemDecoration(
+        private val spanCount: Int,
+        private val spacingPx: Int,
+        private val includeEdge: Boolean
+    ) : RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(
+            outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+        ) {
+            val position = parent.getChildAdapterPosition(view)
+            if (position == RecyclerView.NO_POSITION) return
+
+            val column = position % spanCount
+
+            if (includeEdge) {
+                outRect.left = spacingPx - column * spacingPx / spanCount
+                outRect.right = (column + 1) * spacingPx / spanCount
+                if (position < spanCount) outRect.top = spacingPx
+                outRect.bottom = spacingPx
+            } else {
+                outRect.left = column * spacingPx / spanCount
+                outRect.right = spacingPx - (column + 1) * spacingPx / spanCount
+                if (position >= spanCount) outRect.top = spacingPx
+            }
         }
     }
 }

@@ -4,17 +4,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apk.koshub.api.ApiClient
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class NotificationViewModel : ViewModel() {
 
     val notifications = MutableLiveData<List<NotificationItem>>()
-    val isLoading = MutableLiveData<Boolean>()
     val errorMsg = MutableLiveData<String?>()
 
     private var userIdUsed = -1
-    private var isPolling = false
+    private var pollingJob: Job? = null
 
     fun loadNotifications(userId: Int) {
         userIdUsed = userId
@@ -26,52 +26,61 @@ class NotificationViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val res = ApiClient.api.getNotifications(userIdUsed)
-                notifications.postValue(res.data ?: emptyList())
+
+                if (res.isOk()) {
+                    notifications.postValue(res.data ?: emptyList())
+                    errorMsg.postValue(null)
+                } else {
+                    notifications.postValue(emptyList())
+                    errorMsg.postValue(res.message ?: "Response success=false (atau field success/status mismatch)")
+                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
-                errorMsg.postValue(e.localizedMessage)
+                errorMsg.postValue(e.localizedMessage ?: "Unknown error")
             }
         }
     }
 
     private fun startPolling() {
-        if (isPolling) return
-        isPolling = true
-
-        viewModelScope.launch {
+        if (pollingJob != null) return
+        pollingJob = viewModelScope.launch {
             while (true) {
-                delay(2000) // cek notif setiap 5 detik
+                delay(2000)
                 fetchOnce()
             }
         }
     }
 
+    fun stopPolling() {
+        pollingJob?.cancel()
+        pollingJob = null
+    }
+
     fun markAsRead(notificationId: Int) {
-        val list = notifications.value?.toMutableList() ?: return
+        val list = notifications.value?.toMutableList() ?: mutableListOf()
         val idx = list.indexOfFirst { it.id == notificationId }
         if (idx >= 0) {
-            val item = list[idx]
-            list[idx] = item.copy(is_read = 1)
+            list[idx] = list[idx].copy(is_read = 1)
             notifications.postValue(list)
+        }
 
-            viewModelScope.launch {
-                try {
-                    ApiClient.api.markNotificationRead(notificationId)
-                } catch (_: Exception) {}
-            }
+        viewModelScope.launch {
+            try { ApiClient.api.markNotificationRead(notificationId) } catch (_: Exception) {}
         }
     }
+
     fun markAllRead(userId: Int) {
-        val list = notifications.value?.map { it.copy(is_read = 1) } ?: return
+        val list = notifications.value?.map { it.copy(is_read = 1) } ?: emptyList()
         notifications.postValue(list)
 
         viewModelScope.launch {
-            try {
-                ApiClient.api.markAllRead(userId)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            try { ApiClient.api.markAllRead(userId) } catch (_: Exception) {}
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        stopPolling()
+    }
 }

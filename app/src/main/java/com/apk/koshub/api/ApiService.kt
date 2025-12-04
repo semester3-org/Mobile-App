@@ -6,6 +6,14 @@ import com.apk.koshub.models.UserResponse
 import com.apk.koshub.models.NotificationResponse
 import com.apk.koshub.models.KosDetailResponse
 import com.apk.koshub.models.FacilitiesResponse
+import com.apk.koshub.models.BookingListResponse
+import com.apk.koshub.models.BookingCreateResponse
+import com.apk.koshub.models.BookingDetailResponse
+import com.apk.koshub.models.UnreadCountResponse
+import okhttp3.MultipartBody
+import okhttp3.Response
+import com.apk.koshub.models.UpdateProfileResponse
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -79,4 +87,52 @@ interface ApiService {
     suspend fun markAllRead(
         @Field("user_id") userId: Int
     ): Map<String, Any>
+
+    @GET("users/unread_count.php")
+    fun getUnreadCount(
+        @Query("user_id") userId: Int
+    ): Call<UnreadCountResponse>
+    @FormUrlEncoded
+    @POST("users/update_notification_pref.php")
+    fun updateNotificationPref(
+        @Field("user_id") userId: Int,
+        @Field("enabled") enabled: Int
+    ): Call<BasicResponse>
+
+
+    // ============ BOOKINGS ============
+    @FormUrlEncoded
+    @POST("bookings/create.php")
+    fun createBooking(
+        @FieldMap fields: Map<String, String>
+    ): Call<BookingCreateResponse>
+
+    @GET("bookings/list.php")
+    fun getUserBookings(
+        @Query("user_id") userId: Int
+    ): Call<BookingListResponse>
+
+    @GET("bookings/detail.php")
+    fun getBookingDetail(
+        @Query("booking_id") bookingId: Int
+    ): Call<BookingDetailResponse>
+
+    @FormUrlEncoded
+    @POST("bookings/cancel.php")
+    fun cancelBooking(
+        @Field("booking_id") bookingId: Int,
+        @Field("user_id") userId: Int
+    ): Call<BasicResponse>
+
+    @Multipart
+    @POST("users/update_profile.php")
+    suspend fun updateProfile(
+        @Part("user_id") userId: RequestBody,
+        @Part("username") username: RequestBody,
+        @Part("full_name") fullName: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("phone") phone: RequestBody,
+        @Part profile_picture: MultipartBody.Part?
+    ): UpdateProfileResponse
+
 }

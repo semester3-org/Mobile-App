@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAF8"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F8FAF8">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,49 +34,47 @@
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_marginEnd="40dp"/>
+                android:layout_marginEnd="40dp" />
         </LinearLayout>
 
-        <!-- Foto Profil -->
+        <!-- FOTO PROFIL -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="20dp">
 
             <FrameLayout
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp">
+                android:layout_width="130dp"
+                android:layout_height="130dp">
 
-                <!-- Foto profil -->
-                <ImageView
+                <!-- Foto bulat fix -->
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/sample_avatar"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/profile_circle_bg"
+                    android:adjustViewBounds="true"
+                    app:shapeAppearanceOverlay="@style/CircleImage"
                     android:clipToOutline="true"
-                    android:contentDescription="@string/profile_photo" />
+                    android:background="@drawable/bg_circle_white"
+                    android:src="@drawable/ic_default_profile" />
 
-                <!-- Tombol edit (kamera/pensil) -->
+                <!-- Tombol Edit Foto -->
                 <ImageButton
                     android:id="@+id/btnEditPhoto"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/bg_circle_white"
                     android:src="@drawable/ic_camera"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:elevation="4dp"
-                    android:contentDescription="@string/edit_photo" />
-
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:elevation="6dp"
+                    android:padding="6dp" />
             </FrameLayout>
-
         </LinearLayout>
 
         <!-- Informasi Dasar -->
@@ -84,24 +82,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/bg_card_white"
             android:padding="16dp"
-            android:layout_marginTop="24dp">
+            android:background="@drawable/bg_card_white"
+            android:layout_marginTop="26dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Informasi Dasar"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
+            <!-- Nama -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nama Lengkap"
-                android:textSize="13sp"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginTop="14dp"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/etNamaLengkap"
@@ -109,14 +108,15 @@
                 android:layout_height="45dp"
                 android:background="@drawable/bg_input_field"
                 android:paddingHorizontal="12dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
+            <!-- Username -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Username"
-                android:textSize="13sp"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginTop="14dp"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/etUsername"
@@ -124,14 +124,15 @@
                 android:layout_height="45dp"
                 android:background="@drawable/bg_input_field"
                 android:paddingHorizontal="12dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
+            <!-- Telepon -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nomor Telepon"
-                android:textSize="13sp"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginTop="14dp"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/etTelepon"
@@ -140,32 +141,32 @@
                 android:background="@drawable/bg_input_field"
                 android:paddingHorizontal="12dp"
                 android:inputType="phone"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <!-- Kontak -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_card_white"
+            android:orientation="vertical"
             android:padding="16dp"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical">
+            android:background="@drawable/bg_card_white"
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kontak"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Alamat Email"
-                android:textSize="13sp"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginTop="14dp"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/etEmail"
@@ -174,37 +175,36 @@
                 android:background="@drawable/bg_input_field"
                 android:paddingHorizontal="12dp"
                 android:enabled="false"
-                android:textColorHint="@android:color/darker_gray"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textColorHint="@android:color/darker_gray" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Alamat email tidak dapat diubah."
-                android:textSize="11sp"
+                android:layout_marginTop="4dp"
                 android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="4dp"/>
+                android:textSize="11sp" />
         </LinearLayout>
 
-        <!-- Kata Sandi -->
+        <!-- Password -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_card_white"
-            android:padding="16dp"
-            android:layout_marginTop="16dp"
             android:orientation="horizontal"
+            android:padding="16dp"
             android:gravity="center_vertical"
-            android:weightSum="1">
+            android:background="@drawable/bg_card_white"
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Kata Sandi"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvUbahPassword"
@@ -212,19 +212,19 @@
                 android:layout_height="wrap_content"
                 android:text="Ubah"
                 android:textColor="@color/green_primary"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Tombol Simpan -->
+        <!-- Simpan -->
         <Button
             android:id="@+id/btnSimpanPerubahan"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Simpan Perubahan"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/green_primary"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/bg_btn_green"/>
+            android:background="@drawable/bg_btn_green"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="30dp" />
+
     </LinearLayout>
 </ScrollView>

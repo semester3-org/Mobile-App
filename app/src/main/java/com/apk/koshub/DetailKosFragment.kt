@@ -1,8 +1,5 @@
 package com.apk.koshub.fragments
 
-import android.content.res.ColorStateList
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.DrawableCompat
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -56,6 +54,9 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
 
     private var gMap: GoogleMap? = null
 
+    private var currentDetail: KosDetailDto? = null
+
+
     // ===== Favorite state =====
     private lateinit var pref: SharedPrefHelper
     private lateinit var db: DatabaseHelper
@@ -73,6 +74,10 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
     private lateinit var ratingBar: RatingBar
     private lateinit var tvRatingValue: TextView
     private lateinit var chipGroupFacilities: ChipGroup
+    private lateinit var btnBooking: Button
+
+    // buat bottom sheet
+    private var lastDetail: KosDetailDto? = null
 
     // ===== Photos + dots manual =====
     private lateinit var vpPhotos: ViewPager2
@@ -110,10 +115,13 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
         ratingBar = view.findViewById(R.id.ratingBar)
         tvRatingValue = view.findViewById(R.id.tvRatingValue)
         chipGroupFacilities = view.findViewById(R.id.chipGroupFacilities)
+        btnBooking = view.findViewById(R.id.btnBooking)
 
         view.findViewById<ImageView>(R.id.ivBack).setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
+        btnBooking.setOnClickListener { openBookingSheet() }
 
         // favorite
         ivFavorite = view.findViewById(R.id.ivFavorite)
@@ -168,6 +176,8 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
     }
 
     private fun renderDetail(d: KosDetailDto) {
+        lastDetail = d   // <<-- penting buat bottom sheet
+
         namaKos = d.name
 
         tvNamaKos.text = d.name
@@ -368,10 +378,7 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
                 text = f.name
                 isClickable = false
                 isCheckable = false
-
-                // ✅ biar icon gak “ketint” jadi warna chip
                 chipIconTint = null
-                // ✅ size icon chip enak dipandang
                 chipIconSize = dp(18).toFloat()
 
                 val iconRes = mapFacilityIconToDrawable(f.icon, f.name)
@@ -384,16 +391,10 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
         }
     }
 
-    /**
-     * ✅ FIX BESAR DI SINI:
-     * - Prioritas icon dari server (fa-xxx) dulu
-     * - Fallback pakai nama fasilitas kalau icon kosong / beda versi
-     */
     private fun mapFacilityIconToDrawable(icon: String?, name: String): Int? {
         val fa = icon?.trim()?.lowercase().orEmpty()
         val n = name.trim().lowercase()
 
-        // 1) priority: icon dari backend (fa-xxxx)
         when (fa) {
             "fa-wifi" -> return R.drawable.ic_wifi
             "fa-fan", "fa-snowflake" -> return R.drawable.ic_ac
@@ -413,50 +414,21 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
             "fa-drycleaning" -> return R.drawable.ic_drycleaning
         }
 
-        // 2) fallback: heuristik dari nama fasilitas
         return when {
-            n.contains("wifi") || n.contains("wi-fi") ->
-                R.drawable.ic_wifi
-
-            n == "ac" || n.contains(" ac") || n.contains("ac ") || n.contains("air conditioner") ->
-                R.drawable.ic_ac
-
-            n.contains("air bersih") || n.contains("shower") ->
-                R.drawable.ic_shower
-
-            n.contains("listrik") || n.contains("free listrik") || n.contains("plug") || n.contains("colokan") ->
-                R.drawable.ic_plug
-
-            n.contains("laundry") ->
-                R.drawable.ic_laundry
-
-            n.contains("fingerprint") ->
-                R.drawable.ic_fingerprint
-
-            n.contains("cctv") ->
-                R.drawable.ic_cctv
-
-            n.contains("security") || n.contains("satpam") ->
-                R.drawable.ic_security
-
-            n.contains("parkir luas") || n.contains("garasi") ->
-                R.drawable.ic_garage
-
-            n.contains("parkir motor") || n.contains("parkir mobil") || n.contains("parkir") ->
-                R.drawable.ic_parking
-
-            n.contains("kasur") || n.contains("bed") ->
-                R.drawable.ic_bed
-
-            n.contains("meja") ->
-                R.drawable.ic_meja
-
-            n.contains("lemari") ->
-                R.drawable.ic_lemari
-
-            n.contains("kamar mandi") || n == "km" || n.contains("toilet") || n.contains("wc") ->
-                R.drawable.ic_km_dalam
-
+            n.contains("wifi") || n.contains("wi-fi") -> R.drawable.ic_wifi
+            n == "ac" || n.contains(" ac") || n.contains("ac ") || n.contains("air conditioner") -> R.drawable.ic_ac
+            n.contains("air bersih") || n.contains("shower") -> R.drawable.ic_shower
+            n.contains("listrik") || n.contains("free listrik") || n.contains("plug") || n.contains("colokan") -> R.drawable.ic_plug
+            n.contains("laundry") -> R.drawable.ic_laundry
+            n.contains("fingerprint") -> R.drawable.ic_fingerprint
+            n.contains("cctv") -> R.drawable.ic_cctv
+            n.contains("security") || n.contains("satpam") -> R.drawable.ic_security
+            n.contains("parkir luas") || n.contains("garasi") -> R.drawable.ic_garage
+            n.contains("parkir motor") || n.contains("parkir mobil") || n.contains("parkir") -> R.drawable.ic_parking
+            n.contains("kasur") || n.contains("bed") -> R.drawable.ic_bed
+            n.contains("meja") -> R.drawable.ic_meja
+            n.contains("lemari") -> R.drawable.ic_lemari
+            n.contains("kamar mandi") || n == "km" || n.contains("toilet") || n.contains("wc") -> R.drawable.ic_km_dalam
             else -> null
         }
     }
@@ -468,13 +440,12 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
             .filter { it.isNotBlank() }
             .map { name ->
                 FacilityDto(
-                    id = 0,          // id unknown / dari text bebas
+                    id = 0,
                     name = name,
                     icon = null
                 )
             }
     }
-
 
     // ===================== KOS TYPE + RUPIAH =====================
 
@@ -526,6 +497,30 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
         map.clear()
         map.addMarker(MarkerOptions().position(pos).title(namaKos))
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 16f))
+    }
+
+    // ===================== BOOKING BOTTOM SHEET =====================
+
+    private fun openBookingSheet() {
+        if (!pref.isLoggedIn()) {
+            Toast.makeText(requireContext(), "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val detail = lastDetail
+        if (detail == null) {
+            Toast.makeText(requireContext(), "Data kos belum siap", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val sheet = BookingBottomSheetFragment.newInstance(
+            kosId = kosId,
+            kosName = detail.name,
+            priceMonthly = detail.priceMonthly ?: 0,
+            priceDaily = detail.priceDaily ?: 0, // TAMBAH FIELD INI DI KosDetailDto + API
+            address = detail.address ?: (detail.locationName ?: "")
+        )
+        sheet.show(parentFragmentManager, "booking_sheet")
     }
 
     companion object {

@@ -24,6 +24,10 @@ data class KosDetailDto(
 
     @SerializedName("price_monthly") val priceMonthly: Int? = null,
 
+    @SerializedName("price_daily")
+    val priceDaily: Int?,
+
+
     // JSON lu STRING: "AC, Lemari, ..."
     val facilities: String? = null,
     val rating: Double? = 0.0,

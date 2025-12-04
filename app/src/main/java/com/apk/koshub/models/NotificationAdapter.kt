@@ -1,4 +1,4 @@
-package com.apk.koshub
+package com.apk.koshub.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -40,12 +40,11 @@ class NotificationAdapter(
 
         when (item.type) {
             "booking_approved" -> holder.iconNotif.setImageResource(R.drawable.ic_mail)
+            "booking_rejected" -> holder.iconNotif.setImageResource(R.drawable.ic_mail)
             else -> holder.iconNotif.setImageResource(R.drawable.ic_mail)
         }
 
-        holder.itemView.setOnClickListener {
-            onItemClick(item)
-        }
+        holder.itemView.setOnClickListener { onItemClick(item) }
     }
 
     override fun getItemCount(): Int = items.size
@@ -56,4 +55,3 @@ class NotificationAdapter(
         notifyDataSetChanged()
     }
 }
-

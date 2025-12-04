@@ -61,4 +61,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- EMPTY STATE -->
+    <TextView
+        android:id="@+id/tvEmptyNotif"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Belum ada notifikasi."
+        android:textSize="14sp"
+        android:textColor="#6B6B6B"
+        android:gravity="center"
+        android:padding="24dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rvNotifications"
+        app:layout_constraintBottom_toBottomOf="@id/rvNotifications"
+        app:layout_constraintStart_toStartOf="@id/rvNotifications"
+        app:layout_constraintEnd_toEndOf="@id/rvNotifications" />
+
+    <!-- LOADING -->
+    <ProgressBar
+        android:id="@+id/progressLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rvNotifications"
+        app:layout_constraintBottom_toBottomOf="@id/rvNotifications"
+        app:layout_constraintStart_toStartOf="@id/rvNotifications"
+        app:layout_constraintEnd_toEndOf="@id/rvNotifications" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

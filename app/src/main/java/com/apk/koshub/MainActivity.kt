@@ -6,6 +6,7 @@ import com.apk.koshub.fragments.FavoriteFragment
 import com.apk.koshub.fragments.ExploreFragment
 import com.apk.koshub.fragments.HomeFragment
 import com.apk.koshub.fragments.ProfileFragment
+import com.apk.koshub.fragments.BookingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.apk.koshub.R
 import android.content.Context
@@ -17,6 +18,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.updatePadding
 import androidx.core.view.WindowInsetsCompat
 import android.view.View
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -77,6 +79,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_profile -> {
                     loadFragment(ProfileFragment())
+                    true
+                }
+                R.id.nav_booking -> {
+                    loadFragment(BookingFragment())
                     true
                 }
                 else -> false

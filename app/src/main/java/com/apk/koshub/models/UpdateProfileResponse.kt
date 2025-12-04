@@ -1,8 +1,7 @@
 package com.apk.koshub.models
 
-data class UserResponse(
+data class UpdateProfileResponse(
     val status: String,
-    val code: Int,
     val message: String,
-    val user: User? = null
+    val profile_picture: String? = null
 )

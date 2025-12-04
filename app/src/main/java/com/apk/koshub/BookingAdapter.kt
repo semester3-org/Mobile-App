@@ -85,17 +85,22 @@ class BookingAdapter(
 
             tvKosTypeBadge.setBackgroundResource(R.drawable.bg_badge_pink)
 
+
+            android.util.Log.d(
+                "BookingDebug",
+                "id=${item.id}, status='${item.status}', payment='${item.paymentStatus}'"
+            )
             // status + payment
             val status = item.status.lowercase()
             val payment = item.paymentStatus.lowercase()
 
             // set text badge status
             tvStatusBadge.text = when {
-                status == "pending" ->
+                status == "confirmed" ->
                     "Menunggu"
                 status == "approved" && payment == "unpaid" ->
                     "Dikonfirmasi • Belum Bayar"
-                status == "approved" && payment == "paid" ->
+                status == "confirmed" && payment == "paid" ->
                     "Dikonfirmasi • Lunas"
                 status == "rejected" ->
                     "Ditolak"
@@ -110,7 +115,7 @@ class BookingAdapter(
                 status == "pending" -> {
                     tvStatusBadge.setBackgroundResource(R.drawable.bg_badge_yellow)
                 }
-                status == "approved" -> {
+                status == "confirmed" -> {
                     // pakai chip hijau yang udah ada di project
                     tvStatusBadge.setBackgroundResource(R.drawable.bg_chip_green)
                 }
@@ -140,7 +145,7 @@ class BookingAdapter(
                 }
 
                 // APPROVED tapi BELUM BAYAR: Bayar Sekarang + Detail
-                status == "approved" && payment == "unpaid" -> {
+                status == "confirmed" && payment == "unpaid" -> {
                     btnPrimary.text = "Bayar Sekarang"
                     btnSecondary.text = "Detail"
 
@@ -149,7 +154,7 @@ class BookingAdapter(
                 }
 
                 // APPROVED + PAID: Sudah Bayar (disabled) + Detail
-                status == "approved" && payment == "paid" -> {
+                status == "confirmed" && payment == "paid" -> {
                     btnPrimary.text = "Sudah Bayar"
                     btnPrimary.isEnabled = false
                     btnSecondary.text = "Detail"

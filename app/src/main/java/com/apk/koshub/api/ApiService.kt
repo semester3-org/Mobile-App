@@ -10,6 +10,7 @@ import com.apk.koshub.models.BookingListResponse
 import com.apk.koshub.models.BookingCreateResponse
 import com.apk.koshub.models.BookingDetailResponse
 import com.apk.koshub.models.UnreadCountResponse
+import com.apk.koshub.models.UserRatingResponse
 import okhttp3.MultipartBody
 import okhttp3.Response
 import com.apk.koshub.models.UpdateProfileResponse
@@ -92,6 +93,7 @@ interface ApiService {
     fun getUnreadCount(
         @Query("user_id") userId: Int
     ): Call<UnreadCountResponse>
+
     @FormUrlEncoded
     @POST("users/update_notification_pref.php")
     fun updateNotificationPref(
@@ -135,4 +137,20 @@ interface ApiService {
         @Part profile_picture: MultipartBody.Part?
     ): UpdateProfileResponse
 
+    @GET("users/get_user_rating.php")
+    suspend fun getUserRating(
+        @Query("kos_id") kosId: Int
+    ): UserRatingResponse
+
+    // Endpoint buat kirim rating dan komentar user
+    @FormUrlEncoded
+    @POST("users/submit_user_rating.php")
+    suspend fun submitUserRating(
+        @Field("kos_id") kosId: Int,
+        @Field("rating") rating: Float,
+        @Field("comment") comment: String,
+        @Field("user_id") userId: Int
+    ): BasicResponse
 }
+
+

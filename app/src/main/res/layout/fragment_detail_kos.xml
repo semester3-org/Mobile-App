@@ -168,6 +168,60 @@
             app:chipSpacingHorizontal="8dp"
             app:chipSpacingVertical="8dp" />
 
+        <!-- Rating User -->
+        <TextView
+            android:id="@+id/tvUserRatingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating Anda"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#222222"
+            android:layout_marginTop="16dp"/>
+
+        <RatingBar
+            android:id="@+id/ratingBarUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:rating="0"
+            android:progressTint="#FFC107" />
+
+        <!-- Komen User -->
+        <TextView
+            android:id="@+id/tvUserCommentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Komentar Anda"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#222222"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/etUserComment"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="8dp"
+            android:hint="Tulis komentar"
+            android:textColor="#000000"
+            android:backgroundTint="#D3D3D3"
+            android:padding="10dp"
+            android:gravity="top"
+            android:inputType="textMultiLine"/>
+
+        <Button
+            android:id="@+id/btnSubmitRating"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Kirim Rating"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_green_light"
+            android:layout_marginTop="16dp"/>
+
+
         <!-- Lokasi Title -->
         <TextView
             android:id="@+id/tvLokasiTitle"

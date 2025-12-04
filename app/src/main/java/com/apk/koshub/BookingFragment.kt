@@ -1,5 +1,7 @@
 package com.apk.koshub.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -105,8 +108,19 @@ class BookingFragment : Fragment(), BookingAdapter.Listener {
     }
 
     override fun onPayClicked(item: BookingItem) {
-        // TODO: nanti arahin ke Midtrans / WebView
+        // Cek item.payment_status dulu
+        if (item.paymentStatus == "unpaid") {
+            // Redirect ke transaksi Midtrans via Web
+            val transactionUrl = "https://your-midtrans-url.com/${item.id}"
+
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(transactionUrl))
+            startActivity(intent)
+        } else {
+            // Kalau udah dibayar, bisa kasih toast atau message
+            Toast.makeText(context, "Pembayaran sudah dilakukan.", Toast.LENGTH_SHORT).show()
+        }
     }
+
 
     override fun onCancelClicked(item: BookingItem) {
         // cek lagi biar aman:

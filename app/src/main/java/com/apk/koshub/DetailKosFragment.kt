@@ -11,6 +11,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Button
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,7 @@ import com.apk.koshub.models.BasicResponse
 import com.apk.koshub.models.FacilityDto
 import com.apk.koshub.models.KosDetailDto
 import com.apk.koshub.models.KosResponse
+import com.apk.koshub.models.UserRatingResponse
 import com.apk.koshub.ui.KosPhotoPagerAdapter
 import com.apk.koshub.utils.SharedPrefHelper
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -79,6 +81,15 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
     // buat bottom sheet
     private var lastDetail: KosDetailDto? = null
 
+
+    private var userRating: Float = 0f
+    private var userComment: String = ""
+
+    //----- RATING -----
+    private lateinit var ratingBarUser: RatingBar
+    private lateinit var etUserComment: EditText
+    private lateinit var btnSubmitRating: Button
+
     // ===== Photos + dots manual =====
     private lateinit var vpPhotos: ViewPager2
     private lateinit var dotsContainer: LinearLayout
@@ -116,6 +127,9 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
         tvRatingValue = view.findViewById(R.id.tvRatingValue)
         chipGroupFacilities = view.findViewById(R.id.chipGroupFacilities)
         btnBooking = view.findViewById(R.id.btnBooking)
+        ratingBarUser = view.findViewById(R.id.ratingBarUser)
+        etUserComment = view.findViewById(R.id.etUserComment)
+        btnSubmitRating = view.findViewById(R.id.btnSubmitRating)
 
         view.findViewById<ImageView>(R.id.ivBack).setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -143,9 +157,16 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
         // load detail
         fetchDetail()
 
+        fetchUserRating()
+
         // sync status favorite awal
         syncFavoriteStatus()
+
+        btnSubmitRating.setOnClickListener {
+            submitUserRating()
+        }
     }
+
 
     override fun onDestroyView() {
         vpPhotos.unregisterOnPageChangeCallback(pageCallback)
@@ -522,6 +543,72 @@ class DetailKosFragment : Fragment(R.layout.fragment_detail_kos), OnMapReadyCall
         )
         sheet.show(parentFragmentManager, "booking_sheet")
     }
+    private fun fetchUserRating() {
+        lifecycleScope.launch {
+            try {
+                // langsung dapat UserRatingResponse
+                val userRatingData = api.getUserRating(kosId)
+
+                userRating = userRatingData.rating ?: 0f
+                userComment = userRatingData.comment.orEmpty()
+
+                ratingBarUser.rating = userRating
+                etUserComment.setText(userComment)
+            } catch (e: Exception) {
+                Log.e(TAG, "fetchUserRating error: ${e.message}", e)
+            }
+        }
+    }
+
+
+
+    private fun submitUserRating() {
+        val rating = ratingBarUser.rating
+        val comment = etUserComment.text.toString()
+        Log.d(TAG, "submitUserRating() clicked, rating=$rating, comment=$comment")
+        if (rating == 0f || comment.isEmpty()) {
+            Toast.makeText(requireContext(), "Rating dan komentar harus diisi", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val user = db.getUser()
+        if (user == null) {
+            Toast.makeText(requireContext(), "User Tidak Ditemukan", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        lifecycleScope.launch {
+            try {
+                val res = api.submitUserRating(
+                    kosId = kosId,
+                    rating = rating,
+                    comment = comment,
+                    userId = user.id
+                )
+                Log.d(TAG, "submitUserRating response: success=${res.success}, status=${res.status}, message=${res.message}")
+
+                if (res.success) {
+                    ratingBarUser.rating = 0f      // reset bintang
+                    etUserComment.setText("")      // kosongkan komentar
+                    Toast.makeText(
+                        requireContext(),
+                        res.message ?: "Rating berhasil dikirim",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        res.message ?: "Gagal mengirim rating",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "submitUserRating error: ${e.message}", e)
+                Toast.makeText(requireContext(), "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     companion object {
         private const val TAG = "DETAIL_KOS"
